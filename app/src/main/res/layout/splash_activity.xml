@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/rldMainLayout"
+    android:background="@android:color/white">
+
+
+    <LinearLayout
+        android:layout_width="@dimen/splash_width"
+        android:layout_height="@dimen/splash_height"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:id="@+id/ldtSplash"
+        android:background="@drawable/splash_image"
+        android:orientation="vertical"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/splash_name"
+            android:gravity="center"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:textSize="@dimen/splash_text"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/studies"
+            android:gravity="end"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:textSize="@dimen/splast_text1"/>
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>

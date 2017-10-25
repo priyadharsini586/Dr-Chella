@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Dr Chella</string>
+    <string name="splash_name">Dr.Chella</string>
+    <string name="studies">M.D.,</string>
+    <string name="registration">Registration</string>
+    <string name="Name">Name</string>
 </resources>
