@@ -16,8 +16,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.RegistrationActivity"
-            android:theme="@style/AppTheme.Dark"></activity>
+        <activity
+            android:name=".activity.RegistrationActivity"
+            android:theme="@style/AppTheme.Dark" />
+        <activity
+            android:name=".activity.OTPActivity"
+            android:theme="@style/AppTheme.Dark" />
+        <activity android:name=".activity.BookAppointmentActivity"></activity>
     </application>
 
 </manifest>

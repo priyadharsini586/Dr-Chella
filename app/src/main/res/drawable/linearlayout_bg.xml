@@ -11,10 +11,10 @@
 
     <!-- add some padding for text inside -->
     <padding
-        android:bottom="15dp"
-        android:left="15dp"
-        android:right="15dp"
-        android:top="15dp" />
+        android:bottom="@dimen/linearlayout_bg_padding"
+        android:left="@dimen/linearlayout_bg_padding"
+        android:right="@dimen/linearlayout_bg_padding"
+        android:top="@dimen/linearlayout_bg_padding" />
 
     <!-- we define corner radius, note that radius can be different for each corner -->
     <corners android:radius="10dp" />

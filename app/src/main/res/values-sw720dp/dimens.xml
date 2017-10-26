@@ -3,9 +3,17 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
+    <!--Splash screen dimen-->
     <dimen name="splash_width">340dp</dimen>
     <dimen name="splash_height">320dp</dimen>
     <!--text size in sp-->
     <dimen name="splash_text">42sp</dimen>
     <dimen name="splast_text1">25sp</dimen>
+
+    <!--Registration screen dimen-->
+    <dimen name="edtt_text_padding">50dp</dimen>
+    <dimen name="icon_padding">25dp</dimen>
+    <dimen name="linearlayout_bg_padding">15dp</dimen>
+    <dimen name="edit_text_size">25sp</dimen>
+
 </resources>
