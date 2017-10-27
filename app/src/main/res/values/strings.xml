@@ -14,4 +14,14 @@
 
     <string name="str1">We have sent verification code to your registered Mobile number</string>
     <string name="submit">SUBMIT</string>
+
+
+    <string name="date_and_time">Date &amp;Time</string>
+    <string name="booking_details">Booking Details</string>
+    <string name="conformation">Conformation</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="select_city">Please Select Your City</string>
 </resources>

@@ -16,4 +16,7 @@
     <dimen name="linearlayout_bg_padding">15dp</dimen>
     <dimen name="edit_text_size">25sp</dimen>
 
+
+    <!--Booking Appiontment-->
+    <dimen name="title_padding">20dp</dimen>
 </resources>

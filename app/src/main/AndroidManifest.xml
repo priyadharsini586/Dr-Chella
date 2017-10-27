@@ -22,7 +22,8 @@
         <activity
             android:name=".activity.OTPActivity"
             android:theme="@style/AppTheme.Dark" />
-        <activity android:name=".activity.BookAppointmentActivity"></activity>
+        <activity android:name=".activity.BookAppointmentActivity"
+            android:theme="@style/AppTheme.Dark"></activity>
     </application>
 
 </manifest>
