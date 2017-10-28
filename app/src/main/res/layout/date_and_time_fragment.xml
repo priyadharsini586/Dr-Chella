@@ -9,13 +9,8 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
-
-
-
-
-
     <com.prolificinteractive.materialcalendarview.MaterialCalendarView
         android:id="@+id/calendarView"
         android:layout_width="match_parent"
@@ -26,7 +21,10 @@
         app:mcv_dateTextAppearance ="@style/TextAppearance.MaterialCalendarWidget.WeekDay"
         app:mcv_selectionColor="#01C5CE"/>
 
-   <GridView
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+   <com.hexaenna.drchella.custom_view.ExpandableHeightGridView
        android:id="@+id/gridTime"
        android:layout_width="match_parent"
        android:layout_height="match_parent"
@@ -36,7 +34,9 @@
        android:stretchMode="columnWidth"
        android:numColumns="auto_fit"
        android:verticalSpacing="8dp"
-      android:padding="10dp" />
+      android:padding="10dp"
+       android:scrollbars="none"/>
+        </LinearLayout>
     </LinearLayout>
 
 </ScrollView>

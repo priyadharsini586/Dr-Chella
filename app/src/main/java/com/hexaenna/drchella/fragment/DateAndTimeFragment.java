@@ -40,6 +40,7 @@ import com.hexaenna.drchella.activity.OTPActivity;
 import com.hexaenna.drchella.adapter.CityAdapter;
 import com.hexaenna.drchella.adapter.GenderSpinnerAdapter;
 import com.hexaenna.drchella.adapter.TimeSlotAdapter;
+import com.hexaenna.drchella.custom_view.ExpandableHeightGridView;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.CalendarMode;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
@@ -71,7 +72,7 @@ public class DateAndTimeFragment extends Fragment {
 
     //time slot
     ArrayList<String> timeSlotList;
-    GridView gridView;
+    ExpandableHeightGridView gridView;
 
     @TargetApi(Build.VERSION_CODES.N)
     @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
@@ -178,7 +179,8 @@ public class DateAndTimeFragment extends Fragment {
             });
 
 
-            gridView = (GridView) mainView.findViewById(R.id.gridTime);
+            gridView = (ExpandableHeightGridView) mainView.findViewById(R.id.gridTime);
+            gridView.setExpanded(true);
             gridView.setAdapter(new TimeSlotAdapter(getActivity(), getTimeSlotList()));
             showDailog(getActivity());
 
