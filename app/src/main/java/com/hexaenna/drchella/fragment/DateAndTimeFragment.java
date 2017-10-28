@@ -4,18 +4,22 @@ import android.annotation.TargetApi;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.icu.text.SimpleDateFormat;
 import android.icu.util.Calendar;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.style.BackgroundColorSpan;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,7 +42,9 @@ import com.prolificinteractive.materialcalendarview.CalendarMode;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
 import com.prolificinteractive.materialcalendarview.DayViewFacade;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -58,6 +64,8 @@ public class DateAndTimeFragment extends Fragment {
     Button btnOk;
     int currentDate,currentMonth,endMonth,endDate;
     Dialog dialog;
+    private static final DateFormat FORMATTER = java.text.SimpleDateFormat.getDateInstance();
+
     @TargetApi(Build.VERSION_CODES.N)
     @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
     @Override
@@ -103,47 +111,84 @@ public class DateAndTimeFragment extends Fragment {
             int thisYear = c.get(Calendar.YEAR);
             int thisMonth = c.get(Calendar.MONTH);
 
+            currentDate = c.get(Calendar.DATE);
+            currentMonth = c.get(Calendar.MONTH);
+
             int end_year = cal.get(Calendar.YEAR);
             int end_month = cal.get(Calendar.MONTH);
-            int end_day = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+
+            endDate = cal.get(Calendar.DATE);
+            endMonth = cal.get(Calendar.MONTH);
 
 
             calendarView.state().edit()
                     .setMinimumDate(CalendarDay.from(thisYear,thisMonth,1))
-                    .setMaximumDate(CalendarDay.from(end_year,end_month,end_day))
+                    .setMaximumDate(CalendarDay.from(end_year,end_month,31))
                     .commit();
 
         }
         calendarView.addDecorator(new PriviousDayDisableDecorator(getActivity(),currentDate,currentMonth,endDate,endMonth));
+//        calendarView.addDecorators(new  SelectedDayDecorator(30, R.color.colorAccent));
+        calendarView.addDecorator(new DayViewDecorator() {
+            @Override
+            public boolean shouldDecorate(CalendarDay day) {
+
+                    if (day.getCalendar().get(java.util.Calendar.DAY_OF_WEEK) == java.util.Calendar.FRIDAY) {
+                        if (currentMonth == day.getMonth())
+                        {
+                            if (currentDate <= day.getDay())
+                            {
+                                return true;
+                            }else
+                            {
+                                return false;
+                            }
+                        }else
+                        {
+                            return true;
+
+                        }
+                    } else {
+                        Log.e("day ///",String.valueOf(day.getMonth()));
+                        return false;
+                    }
 
 
-        Calendar cal1 = Calendar.getInstance();
-        cal1.set(2017, 11, 1);
-        Calendar cal2 = Calendar.getInstance();
-        cal2.set(2017, 11, 10);
+            }
 
-        HashSet<CalendarDay> setDays = getCalendarDaysSet(cal1, cal2);
-        int myColor = R.color.colorAccent;
-        calendarView.addDecorator(new BookingDecorator(myColor, setDays));
+            @Override
+            public void decorate(DayViewFacade view) {
+                // add red foreground span
+                view.setDaysDisabled(false);
+                view.addSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorAccent)));
+            }
+        });
 
-
+        calendarView.setOnDateChangedListener(new OnDateSelectedListener() {
+            @Override
+            public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
+                Log.e("check",getSelectedDatesString());
+                if (date.getCalendar().get(java.util.Calendar.DAY_OF_WEEK) == java.util.Calendar.FRIDAY)
+                {
+                    Toast.makeText(getActivity(),"Doctor not avaiable",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
         showDailog(getActivity());
 
         return mainView;
     }
 
-    private HashSet<CalendarDay> getCalendarDaysSet(Calendar cal1, Calendar cal2) {
-        HashSet<CalendarDay> setDays = new HashSet<>();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            while (cal1.getTime().before(cal2.getTime())) {
-                CalendarDay calDay = CalendarDay.from(cal1);
-                setDays.add(calDay);
-                cal1.add(Calendar.DATE, 1);
-            }
-        }
 
-        return setDays;
+
+    private String getSelectedDatesString() {
+        CalendarDay date = calendarView.getSelectedDate();
+        if (date == null) {
+            return "No Selection";
+        }
+        return FORMATTER.format(date.getDate());
     }
+
 
     public void showDailog(Context context) {
 
@@ -215,34 +260,12 @@ public class DateAndTimeFragment extends Fragment {
         @Override
         public void decorate(DayViewFacade view) {
             view.setDaysDisabled(true);
-//            view.setSelectionDrawable(ContextCompat.getDrawable(context,R.drawable.calendar_selected_date));
+         /*   if (view.areDaysDisabled())
+                view.setSelectionDrawable(ContextCompat.getDrawable(context,R.drawable.calendar_selected_date));*/
 
         }
-
 
     }
 
-    private class BookingDecorator implements DayViewDecorator {
-        private int mColor;
-        private HashSet<CalendarDay> mCalendarDayCollection;
-
-        public BookingDecorator(int color, HashSet<CalendarDay> calendarDayCollection) {
-            mColor = color;
-            mCalendarDayCollection = calendarDayCollection;
-        }
-
-        @Override
-        public boolean shouldDecorate(CalendarDay day) {
-            return mCalendarDayCollection.contains(day);
-        }
-
-        @Override
-        public void decorate(DayViewFacade view) {
-            view.addSpan(new ForegroundColorSpan(mColor));
-            //view.addSpan(new BackgroundColorSpan(Color.BLUE));
-            view.setBackgroundDrawable(ContextCompat.getDrawable(getContext(),R.drawable.calendar_selected_date));
-
-        }
-    }
 
 }

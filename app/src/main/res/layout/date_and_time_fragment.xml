@@ -26,4 +26,9 @@
         app:mcv_dateTextAppearance ="@style/TextAppearance.MaterialCalendarWidget.WeekDay"
         app:mcv_selectionColor="#01C5CE"/>
 
+   <GridView
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"></GridView>
+
+
 </LinearLayout>
