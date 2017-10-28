@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -26,6 +27,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -37,6 +39,7 @@ import com.hexaenna.drchella.R;
 import com.hexaenna.drchella.activity.OTPActivity;
 import com.hexaenna.drchella.adapter.CityAdapter;
 import com.hexaenna.drchella.adapter.GenderSpinnerAdapter;
+import com.hexaenna.drchella.adapter.TimeSlotAdapter;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.CalendarMode;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
@@ -66,6 +69,10 @@ public class DateAndTimeFragment extends Fragment {
     Dialog dialog;
     private static final DateFormat FORMATTER = java.text.SimpleDateFormat.getDateInstance();
 
+    //time slot
+    ArrayList<String> timeSlotList;
+    GridView gridView;
+
     @TargetApi(Build.VERSION_CODES.N)
     @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
     @Override
@@ -73,113 +80,117 @@ public class DateAndTimeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-        mainView = inflater.inflate(R.layout.date_and_time_fragment, container, false);
+
+            mainView = inflater.inflate(R.layout.date_and_time_fragment, container, false);
 
 
-        calendarView = (MaterialCalendarView) mainView.findViewById(R.id.calendarView);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            c = Calendar.getInstance();
-            cal = Calendar.getInstance(); //Get the Calendar instance
-            cal.add(Calendar.MONTH,3);//Three months from now
-            cal.getTime();
+            calendarView = (MaterialCalendarView) mainView.findViewById(R.id.calendarView);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                c = Calendar.getInstance();
+                cal = Calendar.getInstance(); //Get the Calendar instance
+                cal.add(Calendar.MONTH, 3);//Three months from now
+                cal.getTime();
 
-            int thisYear = c.get(Calendar.YEAR);
-            int thisMonth = c.get(Calendar.MONTH);
+                int thisYear = c.get(Calendar.YEAR);
+                int thisMonth = c.get(Calendar.MONTH);
 
-            currentDate = c.get(Calendar.DATE);
-            currentMonth = c.get(Calendar.MONTH);
+                currentDate = c.get(Calendar.DATE);
+                currentMonth = c.get(Calendar.MONTH);
 
-            int end_year = cal.get(Calendar.YEAR);
-            int end_month = cal.get(Calendar.MONTH);
+                int end_year = cal.get(Calendar.YEAR);
+                int end_month = cal.get(Calendar.MONTH);
 
-            endDate = cal.get(Calendar.DATE);
-            endMonth = cal.get(Calendar.MONTH);
-
-
-            calendarView.state().edit()
-                    .setMinimumDate(CalendarDay.from(thisYear,thisMonth,1))
-                    .setMaximumDate(CalendarDay.from(end_year,end_month,31))
-                    .commit();
-
-        }else
-        {
-            c = Calendar.getInstance();
-            cal = Calendar.getInstance(); //Get the Calendar instance
-            cal.add(Calendar.MONTH,3);//Three months from now
-            cal.getTime();
-
-            int thisYear = c.get(Calendar.YEAR);
-            int thisMonth = c.get(Calendar.MONTH);
-
-            currentDate = c.get(Calendar.DATE);
-            currentMonth = c.get(Calendar.MONTH);
-
-            int end_year = cal.get(Calendar.YEAR);
-            int end_month = cal.get(Calendar.MONTH);
-
-            endDate = cal.get(Calendar.DATE);
-            endMonth = cal.get(Calendar.MONTH);
+                endDate = cal.get(Calendar.DATE);
+                endMonth = cal.get(Calendar.MONTH);
 
 
-            calendarView.state().edit()
-                    .setMinimumDate(CalendarDay.from(thisYear,thisMonth,1))
-                    .setMaximumDate(CalendarDay.from(end_year,end_month,31))
-                    .commit();
+                calendarView.state().edit()
+                        .setMinimumDate(CalendarDay.from(thisYear, thisMonth, 1))
+                        .setMaximumDate(CalendarDay.from(end_year, end_month, 31))
+                        .commit();
 
-        }
-        calendarView.addDecorator(new PriviousDayDisableDecorator(getActivity(),currentDate,currentMonth,endDate,endMonth));
+            } else {
+                c = Calendar.getInstance();
+                cal = Calendar.getInstance(); //Get the Calendar instance
+                cal.add(Calendar.MONTH, 3);//Three months from now
+                cal.getTime();
+
+                int thisYear = c.get(Calendar.YEAR);
+                int thisMonth = c.get(Calendar.MONTH);
+
+                currentDate = c.get(Calendar.DATE);
+                currentMonth = c.get(Calendar.MONTH);
+
+                int end_year = cal.get(Calendar.YEAR);
+                int end_month = cal.get(Calendar.MONTH);
+
+                endDate = cal.get(Calendar.DATE);
+                endMonth = cal.get(Calendar.MONTH);
+
+
+                calendarView.state().edit()
+                        .setMinimumDate(CalendarDay.from(thisYear, thisMonth, 1))
+                        .setMaximumDate(CalendarDay.from(end_year, end_month, 31))
+                        .commit();
+
+            }
+            calendarView.addDecorator(new PriviousDayDisableDecorator(getActivity(), currentDate, currentMonth, endDate, endMonth));
 //        calendarView.addDecorators(new  SelectedDayDecorator(30, R.color.colorAccent));
-        calendarView.addDecorator(new DayViewDecorator() {
-            @Override
-            public boolean shouldDecorate(CalendarDay day) {
+            calendarView.addDecorator(new DayViewDecorator() {
+                @Override
+                public boolean shouldDecorate(CalendarDay day) {
 
                     if (day.getCalendar().get(java.util.Calendar.DAY_OF_WEEK) == java.util.Calendar.FRIDAY) {
-                        if (currentMonth == day.getMonth())
-                        {
-                            if (currentDate <= day.getDay())
-                            {
+                        if (currentMonth == day.getMonth()) {
+                            if (currentDate <= day.getDay()) {
                                 return true;
-                            }else
-                            {
+                            } else {
                                 return false;
                             }
-                        }else
-                        {
+                        } else {
                             return true;
 
                         }
                     } else {
-                        Log.e("day ///",String.valueOf(day.getMonth()));
+                        Log.e("day ///", String.valueOf(day.getMonth()));
                         return false;
                     }
 
 
-            }
-
-            @Override
-            public void decorate(DayViewFacade view) {
-                // add red foreground span
-                view.setDaysDisabled(false);
-                view.addSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorAccent)));
-            }
-        });
-
-        calendarView.setOnDateChangedListener(new OnDateSelectedListener() {
-            @Override
-            public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
-                Log.e("check",getSelectedDatesString());
-                if (date.getCalendar().get(java.util.Calendar.DAY_OF_WEEK) == java.util.Calendar.FRIDAY)
-                {
-                    Toast.makeText(getActivity(),"Doctor not avaiable",Toast.LENGTH_SHORT).show();
                 }
-            }
-        });
-        showDailog(getActivity());
+
+                @Override
+                public void decorate(DayViewFacade view) {
+                    // add red foreground span
+                    view.setDaysDisabled(false);
+                    view.addSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorAccent)));
+                }
+            });
+
+            calendarView.setOnDateChangedListener(new OnDateSelectedListener() {
+                @Override
+                public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
+                    Log.e("check", getSelectedDatesString());
+                    if (date.getCalendar().get(java.util.Calendar.DAY_OF_WEEK) == java.util.Calendar.FRIDAY) {
+                        Toast.makeText(getActivity(), "Doctor not avaiable", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+
+
+            gridView = (GridView) mainView.findViewById(R.id.gridTime);
+            gridView.setAdapter(new TimeSlotAdapter(getActivity(), getTimeSlotList()));
+            showDailog(getActivity());
 
         return mainView;
     }
 
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+    }
 
     private String getSelectedDatesString() {
         CalendarDay date = calendarView.getSelectedDate();
@@ -267,5 +278,33 @@ public class DateAndTimeFragment extends Fragment {
 
     }
 
+
+    public ArrayList<String> getTimeSlotList()
+    {
+        timeSlotList = new ArrayList<>();
+        timeSlotList.add("9.00AM");
+        timeSlotList.add("9.20AM");
+        timeSlotList.add("9.40AM");
+        timeSlotList.add("10.00AM");
+        timeSlotList.add("10.20AM");
+        timeSlotList.add("10.40AM");
+        timeSlotList.add("11.00AM");
+        timeSlotList.add("11.20AM");
+        timeSlotList.add("11.40AM");
+        timeSlotList.add("9.00AM");
+        timeSlotList.add("9.00AM");
+        timeSlotList.add("9.00AM");
+        timeSlotList.add("9.00AM");
+        timeSlotList.add("9.00AM");
+        timeSlotList.add("9.00AM");
+        timeSlotList.add("9.00AM");
+        timeSlotList.add("9.00AM");
+        timeSlotList.add("9.00AM");
+        timeSlotList.add("9.00AM");
+        timeSlotList.add("9.00AM");timeSlotList.add("9.00AM");
+
+
+        return timeSlotList;
+    }
 
 }

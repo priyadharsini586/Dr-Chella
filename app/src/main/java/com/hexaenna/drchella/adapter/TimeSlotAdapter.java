@@ -9,17 +9,19 @@ import android.widget.TextView;
 
 import com.hexaenna.drchella.R;
 
+import java.util.ArrayList;
+
 /**
  * Created by admin on 10/28/2017.
  */
 
 public class TimeSlotAdapter extends BaseAdapter {
     private Context context;
-    private final String[] mobileValues;
+    ArrayList<String>timeSlotList;
 
-    public TimeSlotAdapter(Context context, String[] mobileValues) {
+    public TimeSlotAdapter(Context context, ArrayList<String>timeSlotList) {
         this.context = context;
-        this.mobileValues = mobileValues;
+        this.timeSlotList = timeSlotList;
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -33,13 +35,12 @@ public class TimeSlotAdapter extends BaseAdapter {
 
             gridView = new View(context);
 
-            // get layout from mobile.xml
             gridView = inflater.inflate(R.layout.time_slot_layout, null);
 
             // set value into textview
             TextView textView = (TextView) gridView
-                    .findViewById(R.id.grid_item_label);
-            textView.setText(mobileValues[position]);
+                    .findViewById(R.id.txtTimeSlot);
+            textView.setText(timeSlotList.get(position));
 
             // set image based on selected text
 
@@ -53,7 +54,7 @@ public class TimeSlotAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return mobileValues.length;
+        return timeSlotList.size();
     }
 
     @Override
