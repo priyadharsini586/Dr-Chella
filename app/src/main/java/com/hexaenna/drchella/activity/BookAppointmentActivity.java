@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.icu.util.Calendar;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -24,19 +25,10 @@ public class BookAppointmentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.book_appointment_activity);
 
-        ldtCity = (LinearLayout) findViewById(R.id.ldtCity);
-        ldtCity.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DateAndTimeFragment dateAndTimeFragment = new DateAndTimeFragment();
-                dateAndTimeFragment.showDailog(BookAppointmentActivity.this);
-
-            }
-        });
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        DateAndTimeFragment hello = new DateAndTimeFragment();
-        fragmentTransaction.add(R.id.fragment_container, hello, "HELLO");
+        fragmentTransaction.replace(R.id.fragment_container, new DateAndTimeFragment(), "DATE_AND_TIME_FRAGMENT");
         fragmentTransaction.commit();
+        fragmentManager.executePendingTransactions();
     }
 }

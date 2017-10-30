@@ -35,7 +35,8 @@
        android:numColumns="auto_fit"
        android:verticalSpacing="8dp"
       android:padding="10dp"
-       android:scrollbars="none"/>
+       android:scrollbars="none"
+       android:visibility="gone"/>
         </LinearLayout>
     </LinearLayout>
 
