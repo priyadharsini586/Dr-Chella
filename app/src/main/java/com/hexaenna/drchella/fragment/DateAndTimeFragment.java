@@ -322,7 +322,7 @@ public class DateAndTimeFragment extends Fragment {
                     java.util.Calendar calendar = java.util.Calendar.getInstance();
                     calendar.set(java.util.Calendar.DAY_OF_WEEK,3);
                     day.copyTo(calendar);
-                    if (day.getDay() <= 7 )
+                    if (day.getCalendar() <= 7 )
                     {
                         return true;
                     }else
