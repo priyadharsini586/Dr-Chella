@@ -6,8 +6,8 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.icu.text.SimpleDateFormat;
 import android.icu.util.Calendar;
+import android.icu.util.GregorianCalendar;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -54,6 +54,8 @@ import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
 import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -74,12 +76,18 @@ public class DateAndTimeFragment extends Fragment {
     int currentDate,currentMonth,endMonth,endDate;
     Dialog dialog;
     Toolbar mToolbar;
-    private static final DateFormat FORMATTER = java.text.SimpleDateFormat.getDateInstance();
     //time slot
     ArrayList<String> timeSlotList;
     ExpandableHeightGridView gridView;
     Context mainContext;
     LinearLayout ldtCity;
+    final String[] item = new String[1];
+
+    CoimbatoreDisableDcorator coimbatoreDisableDcorator;
+    MayiladuthuraiDisableDcorator mayiladuthuraiDisableDcorator;
+    ErodeDisableDcorator erodeDisableDcorator;
+    ChennaiDisableDcorator chennaiDisableDcorator ;
+
     @TargetApi(Build.VERSION_CODES.N)
     @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
     @Override
@@ -160,15 +168,115 @@ public class DateAndTimeFragment extends Fragment {
             calendarView.setOnDateChangedListener(new OnDateSelectedListener() {
                 @Override
                 public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
-                    Log.e("check", getSelectedDatesString());
-                    if (date.getCalendar().get(java.util.Calendar.DAY_OF_WEEK) == java.util.Calendar.FRIDAY) {
-                        Toast.makeText(getActivity(), "Doctor not avaiable", Toast.LENGTH_SHORT).show();
-                        gridView.setVisibility(View.GONE);
-                    }else
+
+                    int week = 0;
+
+                    Date date5 = date.getDate();
+                    DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+                    String reportDate = df.format(date5);
+                    Log.e("date", String.valueOf(reportDate));
+                    Date date1 = null;
+                    try {
+                        date1 = df.parse(reportDate);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        Calendar cal = Calendar.getInstance();
+                        cal.setTime(date1);
+                        week = cal.get(Calendar.WEEK_OF_MONTH);
+                        Log.e("week date",String.valueOf(week));
+
+
+                    }
+                    if (item[0].equals("Erode"))
                     {
-                        gridView.setExpanded(true);
-                        gridView.setAdapter(new TimeSlotAdapter(getActivity(), getErodeTimeSlotList()));
-                        gridView.setVisibility(View.VISIBLE);
+                        if (date.getCalendar().get(java.util.Calendar.DAY_OF_WEEK) == java.util.Calendar.FRIDAY) {
+                            Toast.makeText(getActivity(), "Doctor not avaiable", Toast.LENGTH_SHORT).show();
+                            gridView.setVisibility(View.GONE);
+                        }else
+                        {
+                            gridView.setExpanded(true);
+                            gridView.setAdapter(new TimeSlotAdapter(getActivity(), getErodeTimeSlotList()));
+                            gridView.setVisibility(View.VISIBLE);
+                        }
+                    }else if (item[0].equals("Chennai"))
+                    {
+                        CalendarDay  selectedDate = widget.getSelectedDate();
+                      /*  Date date5 = selectedDate.getDate();
+                        DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+                        String reportDate = df.format(date5);
+                        Log.e("date", String.valueOf(reportDate));
+                        Date date1 = null;
+                        try {
+                            date1 = df.parse(reportDate);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+
+                        Calendar cal = Calendar.getInstance();
+                        cal.setTime(date1);
+                        int week = cal.get(Calendar.WEEK_OF_MONTH);*/
+
+                        if (date.getCalendar().get(java.util.Calendar.DAY_OF_WEEK) != java.util.Calendar.SUNDAY)
+                        {
+                            Toast.makeText(getActivity(), "Doctor not avaiable", Toast.LENGTH_SHORT).show();
+                        }else
+                        {
+                            if (selectedDate.getDay() <= 7 || selectedDate.getDay() < 22 && selectedDate.getDay() > 14)
+                            {
+                                Toast.makeText(getActivity(), "Doctor avaiable", Toast.LENGTH_SHORT).show();
+                            }else
+                            {
+                                Toast.makeText(getActivity(), "Doctor not avaiable", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }else if (item[0].equals("Coimbatore"))
+                    {
+                        if (date.getCalendar().get(java.util.Calendar.DAY_OF_WEEK) == java.util.Calendar.FRIDAY) {
+                            if (week == 2 || week == 4) {
+                                Toast.makeText(getActivity(), "Doctor avaiable", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(getActivity(), "Doctor not avaiable", Toast.LENGTH_SHORT).show();
+                            }
+                        }else {
+                            Toast.makeText(getActivity(), "Doctor not avaiable", Toast.LENGTH_SHORT).show();
+                        }
+                    }else if (item[0].equals("Namakkal"))
+                    {
+                        if (date.getCalendar().get(java.util.Calendar.DAY_OF_WEEK) == java.util.Calendar.FRIDAY) {
+                            if (week == 2 || week == 4) {
+                                Toast.makeText(getActivity(), "Doctor avaiable", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(getActivity(), "Doctor not avaiable", Toast.LENGTH_SHORT).show();
+                            }
+                        }else {
+                            Toast.makeText(getActivity(), "Doctor not avaiable", Toast.LENGTH_SHORT).show();
+                        }
+                    }else if (item[0].equals("Mayiladuthurai"))
+                    {
+                        if (date.getCalendar().get(java.util.Calendar.DAY_OF_WEEK) == java.util.Calendar.FRIDAY) {
+                            if (week == 1 || week == 3) {
+                                Toast.makeText(getActivity(), "Doctor avaiable", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(getActivity(), "Doctor not avaiable", Toast.LENGTH_SHORT).show();
+                            }
+                        }else {
+                            Toast.makeText(getActivity(), "Doctor not avaiable", Toast.LENGTH_SHORT).show();
+                        }
+                    }else if (item[0].equals("Kollidam"))
+                    {
+                        if (date.getCalendar().get(java.util.Calendar.DAY_OF_WEEK) == java.util.Calendar.FRIDAY) {
+                            if (week == 1 || week == 3) {
+                                Toast.makeText(getActivity(), "Doctor avaiable", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(getActivity(), "Doctor not avaiable", Toast.LENGTH_SHORT).show();
+                            }
+                        }else {
+                            Toast.makeText(getActivity(), "Doctor not avaiable", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }
             });
@@ -187,13 +295,13 @@ public class DateAndTimeFragment extends Fragment {
 
     }
 
-    private String getSelectedDatesString() {
+   /* private String getSelectedDatesString() {
         CalendarDay date = calendarView.getSelectedDate();
         if (date == null) {
             return "No Selection";
         }
         return FORMATTER.format(date.getDate());
-    }
+    }*/
 
 
     public void showDailog(final Context context) {
@@ -211,7 +319,7 @@ public class DateAndTimeFragment extends Fragment {
         cityList.add("Kollidam");
         citySpinnerAdapter = new CityAdapter(context,cityList);
         citySpinner = (ListView) dialog.findViewById(R.id.ldtList);
-        final String[] item = new String[1];
+
         citySpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -226,9 +334,10 @@ public class DateAndTimeFragment extends Fragment {
         btnOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                dialog.dismiss();
-                checkList(item[0]);
+                if (item[0] != null) {
+                    dialog.dismiss();
+                    checkList(item[0]);
+                }
             }
         });
         dialog.setCancelable(false);
@@ -271,7 +380,15 @@ public class DateAndTimeFragment extends Fragment {
             {
             }*/
             calendarView.setVisibility(View.VISIBLE);
-            calendarView.addDecorator(new DayViewDecorator() {
+            if (coimbatoreDisableDcorator != null)
+                calendarView.removeDecorator(coimbatoreDisableDcorator);
+            if (chennaiDisableDcorator != null)
+                calendarView.removeDecorator(chennaiDisableDcorator);
+            if (mayiladuthuraiDisableDcorator != null)
+                calendarView.removeDecorator(mayiladuthuraiDisableDcorator);
+            erodeDisableDcorator = new ErodeDisableDcorator(getActivity(), currentDate, currentMonth, endDate, endMonth);
+            calendarView.addDecorator(erodeDisableDcorator);
+           /* calendarView.addDecorator(new DayViewDecorator() {
                 @Override
                 public boolean shouldDecorate(CalendarDay day) {
 
@@ -287,7 +404,6 @@ public class DateAndTimeFragment extends Fragment {
 
                         }
                     } else {
-                        Log.e("day ///", String.valueOf(day.getMonth()));
                         return false;
                     }
 
@@ -300,10 +416,65 @@ public class DateAndTimeFragment extends Fragment {
                     view.setDaysDisabled(false);
                     view.addSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorAccent)));
                 }
-            });
+            });*/
         }else if (city.equals("Chennai")){
 
-            getChennaiCalendar();
+            if (coimbatoreDisableDcorator != null)
+                calendarView.removeDecorator(coimbatoreDisableDcorator);
+            if (erodeDisableDcorator != null)
+                calendarView.removeDecorator(erodeDisableDcorator);
+            if (mayiladuthuraiDisableDcorator != null)
+                calendarView.removeDecorator(mayiladuthuraiDisableDcorator);
+            chennaiDisableDcorator = new ChennaiDisableDcorator(getActivity(), currentDate, currentMonth, endDate, endMonth);
+            calendarView.addDecorator(chennaiDisableDcorator);
+        }else if (city.equals("Coimbatore"))
+        {
+            calendarView.setVisibility(View.VISIBLE);
+            if (erodeDisableDcorator != null)
+                calendarView.removeDecorator(erodeDisableDcorator);
+            if (chennaiDisableDcorator != null)
+                calendarView.removeDecorator(chennaiDisableDcorator);
+            if (mayiladuthuraiDisableDcorator != null)
+                calendarView.removeDecorator(mayiladuthuraiDisableDcorator);
+
+            coimbatoreDisableDcorator = new CoimbatoreDisableDcorator(getActivity(), currentDate, currentMonth, endDate, endMonth);
+            calendarView.addDecorator(coimbatoreDisableDcorator);
+        }else if (city.equals("Namakkal"))
+        {
+            calendarView.setVisibility(View.VISIBLE);
+            calendarView.setVisibility(View.VISIBLE);
+            if (erodeDisableDcorator != null)
+                calendarView.removeDecorator(erodeDisableDcorator);
+            if (chennaiDisableDcorator != null)
+                calendarView.removeDecorator(chennaiDisableDcorator);
+            if (mayiladuthuraiDisableDcorator != null)
+                calendarView.removeDecorator(mayiladuthuraiDisableDcorator);
+            coimbatoreDisableDcorator = new CoimbatoreDisableDcorator(getActivity(), currentDate, currentMonth, endDate, endMonth);
+            calendarView.addDecorator(coimbatoreDisableDcorator);
+        }else if (city.equals("Mayiladuthurai"))
+        {
+            calendarView.setVisibility(View.VISIBLE);
+
+            calendarView.setVisibility(View.VISIBLE);
+            if (erodeDisableDcorator != null)
+                calendarView.removeDecorator(erodeDisableDcorator);
+            if (chennaiDisableDcorator != null)
+                calendarView.removeDecorator(chennaiDisableDcorator);
+            if (coimbatoreDisableDcorator != null)
+                calendarView.removeDecorator(coimbatoreDisableDcorator);
+            mayiladuthuraiDisableDcorator = new MayiladuthuraiDisableDcorator(getActivity(), currentDate, currentMonth, endDate, endMonth);
+            calendarView.addDecorator(mayiladuthuraiDisableDcorator);
+        }else if (city.equals("Kollidam"))
+        {
+            calendarView.setVisibility(View.VISIBLE);
+            if (erodeDisableDcorator != null)
+                calendarView.removeDecorator(erodeDisableDcorator);
+            if (chennaiDisableDcorator != null)
+                calendarView.removeDecorator(chennaiDisableDcorator);
+            if (coimbatoreDisableDcorator != null)
+                calendarView.removeDecorator(coimbatoreDisableDcorator);
+            mayiladuthuraiDisableDcorator = new MayiladuthuraiDisableDcorator(getActivity(), currentDate, currentMonth, endDate, endMonth);
+            calendarView.addDecorator(mayiladuthuraiDisableDcorator);
         }else
         {
             calendarView.setVisibility(View.GONE);
@@ -317,22 +488,67 @@ public class DateAndTimeFragment extends Fragment {
             @Override
             public boolean shouldDecorate(CalendarDay day) {
 
-                if (day.getCalendar().get(java.util.Calendar.DAY_OF_WEEK) == java.util.Calendar.SUNDAY ) {
+                if (currentMonth == day.getMonth())
+                {
+                    if (day.getDay() >= currentDate)
+                    {
+                        if (day.getCalendar().get(java.util.Calendar.DAY_OF_WEEK) == java.util.Calendar.SUNDAY ) {
+                            if (day.getDay() <= 7)
+                            {
+                                return false;
+                            }else  if (day.getDay() < 22 && day.getDay() > 14 )
+                            {
+                                return false;
+                            }else
+                            {
+                                return true;
+                            }
 
-                    java.util.Calendar calendar = java.util.Calendar.getInstance();
-                    calendar.set(java.util.Calendar.DAY_OF_WEEK,3);
-                    day.copyTo(calendar);
-                    if (day.getCalendar() <= 7 )
-                    {
-                        return true;
+                        }else
+                        {
+                            return true;
+                        }
                     }else
+                        {return false;}
+                }else if (endMonth == day.getMonth())
+                {
+                    if (day.getDay() >= endDate)
                     {
-                    return false;}
+                        if (day.getCalendar().get(java.util.Calendar.DAY_OF_WEEK) == java.util.Calendar.SUNDAY ) {
+                            if (day.getDay() <= 7)
+                            {
+                                return false;
+                            }else  if (day.getDay() < 22 && day.getDay() > 14 )
+                            {
+                                return false;
+                            }else
+                            {
+                                return true;
+                            }
+
+                        }else
+                        {
+                            return true;
+                        }
+                    }else {
+                        return false;
+                    }
+                }else if (day.getCalendar().get(java.util.Calendar.DAY_OF_WEEK) == java.util.Calendar.SUNDAY ) {
+                        if (day.getDay() <= 7)
+                        {
+                           return false;
+                        }else  if (day.getDay() < 22 && day.getDay() > 14 )
+                        {
+                            return false;
+                        }else
+                        {
+                            return true;
+                        }
+
                 }else
                 {
-                    return false;
+                    return true;
                 }
-
 
             }
 
@@ -397,10 +613,10 @@ public class DateAndTimeFragment extends Fragment {
 
             int date = day.getDay();
             if (currentMonth == day.getMonth())
-               return date <= currentDate;
+               return date < currentDate;
             else if (lastMonth == day.getMonth())
             {
-                return date >= lastDate;
+                return date > lastDate;
             }else {
                 return false;
             }
@@ -450,4 +666,358 @@ public class DateAndTimeFragment extends Fragment {
         return timeSlotList;
     }
 
+
+
+    private static class CoimbatoreDisableDcorator implements DayViewDecorator {
+
+        int currentDate;
+        int currentMonth;
+        int lastDate;
+        int lastMonth;
+        Context context;
+        public CoimbatoreDisableDcorator(Context context,int currentDate,int currentMonth,int lastDate,int lastMonth)
+        {
+            this.currentDate = currentDate;
+            this.currentMonth = currentMonth;
+            this.lastDate = lastDate;
+            this.lastMonth = lastMonth;
+            this.context = context;
+        }
+
+        @Override
+        public boolean shouldDecorate(CalendarDay day) {
+            int week = 0;
+
+                        Date date5 = day.getDate();
+                        DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+                        String reportDate = df.format(date5);
+                        Log.e("date", String.valueOf(reportDate));
+                        Date date1 = null;
+                        try {
+                            date1 = df.parse(reportDate);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(date1);
+                week = cal.get(Calendar.WEEK_OF_MONTH);
+                Log.e("week date",String.valueOf(week));
+
+
+            }
+
+                if (currentMonth == day.getMonth())
+                {
+                    if (day.getDay() >= currentDate)
+                    {
+                        if (day.getCalendar().get(java.util.Calendar.DAY_OF_WEEK) == java.util.Calendar.FRIDAY) {
+                            if (week == 2 || week == 4) {
+                                return false;
+                            } else {
+                                return true;
+                            }
+                        }else {
+                            return true;
+                        }
+                    } else
+                        {
+                        return false;
+                        }
+                }else if (lastMonth == day.getMonth())
+                {
+                    if (day.getDay() <= lastDate)
+                    { if (day.getCalendar().get(java.util.Calendar.DAY_OF_WEEK) == java.util.Calendar.FRIDAY) {
+                        if (week == 2 || week == 4)
+                        {
+                            return false;
+                        } else {
+                            return true;
+                        }
+                    }else {
+                        return true;
+                    }
+                    } else
+                    {
+                        return false;
+                    }
+                }else
+                    {
+                    if (day.getCalendar().get(java.util.Calendar.DAY_OF_WEEK) == java.util.Calendar.FRIDAY)
+                    {
+                        if (week == 2 || week == 4) {
+                            return false;
+                        } else {
+                            return true;
+                        }
+
+                    }else {
+                        return true;
+                    }
+                }
+
+
+        }
+
+
+        @Override
+        public void decorate(DayViewFacade view) {
+            view.setDaysDisabled(false);
+            view.addSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.colorAccent)));
+
+        }
+
+    }
+
+
+
+
+
+    private static class MayiladuthuraiDisableDcorator implements DayViewDecorator {
+
+        int currentDate;
+        int currentMonth;
+        int lastDate;
+        int lastMonth;
+        Context context;
+        public MayiladuthuraiDisableDcorator(Context context,int currentDate,int currentMonth,int lastDate,int lastMonth)
+        {
+            this.currentDate = currentDate;
+            this.currentMonth = currentMonth;
+            this.lastDate = lastDate;
+            this.lastMonth = lastMonth;
+            this.context = context;
+        }
+
+        @Override
+        public boolean shouldDecorate(CalendarDay day) {
+            int week = 0;
+
+            Date date5 = day.getDate();
+            DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+            String reportDate = df.format(date5);
+            Log.e("date", String.valueOf(reportDate));
+            Date date1 = null;
+            try {
+                date1 = df.parse(reportDate);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(date1);
+                week = cal.get(Calendar.WEEK_OF_MONTH);
+                Log.e("week date",String.valueOf(week));
+
+
+            }
+
+            if (currentMonth == day.getMonth())
+            {
+                if (day.getDay() >= currentDate)
+                {
+                    if (day.getCalendar().get(java.util.Calendar.DAY_OF_WEEK) == java.util.Calendar.FRIDAY) {
+                        if (week == 1 || week == 3) {
+                            return false;
+                        } else {
+                            return true;
+                        }
+                    }else {
+                        return true;
+                    }
+                } else
+                {
+                    return false;
+                }
+            }else if (lastMonth == day.getMonth())
+            {
+                if (day.getDay() <= lastDate)
+                { if (day.getCalendar().get(java.util.Calendar.DAY_OF_WEEK) == java.util.Calendar.FRIDAY) {
+                    if (week == 1 || week == 3)
+                    {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                }else {
+                    return true;
+                }
+                } else
+                {
+                    return false;
+                }
+            }else
+            {
+                if (day.getCalendar().get(java.util.Calendar.DAY_OF_WEEK) == java.util.Calendar.FRIDAY)
+                {
+                    if (week == 1 || week == 3) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+
+                }else {
+                    return true;
+                }
+            }
+
+
+        }
+
+
+        @Override
+        public void decorate(DayViewFacade view) {
+            view.setDaysDisabled(false);
+            view.addSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.colorAccent)));
+
+        }
+
+    }
+
+
+
+
+    private static class ChennaiDisableDcorator implements DayViewDecorator {
+
+        int currentDate;
+        int currentMonth;
+        int lastDate;
+        int lastMonth;
+        Context context;
+        public ChennaiDisableDcorator(Context context,int currentDate,int currentMonth,int lastDate,int lastMonth)
+        {
+            this.currentDate = currentDate;
+            this.currentMonth = currentMonth;
+            this.lastDate = lastDate;
+            this.lastMonth = lastMonth;
+            this.context = context;
+        }
+
+        @Override
+        public boolean shouldDecorate(CalendarDay day) {
+            if (currentMonth == day.getMonth())
+            {
+                if (day.getDay() >= currentDate)
+                {
+                    if (day.getCalendar().get(java.util.Calendar.DAY_OF_WEEK) == java.util.Calendar.SUNDAY ) {
+                        if (day.getDay() <= 7)
+                        {
+                            return false;
+                        }else  if (day.getDay() < 22 && day.getDay() > 14 )
+                        {
+                            return false;
+                        }else
+                        {
+                            return true;
+                        }
+
+                    }else
+                    {
+                        return true;
+                    }
+                }else
+                {return false;}
+            }else if (lastMonth == day.getMonth())
+            {
+                if (day.getDay() >= lastDate)
+                {
+                    if (day.getCalendar().get(java.util.Calendar.DAY_OF_WEEK) == java.util.Calendar.SUNDAY ) {
+                        if (day.getDay() <= 7)
+                        {
+                            return false;
+                        }else  if (day.getDay() < 22 && day.getDay() > 14 )
+                        {
+                            return false;
+                        }else
+                        {
+                            return true;
+                        }
+
+                    }else
+                    {
+                        return true;
+                    }
+                }else {
+                    return false;
+                }
+            }else if (day.getCalendar().get(java.util.Calendar.DAY_OF_WEEK) == java.util.Calendar.SUNDAY ) {
+                if (day.getDay() <= 7)
+                {
+                    return false;
+                }else  if (day.getDay() < 22 && day.getDay() > 14 )
+                {
+                    return false;
+                }else
+                {
+                    return true;
+                }
+
+            }else
+            {
+                return true;
+            }
+
+        }
+
+
+        @Override
+        public void decorate(DayViewFacade view) {
+            view.setDaysDisabled(false);
+            view.addSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.colorAccent)));
+
+        }
+
+    }
+
+
+
+    private static class ErodeDisableDcorator implements DayViewDecorator {
+
+        int currentDate;
+        int currentMonth;
+        int lastDate;
+        int lastMonth;
+        Context context;
+        public ErodeDisableDcorator(Context context,int currentDate,int currentMonth,int lastDate,int lastMonth)
+        {
+            this.currentDate = currentDate;
+            this.currentMonth = currentMonth;
+            this.lastDate = lastDate;
+            this.lastMonth = lastMonth;
+            this.context = context;
+        }
+
+        @Override
+        public boolean shouldDecorate(CalendarDay day) {
+            if (day.getCalendar().get(java.util.Calendar.DAY_OF_WEEK) == java.util.Calendar.FRIDAY) {
+                if (currentMonth == day.getMonth()) {
+                    if (currentDate <= day.getDay()) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                } else {
+                    return true;
+
+                }
+            } else {
+                return false;
+            }
+
+
+        }
+
+
+        @Override
+        public void decorate(DayViewFacade view) {
+            view.setDaysDisabled(false);
+            view.addSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.colorAccent)));
+
+        }
+
+    }
 }
