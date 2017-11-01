@@ -87,6 +87,7 @@ public class DateAndTimeFragment extends Fragment {
     MayiladuthuraiDisableDcorator mayiladuthuraiDisableDcorator;
     ErodeDisableDcorator erodeDisableDcorator;
     ChennaiDisableDcorator chennaiDisableDcorator ;
+    TextView txtCity;
 
     @TargetApi(Build.VERSION_CODES.N)
     @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
@@ -103,6 +104,7 @@ public class DateAndTimeFragment extends Fragment {
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         ldtCity = (LinearLayout) mToolbar.findViewById(R.id.ldtCity);
+        txtCity = (TextView) mToolbar.findViewById(R.id.txtCity);
         ldtCity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -190,7 +192,14 @@ public class DateAndTimeFragment extends Fragment {
                         Log.e("week date",String.valueOf(week));
 
 
+                    }else
+                    {
+                        Calendar cal = Calendar.getInstance();
+                        cal.setTime(date1);
+                        week = cal.get(Calendar.WEEK_OF_MONTH);
+                        Log.e("week date",String.valueOf(week));
                     }
+
                     if (item[0].equals("Erode"))
                     {
                         if (date.getCalendar().get(java.util.Calendar.DAY_OF_WEEK) == java.util.Calendar.FRIDAY) {
@@ -324,7 +333,8 @@ public class DateAndTimeFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                  item[0] = (String) cityList.get(position);
-                Toast.makeText(context, item[0],Toast.LENGTH_LONG).show();
+//                Toast.makeText(context, item[0],Toast.LENGTH_LONG).show();
+                txtCity.setText(item[0]);
 
             }
         });
@@ -419,6 +429,7 @@ public class DateAndTimeFragment extends Fragment {
             });*/
         }else if (city.equals("Chennai")){
 
+            calendarView.setVisibility(View.VISIBLE);
             if (coimbatoreDisableDcorator != null)
                 calendarView.removeDecorator(coimbatoreDisableDcorator);
             if (erodeDisableDcorator != null)
@@ -684,6 +695,7 @@ public class DateAndTimeFragment extends Fragment {
             this.context = context;
         }
 
+        @TargetApi(Build.VERSION_CODES.N)
         @Override
         public boolean shouldDecorate(CalendarDay day) {
             int week = 0;
@@ -707,6 +719,12 @@ public class DateAndTimeFragment extends Fragment {
                 Log.e("week date",String.valueOf(week));
 
 
+            }else
+            {
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(date1);
+                week = cal.get(Calendar.WEEK_OF_MONTH);
+                Log.e("week date",String.valueOf(week));
             }
 
                 if (currentMonth == day.getMonth())
@@ -791,6 +809,7 @@ public class DateAndTimeFragment extends Fragment {
             this.context = context;
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.N)
         @Override
         public boolean shouldDecorate(CalendarDay day) {
             int week = 0;
@@ -813,6 +832,13 @@ public class DateAndTimeFragment extends Fragment {
                 week = cal.get(Calendar.WEEK_OF_MONTH);
                 Log.e("week date",String.valueOf(week));
 
+
+            }else
+            {
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(date1);
+                week = cal.get(Calendar.WEEK_OF_MONTH);
+                Log.e("week date",String.valueOf(week));
 
             }
 
@@ -923,7 +949,7 @@ public class DateAndTimeFragment extends Fragment {
                 {return false;}
             }else if (lastMonth == day.getMonth())
             {
-                if (day.getDay() >= lastDate)
+                if (day.getDay() <= lastDate)
                 {
                     if (day.getCalendar().get(java.util.Calendar.DAY_OF_WEEK) == java.util.Calendar.SUNDAY ) {
                         if (day.getDay() <= 7)
@@ -934,7 +960,7 @@ public class DateAndTimeFragment extends Fragment {
                             return false;
                         }else
                         {
-                            return true;
+                            return false;
                         }
 
                     }else
@@ -993,20 +1019,42 @@ public class DateAndTimeFragment extends Fragment {
 
         @Override
         public boolean shouldDecorate(CalendarDay day) {
-            if (day.getCalendar().get(java.util.Calendar.DAY_OF_WEEK) == java.util.Calendar.FRIDAY) {
+
                 if (currentMonth == day.getMonth()) {
-                    if (currentDate <= day.getDay()) {
-                        return true;
+                    if (currentDate <= day.getDay())
+                    {
+                        if (day.getCalendar().get(java.util.Calendar.DAY_OF_WEEK) == java.util.Calendar.FRIDAY) {
+                            return true;
+                        }else
+                        {
+                            return false;
+                        }
                     } else {
                         return false;
                     }
-                } else {
-                    return true;
+                } else if (lastMonth == day.getMonth()){
+                    if (lastDate >= day.getDay()) {
+                        if (day.getCalendar().get(java.util.Calendar.DAY_OF_WEEK) == java.util.Calendar.FRIDAY) {
+                            return true;
+                        }else
+                        {
+                            return false;
+                        }
+                    }else
+                    {
+                        return false;
+                    }
 
+                }else
+                {
+                    if (day.getCalendar().get(java.util.Calendar.DAY_OF_WEEK) == java.util.Calendar.FRIDAY) {
+                        return true;
+                    }else
+                    {
+                        return false;
+                    }
                 }
-            } else {
-                return false;
-            }
+
 
 
         }

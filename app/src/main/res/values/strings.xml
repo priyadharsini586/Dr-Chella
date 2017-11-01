@@ -24,7 +24,28 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string name="select_city">Please Select Your City</string>
+    <string name="available">Available</string>
+    <string name="not_available">Not Available</string>
 
+    <string name="tamil_name">பெயர்:</string>
+    <string name="english_name">Name</string>
+
+    <string name="mr">Mr</string>
+    <string name="mrs">Mrs</string>
+    <string name="ms">Ms</string>
+    <string name="dr">Dr</string>
+    <string name="er">Er</string>
+    <string name="title">Title</string>
+
+    <string name="country_prompt">Choose a country</string>
+
+    <string-array name="country_arrays">
+        <item>Mr</item>
+        <item>Mrs</item>
+        <item>Ms</item>
+        <item>Dr</item>
+        <item>Er</item>
+    </string-array>
 
     <!--time slot-->
 </resources>
