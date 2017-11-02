@@ -103,21 +103,28 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:paddingLeft="@dimen/icon_padding">
+                android:paddingLeft="@dimen/icon_padding"
+                >
 
                     <fr.ganfra.materialspinner.MaterialSpinner
                         android:id="@+id/spinner1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:ms_arrowColor="@color/colorPrimary"
-                        app:ms_arrowSize="10dp"
-                        app:ms_floatingLabelColor="@color/colorPrimary"
+                        app:ms_enableFloatingLabel="true"
+                        app:ms_enableErrorLabel="true"
                         app:ms_floatingLabelText="@string/gender"
-                        app:ms_hint="@string/gender"
-                        app:ms_dropDownHintView="@layout/drop_down_items"
-                        app:ms_alignLabels="false"
+                        app:ms_baseColor="@color/colorPrimary"
+                        app:ms_highlightColor="@color/colorPrimary"
+                        app:ms_errorColor="@android:color/holo_red_dark"
+                        app:ms_thickness="1dp"
                         app:ms_hintColor="@color/colorPrimary"
-                        />
+                        app:ms_arrowColor="@color/colorPrimary"
+                        app:ms_arrowSize="12dp"
+                        app:ms_alignLabels="true"
+                        app:ms_floatingLabelColor="@color/colorPrimary"
+                        android:popupBackground="@android:color/white"
+                        app:ms_hint="@string/gender"
+                        app:ms_multiline="false"/>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

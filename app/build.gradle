@@ -18,10 +18,14 @@ android {
         }
     }
 }
-
-
-
-
+allprojects {
+    repositories {
+        jcenter()
+        maven {
+            url "https://maven.google.com"
+        }
+    }
+}
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')

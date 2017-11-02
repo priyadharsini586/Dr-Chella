@@ -5,4 +5,8 @@
     <color name="colorAccent">#FF4081</color>
     <color name="white">#FFFFFF</color>
     <color name="orange">#FFAD00</color>
+    <color name="red_not_avaliable">#c91b1b</color>
+    <color name="green_avaliable">#006600</color>
+    <color name="book_title_orange">#F28F20</color>
+    <color name="black">#000000</color>
 </resources>

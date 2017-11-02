@@ -28,8 +28,28 @@
     <string name="not_available">Not Available</string>
 
     <string name="tamil_name">பெயர்:</string>
-    <string name="english_name">Name</string>
-
+    <string name="english_name">Name:</string>
+    <string name="tamil_age">வயது:</string>
+    <string name="english_age">Age:</string>
+    <string name="tamil_gender">பாலினம்:</string>
+    <string name="english_gender">Gender:</string>
+    <string name="tamil_female">பெண்</string>
+    <string name="english_female">Female</string>
+    <string name="tamil_male">ஆண்</string>
+    <string name="english_male">Male</string>
+    <string name="tamil_transgender">திருநங்கை</string>
+    <string name="english_transgender">Transgender</string>
+    <string name="tamil_patient_mobile">நோயாளியின் கைப்பேசி எண்:</string>
+    <string name="english_patient_mobile">Patient mobile number:</string>
+    <string name="tamil_applicant_mobile">விண்ணப்பதாரர் கைப்பேசி எண்:</string>
+    <string name="english_applicant_mobile">Applicant mobile number:</string>
+    <string name="english_place">Place:</string>
+    <string name="tamil_place">இடம்:</string>
+    <string name="english_e_mail">Email id:</string>
+    <string name="tamil_e_mail">மின்னஞ்சல் முகவரி்:</string>
+    <string name="english_address">Short address:</string>
+    <string name="tamil_address">குறுகிய முகவரி:</string>
+    
     <string name="mr">Mr</string>
     <string name="mrs">Mrs</string>
     <string name="ms">Ms</string>
@@ -39,6 +59,9 @@
 
     <string name="country_prompt">Choose a country</string>
 
+
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
     <string-array name="country_arrays">
         <item>Mr</item>
         <item>Mrs</item>

@@ -4,16 +4,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
    >
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/icon_padding">
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:weightSum="3">
+    android:weightSum="3"
+    >
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -26,26 +32,42 @@
                 android:layout_height="wrap_content"
                 android:text="@string/english_name"
                 android:textColor="@android:color/black"
-                android:gravity="center"/>
+                android:gravity="end"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/tamil_name"
                 android:textColor="@android:color/black"
-                android:gravity="center"/>
+                android:gravity="end"/>
         </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_gravity="center"
-        android:layout_weight="1.2">
+        android:layout_weight="1.2"
+        android:gravity="center">
 
-        <com.jaredrummler.materialspinner.MaterialSpinner
+        <fr.ganfra.materialspinner.MaterialSpinner
             android:id="@+id/surname"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            />
+            app:ms_enableFloatingLabel="true"
+            app:ms_enableErrorLabel="true"
+            app:ms_floatingLabelText="@string/title"
+            app:ms_baseColor="@color/colorPrimary"
+            app:ms_highlightColor="@color/colorPrimary"
+            app:ms_errorColor="@android:color/holo_red_dark"
+            app:ms_thickness="1dp"
+            app:ms_hintColor="@color/colorPrimary"
+            app:ms_arrowColor="@color/colorPrimary"
+            app:ms_arrowSize="10dp"
+            app:ms_alignLabels="true"
+            app:ms_floatingLabelColor="@color/colorPrimary"
+            android:popupBackground="@android:color/white"
+            app:ms_hint="@string/title"
+            app:ms_multiline="true"
+            android:layout_gravity="center"/>
 
 
     </LinearLayout>
@@ -54,16 +76,439 @@
         android:layout_height="wrap_content"
         android:id="@+id/txtInputName"
         android:layout_gravity="center"
-        android:layout_weight="0.6">
+        android:layout_weight="0.5">
     <EditText
         android:id="@+id/input_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="text"
         android:hint="@string/Name"
-        style="@style/App_EditTextStyle"/>
+        style="@style/App_Book_Appointment"/>
     </android.support.design.widget.TextInputLayout>
 </LinearLayout>
-    </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/icon_padding"
+            android:orientation="horizontal"
+            android:weightSum="1">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="0.7"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:paddingRight="10dp"
+                android:paddingLeft="0dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/english_age"
+                android:gravity="end"
+                android:textColor="@android:color/black"
+                />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tamil_age"
+                    android:gravity="end"
+                    android:textColor="@android:color/black"
+                    />
+            </LinearLayout>
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtInputAge"
+                android:layout_gravity="center"
+                android:layout_weight="0.3">
+                <EditText
+                    android:id="@+id/edtAge"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:hint="@string/age"
+                    style="@style/App_Book_Appointment"
+                    android:maxLength="3"/>
+            </android.support.design.widget.TextInputLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/icon_padding"
+            android:orientation="horizontal"
+            android:weightSum="1">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="0.7"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:paddingRight="10dp"
+                android:paddingLeft="0dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/english_gender"
+                    android:gravity="end"
+                    android:textColor="@android:color/black"
+                    />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tamil_gender"
+                    android:gravity="end"
+                    android:textColor="@android:color/black"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.3"
+                android:orientation="vertical">
+
+                <RadioGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="3">
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/black"
+                        android:layout_weight="1.2"
+                        android:layout_gravity="center"/>
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_gravity="center">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/english_male"
+                                android:textColor="@android:color/black"
+                                android:textSize="@dimen/gender_text"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/tamil_male"
+                                android:textColor="@android:color/black"
+                                android:textSize="@dimen/gender_text"/>
+                        </LinearLayout>
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColor="@android:color/black"
+                        android:layout_gravity="center"/>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_gravity="center">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/english_female"
+                            android:textColor="@android:color/black"
+                            android:textSize="@dimen/gender_text"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/tamil_female"
+                            android:textColor="@android:color/black"
+                            android:textSize="@dimen/gender_text"/>
+                    </LinearLayout>
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.8"
+                        android:textColor="@android:color/black"
+                        android:layout_gravity="center"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_gravity="center">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/english_transgender"
+                            android:textColor="@android:color/black"
+                            android:textSize="@dimen/gender_text"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/tamil_transgender"
+                            android:textColor="@android:color/black"
+                            android:textSize="@dimen/gender_text"/>
+                    </LinearLayout>
+                </RadioGroup>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/icon_padding"
+            android:orientation="horizontal"
+            android:weightSum="1">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="0.7">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/english_applicant_mobile"
+                    android:gravity="end"
+                    android:textColor="@android:color/black"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tamil_applicant_mobile"
+                    android:gravity="end"
+                    android:textColor="@android:color/black"/>
+            </LinearLayout>
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtInputApplicantMobileNumber"
+                android:layout_gravity="center"
+                android:layout_weight="0.3">
+                <EditText
+                    android:id="@+id/edtApplicantMobileNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:hint="@string/english_applicant_mobile"
+                    style="@style/App_Book_Appointment"
+                    android:maxLength="10"/>
+            </android.support.design.widget.TextInputLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/icon_padding"
+            android:orientation="horizontal"
+            android:weightSum="1">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="0.7">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/english_patient_mobile"
+                    android:gravity="end"
+                    android:textColor="@android:color/black"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tamil_patient_mobile"
+                    android:gravity="end"
+                    android:textColor="@android:color/black"/>
+            </LinearLayout>
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtInputMobileNumber"
+                android:layout_gravity="center"
+                android:layout_weight="0.3">
+                <EditText
+                    android:id="@+id/edtMobileNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:hint="@string/english_patient_mobile"
+                    style="@style/App_Book_Appointment"
+                    android:maxLength="10"/>
+            </android.support.design.widget.TextInputLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/icon_padding"
+            android:orientation="horizontal"
+            android:weightSum="1">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="0.7"
+                android:layout_gravity="center"
+                android:gravity="center">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/english_place"
+                    android:gravity="end"
+                    android:textColor="@android:color/black"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tamil_place"
+                    android:gravity="end"
+                    android:textColor="@android:color/black"/>
+            </LinearLayout>
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtInputPlace"
+                android:layout_gravity="center"
+                android:layout_weight="0.3">
+                <EditText
+                    android:id="@+id/edtPlace"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:hint="@string/english_place"
+                    style="@style/App_Book_Appointment"
+                    android:maxLength="10"/>
+            </android.support.design.widget.TextInputLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/icon_padding"
+            android:orientation="horizontal"
+            android:weightSum="1">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="0.7"
+                android:layout_gravity="center"
+                android:gravity="center">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/english_e_mail"
+                    android:gravity="end"
+                    android:textColor="@android:color/black"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tamil_e_mail"
+                    android:gravity="end"
+                    android:textColor="@android:color/black"/>
+            </LinearLayout>
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtInputemail"
+                android:layout_gravity="center"
+                android:layout_weight="0.3">
+                <EditText
+                    android:id="@+id/edtE_mail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textEmailAddress"
+                    android:hint="@string/english_e_mail"
+                    style="@style/App_Book_Appointment"
+                    android:maxLength="10"/>
+            </android.support.design.widget.TextInputLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/icon_padding"
+            android:orientation="horizontal"
+            android:weightSum="1">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="0.7"
+                android:layout_gravity="center"
+                android:gravity="center">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/english_address"
+                    android:gravity="end"
+                    android:textColor="@android:color/black"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tamil_address"
+                    android:gravity="end"
+                    android:textColor="@android:color/black"/>
+            </LinearLayout>
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtInputaddress"
+                android:layout_gravity="center"
+                android:layout_weight="0.3">
+                <EditText
+                    android:id="@+id/edtaddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/english_address"
+                    style="@style/App_Book_Appointment"
+                    />
+            </android.support.design.widget.TextInputLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/icon_padding"
+            android:paddingBottom="@dimen/icon_padding">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/ldtPreviosFragment">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                   android:src="@mipmap/ic_next"
+                    android:rotation="180"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/previous"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/edit_text_size"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="end">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/next"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/edit_text_size"/>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/ic_next"
+                    />
+
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
 </ScrollView>

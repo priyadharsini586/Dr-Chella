@@ -40,7 +40,9 @@ import android.widget.Toast;
 
 import com.applandeo.materialcalendarview.CalendarView;
 
+import com.hexaenna.drchella.Model.BookingDetails;
 import com.hexaenna.drchella.R;
+import com.hexaenna.drchella.activity.BookAppointmentActivity;
 import com.hexaenna.drchella.activity.OTPActivity;
 import com.hexaenna.drchella.adapter.CityAdapter;
 import com.hexaenna.drchella.adapter.GenderSpinnerAdapter;
@@ -63,7 +65,7 @@ import java.util.HashSet;
 import fr.ganfra.materialspinner.MaterialSpinner;
 
 
-public class DateAndTimeFragment extends Fragment {
+public class DateAndTimeFragment extends Fragment implements View.OnClickListener {
     // TODO: Rename parameter arguments, choose names that match
 
     ListView citySpinner;
@@ -89,6 +91,9 @@ public class DateAndTimeFragment extends Fragment {
     ChennaiDisableDcorator chennaiDisableDcorator ;
     TextView txtCity;
 
+    LinearLayout ldtNext;
+    BookingDetails bookingDetails = BookingDetails.getInstance();
+
     @TargetApi(Build.VERSION_CODES.N)
     @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
     @Override
@@ -111,6 +116,7 @@ public class DateAndTimeFragment extends Fragment {
                 showDailog(getActivity());
             }
         });
+        ldtCity.setVisibility(View.VISIBLE);
 
 
         calendarView = (MaterialCalendarView) mainView.findViewById(R.id.calendarView);
@@ -164,7 +170,7 @@ public class DateAndTimeFragment extends Fragment {
 
             }
             calendarView.addDecorator(new PriviousDayDisableDecorator(getActivity(), currentDate, currentMonth, endDate, endMonth));
-//        calendarView.addDecorators(new  SelectedDayDecorator(30, R.color.colorAccent));
+//        calendarView.addDecorators(new  SelectedDayDecorator(30, R.color.red_not_avaliable));
           calendarView.setVisibility(View.GONE);
 
             calendarView.setOnDateChangedListener(new OnDateSelectedListener() {
@@ -291,7 +297,16 @@ public class DateAndTimeFragment extends Fragment {
             });
         gridView = (ExpandableHeightGridView) mainView.findViewById(R.id.gridTime);
 
+        ldtNext = (LinearLayout) mainView.findViewById(R.id.ldtNext);
+        ldtNext.setOnClickListener(this);
+
+        if (bookingDetails.getCity() == null) {
             showDailog(getActivity());
+        }else
+        {
+            item[0] = bookingDetails.getCity();
+            checkList(bookingDetails.getCity());
+        }
 
         return mainView;
     }
@@ -375,6 +390,7 @@ public class DateAndTimeFragment extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+
     }
 
     private void checkList(String city) {
@@ -424,7 +440,7 @@ public class DateAndTimeFragment extends Fragment {
                 public void decorate(DayViewFacade view) {
                     // add red foreground span
                     view.setDaysDisabled(false);
-                    view.addSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorAccent)));
+                    view.addSpan(new ForegroundColorSpan(getResources().getColor(R.color.red_not_avaliable)));
                 }
             });*/
         }else if (city.equals("Chennai")){
@@ -567,7 +583,7 @@ public class DateAndTimeFragment extends Fragment {
             public void decorate(DayViewFacade view) {
                 // add red foreground span
                 view.setDaysDisabled(false);
-                view.addSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorAccent)));
+                view.addSpan(new ForegroundColorSpan(getResources().getColor(R.color.red_not_avaliable)));
             }
         });
     }
@@ -601,6 +617,34 @@ public class DateAndTimeFragment extends Fragment {
     public void onInflate(Context context, AttributeSet attrs, Bundle savedInstanceState) {
         Log.e("activity","fragment inflate");
         super.onInflate(context, attrs, savedInstanceState);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId())
+        {
+            case R.id.ldtNext:
+                getNextFragment();
+                break;
+        }
+    }
+
+    private void getNextFragment() {
+
+        if (item[0] != null)
+            bookingDetails.setCity(item[0]);
+        else
+            bookingDetails.setCity(bookingDetails.getCity());
+
+        BookAppointmentActivity.ldtBookingDetails.setBackgroundColor(getActivity().getResources().getColor(R.color.book_title_orange));
+        BookAppointmentActivity.ldtBookingDetails.setTextColor(getActivity().getResources().getColor(R.color.white));
+
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.setCustomAnimations(R.anim.right_in, R.anim.left_out);
+        fragmentTransaction.replace(R.id.fragment_container, new RegisterDetailsFragment(), "BOOKING_ FRAGMENT");
+        fragmentTransaction.addToBackStack("BOOKING_ FRAGMENT");
+        fragmentTransaction.commit();
     }
 
     private static class PriviousDayDisableDecorator implements DayViewDecorator {
@@ -783,7 +827,7 @@ public class DateAndTimeFragment extends Fragment {
         @Override
         public void decorate(DayViewFacade view) {
             view.setDaysDisabled(false);
-            view.addSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.colorAccent)));
+            view.addSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.red_not_avaliable)));
 
         }
 
@@ -898,7 +942,7 @@ public class DateAndTimeFragment extends Fragment {
         @Override
         public void decorate(DayViewFacade view) {
             view.setDaysDisabled(false);
-            view.addSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.colorAccent)));
+            view.addSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.red_not_avaliable)));
 
         }
 
@@ -993,7 +1037,7 @@ public class DateAndTimeFragment extends Fragment {
         @Override
         public void decorate(DayViewFacade view) {
             view.setDaysDisabled(false);
-            view.addSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.colorAccent)));
+            view.addSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.red_not_avaliable)));
 
         }
 
@@ -1063,9 +1107,11 @@ public class DateAndTimeFragment extends Fragment {
         @Override
         public void decorate(DayViewFacade view) {
             view.setDaysDisabled(false);
-            view.addSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.colorAccent)));
+            view.addSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.red_not_avaliable)));
 
         }
 
     }
+
+
 }

@@ -3,6 +3,7 @@ package com.hexaenna.drchella.activity;
 import android.graphics.Color;
 import android.icu.util.Calendar;
 import android.os.Build;
+import android.os.PersistableBundle;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -21,41 +22,26 @@ import com.hexaenna.drchella.fragment.RegisterDetailsFragment;
 public class BookAppointmentActivity extends AppCompatActivity {
 
 
-    TextView ldtBookingDetails,ldtDateTime;
+   public static TextView ldtBookingDetails,ldtDateTime;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.book_appointment_activity);
 
         ldtBookingDetails = (TextView) findViewById(R.id.ldtBookingDetails);
-        ldtBookingDetails.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_container, new RegisterDetailsFragment(), "BOOKING_ FRAGMENT");
-                fragmentTransaction.commit();
-                fragmentManager.executePendingTransactions();
-            }
-        });
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container, new DateAndTimeFragment(), "DATE_AND_TIME_FRAGMENT");
+        fragmentTransaction.add(R.id.fragment_container, new DateAndTimeFragment(), "DATE_AND_TIME_FRAGMENT");
+        fragmentTransaction.addToBackStack("DATE_AND_TIME_FRAGMENT");
         fragmentTransaction.commit();
-        fragmentManager.executePendingTransactions();
-
 
         ldtDateTime = (TextView) findViewById(R.id.ldtDateTime);
-        ldtDateTime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_container, new DateAndTimeFragment(), "DATE_AND_TIME_FRAGMENT");
-                fragmentTransaction.commit();
-                fragmentManager.executePendingTransactions();
-            }
-        });
+
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
     }
 }

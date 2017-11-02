@@ -20,4 +20,7 @@
     <!--Booking Appiontment-->
     <dimen name="title_padding">20dp</dimen>
 
+
+    <!--booking appointment text size-->
+    <dimen name="gender_text">15sp</dimen>
 </resources>

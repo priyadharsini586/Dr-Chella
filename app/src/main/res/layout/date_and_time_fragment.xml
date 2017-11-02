@@ -32,7 +32,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/available"
                 android:padding="10dp"
-                android:textColor="@android:color/black"/>
+                android:textColor="@color/green_avaliable"/>
             <View
                 android:layout_width="10dp"
                 android:layout_height="10dp"
@@ -42,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/not_available"
                 android:padding="10dp"
-                android:textColor="@color/colorAccent"/>
+                android:textColor="@color/red_not_avaliable"/>
             </LinearLayout>
         </LinearLayout>
 
@@ -54,7 +54,8 @@
         app:mcv_headerTextAppearance="@style/TextAppearance.MaterialCalendarWidget.Header"
         app:mcv_weekDayTextAppearance="@style/TextAppearance.MaterialCalendarWidget.Date"
         app:mcv_dateTextAppearance ="@style/TextAppearance.MaterialCalendarWidget.WeekDay"
-        app:mcv_selectionColor="#01C5CE"/>
+        app:mcv_selectionColor="#01C5CE"
+         />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -72,6 +73,35 @@
       android:padding="10dp"
        android:scrollbars="none"
        android:visibility="gone"/>
+        </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/icon_padding"
+        android:paddingBottom="@dimen/icon_padding"
+        android:gravity="end">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:id="@+id/ldtNext">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/next"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:textColor="@android:color/black"
+                android:textStyle="bold"
+                android:textSize="@dimen/edit_text_size"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/ic_next"
+                />
+            </LinearLayout>
+
         </LinearLayout>
     </LinearLayout>
 

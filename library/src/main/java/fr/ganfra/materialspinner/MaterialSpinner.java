@@ -30,7 +30,7 @@ import android.widget.TextView;
 
 public class MaterialSpinner extends AppCompatSpinner implements ValueAnimator.AnimatorUpdateListener {
 
-    public static final int DEFAULT_ARROW_WIDTH_DP = 12;
+    public static final int DEFAULT_ARROW_WIDTH_DP = 10;
 
     private static final String TAG = MaterialSpinner.class.getSimpleName();
 
@@ -440,7 +440,7 @@ public class MaterialSpinner extends AppCompatSpinner implements ValueAnimator.A
         }
 
         // Underline Drawing
-        canvas.drawRect(startX, startYLine, endX, startYLine + lineHeight, paint);
+        canvas.drawRect(startX-10, startYLine-10, endX-10, startYLine + lineHeight-10, paint);
 
         //Floating Label Drawing
         if ((hint != null || floatingLabelText != null) && enableFloatingLabel) {
