@@ -5,9 +5,9 @@
     <solid android:color="#fff" />
 
     <!-- we define border color and thick -->
-  <!--  <stroke
-        android:width="3dp"
-        android:color="#5b8bc7" />-->
+    <stroke
+        android:width="2dp"
+        android:color="#5b8bc7" />
 
     <!-- add some padding for text inside -->
     <padding
@@ -17,6 +17,6 @@
         android:top="@dimen/linearlayout_bg_padding" />
 
     <!-- we define corner radius, note that radius can be different for each corner -->
-    <corners android:radius="10dp" />
+    <corners android:radius="5dp" />
 
 </shape>

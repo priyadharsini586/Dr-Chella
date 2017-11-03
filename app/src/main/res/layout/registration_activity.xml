@@ -6,8 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/registration_bg"
-    android:orientation="vertical">
-<LinearLayout
+    android:orientation="vertical"
+    android:id="@+id/sclRegisterMain">
+<RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -34,7 +35,7 @@
         android:paddingRight="20dp"
         android:orientation="horizontal"
         android:paddingTop="5dp"
-        android:layout_below="@+id/ldtImage"
+        android:layout_below="@+id/toolbar"
         android:id="@+id/txtMan"
         android:gravity="center">
         <ImageView
@@ -54,7 +55,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/edtt_text_padding">
+        android:orientation="vertical"
+        android:layout_below="@+id/txtMan">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/edtt_text_padding"
+        >
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -63,24 +70,32 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@mipmap/ic_user"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center"
+            android:padding="@dimen/icon_padding"
+            />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:paddingLeft="@dimen/icon_padding">
+                android:gravity="center"
+                android:padding="@dimen/icon_padding">
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/txtInputName"
-            android:layout_gravity="center">
+            android:layout_gravity="center"
+            android:gravity="center"
+            app:errorTextAppearance="@style/error_appearance">
             <EditText
-                android:id="@+id/input_name"
+                android:id="@+id/edtName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text"
                 android:hint="@string/Name"
-               style="@style/App_EditTextStyle"/>
+               style="@style/App_EditTextStyle"
+                android:background="@android:color/transparent"
+                android:layout_gravity="center"
+                />
             </android.support.design.widget.TextInputLayout>
             </LinearLayout>
     </LinearLayout>
@@ -98,33 +113,56 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@mipmap/ic_gender"
-                android:layout_gravity="center"/>
+                android:layout_gravity="center"
+                android:padding="@dimen/icon_padding"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:paddingLeft="@dimen/icon_padding"
-                >
+                android:padding="@dimen/icon_padding">
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/txtInputGender"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    app:errorTextAppearance="@style/error_appearance">
+                   <RadioGroup
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       android:weightSum="3"
+                       android:orientation="horizontal"
+                       android:layout_gravity="center"
+                       android:gravity="center"
+                       android:id="@+id/radioSexGroup">
+                       <RadioButton
+                           android:layout_width="match_parent"
+                           android:layout_height="wrap_content"
+                           android:layout_weight="1.1"
+                           android:text="@string/english_male"
+                           android:layout_gravity="center"
+                           android:textColor="@color/colorPrimary"
+                           android:textSize="@dimen/gender_text"
+                           android:id="@+id/radioMale"/>
+                       <RadioButton
+                           android:layout_width="match_parent"
+                           android:layout_height="wrap_content"
+                           android:layout_weight="1.1"
+                           android:text="@string/english_female"
+                           android:textColor="@color/colorPrimary"
+                           android:textSize="@dimen/gender_text"
+                           android:id="@+id/radioFemale"/>
+                       <RadioButton
+                           android:layout_width="match_parent"
+                           android:layout_height="wrap_content"
+                           android:layout_weight="0.8"
+                           android:text="@string/english_transgender"
+                           android:textColor="@color/colorPrimary"
+                           android:textSize="@dimen/gender_text"
+                           android:id="@+id/radioTrans"/>
 
-                    <fr.ganfra.materialspinner.MaterialSpinner
-                        android:id="@+id/spinner1"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:ms_enableFloatingLabel="true"
-                        app:ms_enableErrorLabel="true"
-                        app:ms_floatingLabelText="@string/gender"
-                        app:ms_baseColor="@color/colorPrimary"
-                        app:ms_highlightColor="@color/colorPrimary"
-                        app:ms_errorColor="@android:color/holo_red_dark"
-                        app:ms_thickness="1dp"
-                        app:ms_hintColor="@color/colorPrimary"
-                        app:ms_arrowColor="@color/colorPrimary"
-                        app:ms_arrowSize="12dp"
-                        app:ms_alignLabels="true"
-                        app:ms_floatingLabelColor="@color/colorPrimary"
-                        android:popupBackground="@android:color/white"
-                        app:ms_hint="@string/gender"
-                        app:ms_multiline="false"/>
+                   </RadioGroup>
+                </android.support.design.widget.TextInputLayout>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
@@ -140,17 +178,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@mipmap/ic_age"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center"
+            android:padding="@dimen/icon_padding"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:paddingLeft="@dimen/icon_padding">
+           android:gravity="center"
+            android:paddingTop="@dimen/icon_padding"
+            android:paddingBottom="@dimen/icon_padding">
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/txtInputAge"
-                android:layout_gravity="center">
+                android:layout_gravity="center"
+                android:gravity="center"
+                app:errorTextAppearance="@style/error_appearance">
                 <EditText
                     android:id="@+id/inputAge"
                     android:layout_width="match_parent"
@@ -158,7 +201,8 @@
                     android:inputType="number"
                     android:hint="@string/age"
                     style="@style/App_EditTextStyle"
-                    android:maxLength="2"/>
+                    android:maxLength="2"
+                    android:background="@android:color/transparent"/>
             </android.support.design.widget.TextInputLayout>
             </LinearLayout>
         </LinearLayout>
@@ -172,27 +216,34 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/linearlayout_bg">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
             <ImageView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:src="@mipmap/ic_city"
-                android:layout_gravity="center"/>
+                android:layout_gravity="center"
+                android:padding="@dimen/icon_padding"/></LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:paddingLeft="@dimen/icon_padding">
+               android:paddingTop="@dimen/icon_padding"
+                android:paddingBottom="@dimen/icon_padding">
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/txtInputCity"
-                    android:layout_gravity="center">
-                    <EditText android:id="@+id/inputCity"
+                    android:layout_gravity="center"
+                    app:errorTextAppearance="@style/error_appearance">
+                    <EditText android:id="@+id/edtCity"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="text"
                         android:hint="@string/city"
-                        style="@style/App_EditTextStyle"/>
+                        style="@style/App_EditTextStyle"
+                        android:background="@android:color/transparent"/>
                 </android.support.design.widget.TextInputLayout>
             </LinearLayout>
         </LinearLayout>
@@ -210,24 +261,28 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@mipmap/ic_mobile"
-                android:layout_gravity="center"/>
+                android:layout_gravity="center"
+                android:padding="@dimen/icon_padding"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:paddingLeft="@dimen/icon_padding">
+                android:paddingTop="@dimen/icon_padding"
+                android:paddingBottom="@dimen/icon_padding">
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/txtInputMobile"
-                    android:layout_gravity="center">
-                    <EditText android:id="@+id/inputMobile"
+                    android:layout_gravity="center"
+                    app:errorTextAppearance="@style/error_appearance">
+                    <EditText android:id="@+id/edtMobile"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="number"
                         android:hint="@string/mobile"
                         style="@style/App_EditTextStyle"
-                        android:maxLength="10"/>
+                        android:maxLength="10"
+                        android:background="@android:color/transparent"/>
                 </android.support.design.widget.TextInputLayout>
             </LinearLayout>
         </LinearLayout>
@@ -245,23 +300,27 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@mipmap/ic_email"
-                android:layout_gravity="center"/>
+                android:layout_gravity="center"
+                android:padding="@dimen/icon_padding"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:paddingLeft="@dimen/icon_padding">
+                android:paddingTop="@dimen/icon_padding"
+                android:paddingBottom="@dimen/icon_padding">
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/txtInpute_mail"
-                    android:layout_gravity="center">
-                    <EditText android:id="@+id/inpute_mail"
+                    android:layout_gravity="center"
+                    app:errorTextAppearance="@style/error_appearance">
+                    <EditText android:id="@+id/edtmail"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textEmailAddress"
                         android:hint="@string/e_mail"
-                        style="@style/App_EditTextStyle"/>
+                        style="@style/App_EditTextStyle"
+                        android:background="@android:color/transparent"/>
                 </android.support.design.widget.TextInputLayout>
             </LinearLayout>
         </LinearLayout>
@@ -284,4 +343,13 @@
            android:id="@+id/btnReg"/>
     </LinearLayout>
     </LinearLayout>
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="@style/Widget.AppCompat.ProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:max="100"
+        android:layout_gravity="center"
+        android:layout_centerInParent="true"/>
+    </RelativeLayout>
 </ScrollView>

@@ -11,7 +11,7 @@
     <dimen name="splast_text1">25sp</dimen>
 
     <!--Registration screen dimen-->
-    <dimen name="edtt_text_padding">50dp</dimen>
+    <dimen name="edtt_text_padding">30dp</dimen>
     <dimen name="icon_padding">25dp</dimen>
     <dimen name="linearlayout_bg_padding">15dp</dimen>
     <dimen name="edit_text_size">25sp</dimen>
