@@ -27,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidadvance.topsnackbar.TSnackbar;
+import com.hexaenna.drchella.Db.DatabaseHandler;
 import com.hexaenna.drchella.Model.RegisterRequestAndResponse;
 import com.hexaenna.drchella.R;
 import com.hexaenna.drchella.adapter.GenderSpinnerAdapter;
@@ -67,7 +68,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        showLanguage();
         networkChangeReceiver = new NetworkChangeReceiver()
         {
             @Override
@@ -125,6 +126,21 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
         isGenderValidate();
         isMobileValidate();
+    }
+
+    private void showLanguage() {
+
+        DatabaseHandler databaseHandler = new DatabaseHandler(getApplicationContext());
+//        databaseHandler.addLanguage("English","0");
+
+        if (databaseHandler.getContact("0").equals("English"))
+        {
+
+        }else if (databaseHandler.getContact("0").equals("Tamil"))
+        {
+
+        }
+        databaseHandler.getContact("0");
     }
 
     @Override
