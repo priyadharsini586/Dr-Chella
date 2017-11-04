@@ -23,4 +23,8 @@
 
     <!--booking appointment text size-->
     <dimen name="gender_text">18sp</dimen>
+    <dimen name="book_title">13sp</dimen>
+    <dimen name="city_txt">12sp</dimen>
+    <dimen name="booking_text">12sp</dimen>
+    <dimen name="register_text">13sp</dimen>
 </resources>

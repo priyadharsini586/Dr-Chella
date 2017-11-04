@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.applandeo.materialcalendarview.CalendarView;
+import com.hexaenna.drchella.Db.DatabaseHandler;
 import com.hexaenna.drchella.R;
 import com.hexaenna.drchella.fragment.DateAndTimeFragment;
 import com.hexaenna.drchella.fragment.RegisterDetailsFragment;
@@ -22,13 +23,32 @@ import com.hexaenna.drchella.fragment.RegisterDetailsFragment;
 public class BookAppointmentActivity extends AppCompatActivity {
 
 
-   public static TextView ldtBookingDetails,ldtDateTime;
+   public static LinearLayout ldtBookingDetails,ldtDateTime,ldtConformation;
+    public static TextView txtDateTime,txtBooking,txtConformation;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.book_appointment_activity);
+        final DatabaseHandler databaseHandler = new DatabaseHandler(getApplicationContext());
+        if (databaseHandler.getContact("0").equals("English"))
+        {
+            setContentView(R.layout.book_appointment_activity);
 
-        ldtBookingDetails = (TextView) findViewById(R.id.ldtBookingDetails);
+
+        }else if (databaseHandler.getContact("0").equals("Tamil"))
+        {
+            setContentView(R.layout.tamil_book_appointment_activity);
+
+
+        }
+
+
+        ldtBookingDetails = (LinearLayout) findViewById(R.id.ldtBookingDetails);
+        ldtDateTime = (LinearLayout) findViewById(R.id.ldtDateTime);
+        ldtConformation = (LinearLayout) findViewById(R.id.ldtConformation);
+
+        txtDateTime  = (TextView) findViewById(R.id.txtDateTime);
+        txtBooking = (TextView) findViewById(R.id.txtBooking);
+        txtConformation = (TextView) findViewById(R.id.txtConformation);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -36,7 +56,7 @@ public class BookAppointmentActivity extends AppCompatActivity {
         fragmentTransaction.addToBackStack("DATE_AND_TIME_FRAGMENT");
         fragmentTransaction.commit();
 
-        ldtDateTime = (TextView) findViewById(R.id.ldtDateTime);
+
 
     }
 

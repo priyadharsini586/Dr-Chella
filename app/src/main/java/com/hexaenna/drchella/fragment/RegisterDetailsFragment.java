@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.hexaenna.drchella.Db.DatabaseHandler;
 import com.hexaenna.drchella.R;
 import com.hexaenna.drchella.activity.BookAppointmentActivity;
 
@@ -43,7 +44,19 @@ public class RegisterDetailsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        mainView = inflater.inflate(R.layout.fragment_register_details, container, false);
+
+        final DatabaseHandler databaseHandler = new DatabaseHandler(getActivity());
+        if (databaseHandler.getContact("0").equals("English"))
+        {
+            mainView = inflater.inflate(R.layout.fragment_register_details, container, false);
+
+
+        }else if (databaseHandler.getContact("0").equals("Tamil"))
+        {
+            mainView = inflater.inflate(R.layout.tamil_fragment_register_details, container, false);
+
+        }
+
         spnSirName = (MaterialSpinner) mainView.findViewById(R.id.surname);
         String[] SPINNERLIST = {"Mr", "Mrs", "Ms", "Dr","Er"};
 
@@ -72,7 +85,7 @@ public class RegisterDetailsFragment extends Fragment {
                 fragmentTransaction.addToBackStack("DATE_AND_TIME_FRAGMENT");
                 fragmentTransaction.commit();
                 BookAppointmentActivity.ldtBookingDetails.setBackgroundColor(getActivity().getResources().getColor(R.color.white));
-                BookAppointmentActivity.ldtBookingDetails.setTextColor(getActivity().getResources().getColor(R.color.black));
+                BookAppointmentActivity.txtBooking.setTextColor(getActivity().getResources().getColor(R.color.black));
             }
         });
 

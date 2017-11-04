@@ -4,10 +4,13 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.icu.util.Calendar;
 import android.icu.util.GregorianCalendar;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -35,25 +38,39 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.androidadvance.topsnackbar.TSnackbar;
 import com.applandeo.materialcalendarview.CalendarView;
 
+import com.hexaenna.drchella.Db.DatabaseHandler;
 import com.hexaenna.drchella.Model.BookingDetails;
+import com.hexaenna.drchella.Model.RegisterRequestAndResponse;
+import com.hexaenna.drchella.Model.TimeAndDateResponse;
 import com.hexaenna.drchella.R;
 import com.hexaenna.drchella.activity.BookAppointmentActivity;
 import com.hexaenna.drchella.activity.OTPActivity;
+import com.hexaenna.drchella.activity.RegistrationActivity;
 import com.hexaenna.drchella.adapter.CityAdapter;
 import com.hexaenna.drchella.adapter.GenderSpinnerAdapter;
 import com.hexaenna.drchella.adapter.TimeSlotAdapter;
+import com.hexaenna.drchella.api.ApiClient;
+import com.hexaenna.drchella.api.ApiInterface;
 import com.hexaenna.drchella.custom_view.ExpandableHeightGridView;
+import com.hexaenna.drchella.utils.Constants;
+import com.hexaenna.drchella.utils.NetworkChangeReceiver;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.CalendarMode;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
 import com.prolificinteractive.materialcalendarview.DayViewFacade;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -63,6 +80,9 @@ import java.util.Date;
 import java.util.HashSet;
 
 import fr.ganfra.materialspinner.MaterialSpinner;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class DateAndTimeFragment extends Fragment implements View.OnClickListener {
@@ -90,8 +110,16 @@ public class DateAndTimeFragment extends Fragment implements View.OnClickListene
     ErodeDisableDcorator erodeDisableDcorator;
     ChennaiDisableDcorator chennaiDisableDcorator ;
     TextView txtCity;
+    ApiInterface apiInterface;
+    String isConnection = null;
+    ScrollView sclRegisterMain;
+    TSnackbar snackbar;
+    View snackbarView;
+    NetworkChangeReceiver networkChangeReceiver;
+    ProgressBar progressBar;
 
     LinearLayout ldtNext;
+    ScrollView scltimeMain;
     BookingDetails bookingDetails = BookingDetails.getInstance();
 
     @TargetApi(Build.VERSION_CODES.N)
@@ -101,13 +129,45 @@ public class DateAndTimeFragment extends Fragment implements View.OnClickListene
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
+        networkChangeReceiver = new NetworkChangeReceiver()
+        {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                super.onReceive(context, intent);
 
+
+                Bundle b = intent.getExtras();
+                isConnection = b.getString(Constants.MESSAGE);
+                Log.e("newmesage", "" + isConnection);
+                getNetworkState();
+            }
+        };
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+        intentFilter.addAction(Constants.BROADCAST);
+        getActivity().registerReceiver(networkChangeReceiver,
+                intentFilter);
+
+        final DatabaseHandler databaseHandler = new DatabaseHandler(getActivity());
+        if (databaseHandler.getContact("0").equals("English"))
+        {
             mainView = inflater.inflate(R.layout.date_and_time_fragment, container, false);
+
+
+        }else if (databaseHandler.getContact("0").equals("Tamil"))
+        {
+            mainView = inflater.inflate(R.layout.tamil_date_and_time_fragment, container, false);
+
+
+        }
+
+
 
          mToolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
         ((AppCompatActivity)getActivity()).setSupportActionBar(mToolbar);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+        scltimeMain = (ScrollView) mainView.findViewById(R.id.scltimeMain);
         ldtCity = (LinearLayout) mToolbar.findViewById(R.id.ldtCity);
         txtCity = (TextView) mToolbar.findViewById(R.id.txtCity);
         ldtCity.setOnClickListener(new View.OnClickListener() {
@@ -206,18 +266,19 @@ public class DateAndTimeFragment extends Fragment implements View.OnClickListene
                         Log.e("week date",String.valueOf(week));
                     }
 
-                    if (item[0].equals("Erode"))
+                    if (item[0].equals("Erode") || item[0].equals("ஈரோடு"))
                     {
                         if (date.getCalendar().get(java.util.Calendar.DAY_OF_WEEK) == java.util.Calendar.FRIDAY) {
                             Toast.makeText(getActivity(), "Doctor not avaiable", Toast.LENGTH_SHORT).show();
                             gridView.setVisibility(View.GONE);
                         }else
                         {
+                            getTimingList();
                             gridView.setExpanded(true);
                             gridView.setAdapter(new TimeSlotAdapter(getActivity(), getErodeTimeSlotList()));
                             gridView.setVisibility(View.VISIBLE);
                         }
-                    }else if (item[0].equals("Chennai"))
+                    }else if (item[0].equals("Chennai") || item[0].equals("சென்னை"))
                     {
                         CalendarDay  selectedDate = widget.getSelectedDate();
                       /*  Date date5 = selectedDate.getDate();
@@ -248,7 +309,7 @@ public class DateAndTimeFragment extends Fragment implements View.OnClickListene
                                 Toast.makeText(getActivity(), "Doctor not avaiable", Toast.LENGTH_SHORT).show();
                             }
                         }
-                    }else if (item[0].equals("Coimbatore"))
+                    }else if (item[0].equals("Coimbatore") || item[0].equals("கோயம்புத்தூர்"))
                     {
                         if (date.getCalendar().get(java.util.Calendar.DAY_OF_WEEK) == java.util.Calendar.FRIDAY) {
                             if (week == 2 || week == 4) {
@@ -259,7 +320,7 @@ public class DateAndTimeFragment extends Fragment implements View.OnClickListene
                         }else {
                             Toast.makeText(getActivity(), "Doctor not avaiable", Toast.LENGTH_SHORT).show();
                         }
-                    }else if (item[0].equals("Namakkal"))
+                    }else if (item[0].equals("Namakkal") || item[0].equals("நாமக்கல்"))
                     {
                         if (date.getCalendar().get(java.util.Calendar.DAY_OF_WEEK) == java.util.Calendar.FRIDAY) {
                             if (week == 2 || week == 4) {
@@ -270,7 +331,7 @@ public class DateAndTimeFragment extends Fragment implements View.OnClickListene
                         }else {
                             Toast.makeText(getActivity(), "Doctor not avaiable", Toast.LENGTH_SHORT).show();
                         }
-                    }else if (item[0].equals("Mayiladuthurai"))
+                    }else if (item[0].equals("Mayiladuthurai") || item[0].equals("மயிலாடுதுறை"))
                     {
                         if (date.getCalendar().get(java.util.Calendar.DAY_OF_WEEK) == java.util.Calendar.FRIDAY) {
                             if (week == 1 || week == 3) {
@@ -281,7 +342,7 @@ public class DateAndTimeFragment extends Fragment implements View.OnClickListene
                         }else {
                             Toast.makeText(getActivity(), "Doctor not avaiable", Toast.LENGTH_SHORT).show();
                         }
-                    }else if (item[0].equals("Kollidam"))
+                    }else if (item[0].equals("Kollidam") || item[0].equals("கொள்ளிடம்"))
                     {
                         if (date.getCalendar().get(java.util.Calendar.DAY_OF_WEEK) == java.util.Calendar.FRIDAY) {
                             if (week == 1 || week == 3) {
@@ -311,6 +372,70 @@ public class DateAndTimeFragment extends Fragment implements View.OnClickListene
         return mainView;
     }
 
+    private void getTimingList() {
+        if (isConnection.equals(Constants.NETWORK_CONNECTED)) {
+            apiInterface = ApiClient.getClient().create(ApiInterface.class);
+            JSONObject jsonObject = new JSONObject();
+            try {
+                jsonObject.put("city","1");
+                jsonObject.put("adate","05-11-2017");
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            Call<TimeAndDateResponse> call = apiInterface.check_time(jsonObject);
+            call.enqueue(new Callback<TimeAndDateResponse>() {
+                @Override
+                public void onResponse(Call<TimeAndDateResponse> call, Response<TimeAndDateResponse> response) {
+                    if (response.isSuccessful()) {
+                        TimeAndDateResponse timeAndDateResponse = response.body();
+                        if (timeAndDateResponse.getStatus_code() != null)
+                        {
+                            if (timeAndDateResponse.getStatus_code().equals(Constants.status_code1))
+                            {
+                                ArrayList<String> bookList = timeAndDateResponse.getBooked_Array();
+                                ArrayList<String> blockedList = timeAndDateResponse.getBlocked_Array();
+
+                            }else
+                            {
+                                if (timeAndDateResponse.getStatus_message() != null)
+                                    Toast.makeText(getActivity(),timeAndDateResponse.getStatus_message(),Toast.LENGTH_SHORT).show();
+                            }
+
+                        }
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<TimeAndDateResponse> call, Throwable t) {
+                    Log.e("output", t.getMessage());
+                }
+            });
+
+        }else
+        {
+            snackbar = TSnackbar
+                    .make(scltimeMain, "No Internet Connection !", TSnackbar.LENGTH_INDEFINITE)
+                    .setAction("Retry", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Log.d("Action Button", "onClick triggered");
+
+                        }
+                    });
+            snackbar.setActionTextColor(Color.parseColor("#4ecc00"));
+            snackbarView = snackbar.getView();
+            snackbarView.setBackgroundColor(Color.parseColor("#E43F3F"));
+            TextView textView = (TextView) snackbarView.findViewById(com.androidadvance.topsnackbar.R.id.snackbar_text);
+            textView.setTextColor(Color.YELLOW);
+            textView.setTypeface(null, Typeface.BOLD);
+            snackbar.show();
+        }
+
+    }
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -332,15 +457,38 @@ public class DateAndTimeFragment extends Fragment implements View.OnClickListene
 
         dialog = new Dialog(context);
         dialog.setContentView(R.layout.city_items);
-
+        TextView txtSelectLanguage = (TextView) dialog.findViewById(R.id.txtSelectLanguage);
         // Custom Android Allert Dialog Title
-        cityList = new ArrayList<>();
-        cityList.add("Chennai");
-        cityList.add("Erode");
-        cityList.add("Coimbatore");
-        cityList.add("Namakkal");
-        cityList.add("Mayiladuthurai");
-        cityList.add("Kollidam");
+
+        btnOk = (Button) dialog.findViewById(R.id.btnOk);
+        final DatabaseHandler databaseHandler = new DatabaseHandler(getActivity());
+        if (databaseHandler.getContact("0").equals("English"))
+        {
+            cityList = new ArrayList<>();
+            cityList.add("Chennai");
+            cityList.add("Erode");
+            cityList.add("Coimbatore");
+            cityList.add("Namakkal");
+            cityList.add("Mayiladuthurai");
+            cityList.add("Kollidam");
+            btnOk.setText("OK");
+            txtSelectLanguage.setText(getActivity().getResources().getText(R.string.select_city));
+
+
+        }else if (databaseHandler.getContact("0").equals("Tamil"))
+        {
+
+            cityList = new ArrayList<>();
+            cityList.add("சென்னை");
+            cityList.add("ஈரோடு");
+            cityList.add("கோயம்புத்தூர்");
+            cityList.add("நாமக்கல்");
+            cityList.add("மயிலாடுதுறை");
+            cityList.add("கொள்ளிடம்");
+            btnOk.setText("சரி");
+            txtSelectLanguage.setText(getActivity().getResources().getText(R.string.tamil_select_city));
+
+        }
         citySpinnerAdapter = new CityAdapter(context,cityList);
         citySpinner = (ListView) dialog.findViewById(R.id.ldtList);
 
@@ -355,7 +503,7 @@ public class DateAndTimeFragment extends Fragment implements View.OnClickListene
         });
         citySpinner.setAdapter(citySpinnerAdapter);
 
-        btnOk = (Button) dialog.findViewById(R.id.btnOk);
+
         btnOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -395,7 +543,7 @@ public class DateAndTimeFragment extends Fragment implements View.OnClickListene
 
     private void checkList(String city) {
 
-        if (city.equals("Erode"))
+        if (city.equals("Erode") || city.equals("ஈரோடு"))
         {
 //            gridView = (ExpandableHeightGridView) mainView.findViewById(R.id.gridTime);
             /*if (gridView != null) {
@@ -443,7 +591,7 @@ public class DateAndTimeFragment extends Fragment implements View.OnClickListene
                     view.addSpan(new ForegroundColorSpan(getResources().getColor(R.color.red_not_avaliable)));
                 }
             });*/
-        }else if (city.equals("Chennai")){
+        }else if (city.equals("Chennai") || city.equals("சென்னை")){
 
             calendarView.setVisibility(View.VISIBLE);
             if (coimbatoreDisableDcorator != null)
@@ -454,7 +602,7 @@ public class DateAndTimeFragment extends Fragment implements View.OnClickListene
                 calendarView.removeDecorator(mayiladuthuraiDisableDcorator);
             chennaiDisableDcorator = new ChennaiDisableDcorator(getActivity(), currentDate, currentMonth, endDate, endMonth);
             calendarView.addDecorator(chennaiDisableDcorator);
-        }else if (city.equals("Coimbatore"))
+        }else if (city.equals("Coimbatore") || city.equals("கோயம்புத்தூர்"))
         {
             calendarView.setVisibility(View.VISIBLE);
             if (erodeDisableDcorator != null)
@@ -466,7 +614,7 @@ public class DateAndTimeFragment extends Fragment implements View.OnClickListene
 
             coimbatoreDisableDcorator = new CoimbatoreDisableDcorator(getActivity(), currentDate, currentMonth, endDate, endMonth);
             calendarView.addDecorator(coimbatoreDisableDcorator);
-        }else if (city.equals("Namakkal"))
+        }else if (city.equals("Namakkal") || city.equals("நாமக்கல்"))
         {
             calendarView.setVisibility(View.VISIBLE);
             calendarView.setVisibility(View.VISIBLE);
@@ -478,7 +626,7 @@ public class DateAndTimeFragment extends Fragment implements View.OnClickListene
                 calendarView.removeDecorator(mayiladuthuraiDisableDcorator);
             coimbatoreDisableDcorator = new CoimbatoreDisableDcorator(getActivity(), currentDate, currentMonth, endDate, endMonth);
             calendarView.addDecorator(coimbatoreDisableDcorator);
-        }else if (city.equals("Mayiladuthurai"))
+        }else if (city.equals("Mayiladuthurai")|| item[0].equals("மயிலாடுதுறை"))
         {
             calendarView.setVisibility(View.VISIBLE);
 
@@ -491,7 +639,7 @@ public class DateAndTimeFragment extends Fragment implements View.OnClickListene
                 calendarView.removeDecorator(coimbatoreDisableDcorator);
             mayiladuthuraiDisableDcorator = new MayiladuthuraiDisableDcorator(getActivity(), currentDate, currentMonth, endDate, endMonth);
             calendarView.addDecorator(mayiladuthuraiDisableDcorator);
-        }else if (city.equals("Kollidam"))
+        }else if (city.equals("Kollidam")|| item[0].equals("கொள்ளிடம்"))
         {
             calendarView.setVisibility(View.VISIBLE);
             if (erodeDisableDcorator != null)
@@ -637,7 +785,7 @@ public class DateAndTimeFragment extends Fragment implements View.OnClickListene
             bookingDetails.setCity(bookingDetails.getCity());
 
         BookAppointmentActivity.ldtBookingDetails.setBackgroundColor(getActivity().getResources().getColor(R.color.book_title_orange));
-        BookAppointmentActivity.ldtBookingDetails.setTextColor(getActivity().getResources().getColor(R.color.white));
+        BookAppointmentActivity.txtBooking.setTextColor(getActivity().getResources().getColor(R.color.white));
 
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -1112,6 +1260,49 @@ public class DateAndTimeFragment extends Fragment implements View.OnClickListene
         }
 
     }
+    private void getNetworkState() {
+
+        if (isConnection != null) {
+            if (isConnection.equals(Constants.NETWORK_NOT_CONNECTED)) {
+                snackbar = TSnackbar
+                        .make(scltimeMain, "No Internet Connection !", TSnackbar.LENGTH_INDEFINITE)
+                        .setAction("Retry", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Log.d("Action Button", "onClick triggered");
+
+                            }
+                        });
+                snackbar.setActionTextColor(Color.parseColor("#4ecc00"));
+                snackbarView = snackbar.getView();
+                snackbarView.setBackgroundColor(Color.parseColor("#E43F3F"));
+                TextView textView = (TextView) snackbarView.findViewById(com.androidadvance.topsnackbar.R.id.snackbar_text);
+                textView.setTextColor(Color.YELLOW);
+                textView.setTypeface(null, Typeface.BOLD);
+                snackbar.show();
 
 
+            } else if (isConnection.equals(Constants.NETWORK_CONNECTED)) {
+                if (snackbar != null) {
+                    snackbar.dismiss();
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (networkChangeReceiver == null)
+        {
+            Log.e("reg","Do not unregister receiver as it was never registered");
+        }
+        else
+        {
+            Log.e("reg","Unregister receiver");
+            getActivity().unregisterReceiver(networkChangeReceiver);
+            networkChangeReceiver = null;
+        }
+    }
 }
+

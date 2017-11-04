@@ -94,7 +94,7 @@ public class SplashActivity extends AppCompatActivity {
                     @Override
                     public void run() {
 
-                        Intent intent = new Intent(getApplicationContext(),RegistrationActivity.class);
+                        Intent intent = new Intent(getApplicationContext(),BookAppointmentActivity.class);
                         Bundle bundle = new Bundle();
                         bundle.putString("email", getE_mail());
                         intent.putExtras(bundle);

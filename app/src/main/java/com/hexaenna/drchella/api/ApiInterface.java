@@ -1,6 +1,7 @@
 package com.hexaenna.drchella.api;
 
 import com.hexaenna.drchella.Model.RegisterRequestAndResponse;
+import com.hexaenna.drchella.Model.TimeAndDateResponse;
 
 import org.json.JSONObject;
 
@@ -30,4 +31,8 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("resend_vcode.php")
     Call<RegisterRequestAndResponse> reSendOTP(@Field("x") JSONObject verifyRequest);
+
+    @FormUrlEncoded
+    @POST("check_time.php")
+    Call<TimeAndDateResponse> check_time(@Field("x") JSONObject checkTimeObject);
 }

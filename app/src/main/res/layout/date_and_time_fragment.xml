@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.hexaenna.drchella.fragment.DateAndTimeFragment">
+    tools:context="com.hexaenna.drchella.fragment.DateAndTimeFragment"
+    android:id="@+id/scltimeMain">
 
 
     <LinearLayout
@@ -98,7 +99,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                />
+                android:src="@mipmap/ic_next"/>
             </LinearLayout>
 
         </LinearLayout>

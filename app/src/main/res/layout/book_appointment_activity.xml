@@ -24,7 +24,7 @@
             android:textStyle="bold"
             android:textSize="20sp"
             android:id="@+id/txtToolbarText"
-            android:text="Book Your Appointment"/>
+            android:text="@string/book_appointment"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -53,28 +53,45 @@
         android:orientation="horizontal"
         android:weightSum="3"
         >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#F28F20"
+            android:id="@+id/ldtDateTime">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:text="@string/date_and_time"
             style="@style/booking_style"
             android:background="#F28F20"
             android:textColor="@android:color/white"
-            android:id="@+id/ldtDateTime"/>
+           android:id="@+id/txtDateTime"/>
+            </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:id="@+id/ldtBookingDetails">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:text="@string/booking_details"
             style="@style/booking_style"
-            android:id="@+id/ldtBookingDetails"/>
+           android:id="@+id/txtBooking" />
+            </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:id="@+id/ldtConformation">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:text="@string/conformation"
-            style="@style/booking_style"/>
+            style="@style/booking_style"
+            android:id="@+id/txtConformation"/>
+            </LinearLayout>
     </LinearLayout>
     <FrameLayout
         android:id="@+id/fragment_container"

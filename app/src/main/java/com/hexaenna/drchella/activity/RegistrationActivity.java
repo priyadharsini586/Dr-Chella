@@ -1,15 +1,19 @@
 package com.hexaenna.drchella.activity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.support.annotation.IdRes;
 import android.support.design.widget.TextInputLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatDialog;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -40,6 +44,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import fr.ganfra.materialspinner.MaterialSpinner;
 import retrofit2.Call;
@@ -87,9 +92,64 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         intentFilter.addAction(Constants.BROADCAST);
         this.registerReceiver(networkChangeReceiver,
                 intentFilter);
-        setContentView(R.layout.registration_activity);
 
-         btnRegister = (Button) findViewById(R.id.btnReg);
+
+    }
+
+    private void showLanguage() {
+
+        final DatabaseHandler databaseHandler = new DatabaseHandler(getApplicationContext());
+        final String[] selected = new String[1];
+        final AlertDialog.Builder[] builder = {new AlertDialog.Builder(RegistrationActivity.this,R.style.MyAlertDialogMaterialStyle)};
+        final  String array[] = getApplicationContext().getResources().getStringArray(R.array.language);
+        builder[0].setTitle("Select Your Language");
+        builder[0].setSingleChoiceItems(R.array.language, 0,
+                new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialog,int id) {
+
+                       selected[0] = array[id].toString();
+                        Log.e("selected", selected[0]);
+
+
+                    }
+                })
+
+                // Set the action buttons
+                .setPositiveButton(R.string.ok_button, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User clicked OK, so save the mSelectedItems results somewhere
+                        // or return them to the component that opened the dialog
+                        databaseHandler.addLanguage(selected[0],"0");
+                        if (databaseHandler.getContact("0").equals("English"))
+                        {
+                            setContentView(R.layout.registration_activity);
+                            setView();
+
+
+                        }else if (databaseHandler.getContact("0").equals("Tamil"))
+                        {
+                            setContentView(R.layout.tamil_registration_activity);
+                            setView();
+                        }
+                    }
+                });
+
+
+        builder[0].setCancelable(false);
+        AppCompatDialog alertDialog = builder[0].create();
+        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(getApplicationContext().getResources().getColor(R.color.white)));
+        alertDialog.show();
+
+
+
+
+    }
+
+    private void setView()
+    {
+        btnRegister = (Button) findViewById(R.id.btnReg);
         btnRegister.setOnClickListener(this);
 
         sclRegisterMain = (ScrollView) findViewById(R.id.sclRegisterMain);
@@ -126,21 +186,6 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
         isGenderValidate();
         isMobileValidate();
-    }
-
-    private void showLanguage() {
-
-        DatabaseHandler databaseHandler = new DatabaseHandler(getApplicationContext());
-//        databaseHandler.addLanguage("English","0");
-
-        if (databaseHandler.getContact("0").equals("English"))
-        {
-
-        }else if (databaseHandler.getContact("0").equals("Tamil"))
-        {
-
-        }
-        databaseHandler.getContact("0");
     }
 
     @Override
@@ -540,5 +585,18 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     private static boolean isValidEmail(String email) {
         return !TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
-
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (networkChangeReceiver == null)
+        {
+            Log.e("reg","Do not unregister receiver as it was never registered");
+        }
+        else
+        {
+            Log.e("reg","Unregister receiver");
+            unregisterReceiver(networkChangeReceiver);
+            networkChangeReceiver = null;
+        }
+    }
 }

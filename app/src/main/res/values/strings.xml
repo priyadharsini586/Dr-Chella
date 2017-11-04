@@ -3,6 +3,7 @@
     <string name="splash_name">Dr.Chella</string>
     <string name="studies">M.D.,</string>
     <string name="registration">Registration</string>
+    <string name="tamil_registration">பதிவு செய்தல்</string>
     <string name="Name">Name</string>
     <string name="gender">Gender</string>
     <string name="age">Age</string>
@@ -10,20 +11,28 @@
     <string name="mobile">Mobile number</string>
     <string name="e_mail">E_Mail</string>
     <string name="register">Register</string>
+    <string name="tamil_register">பதிவு</string>
     <string name="allfield">All fields are mandatory</string>
+    <string name="tamil_allfield">அனைத்து தகவலும் கட்டாயம்</string>
 
     <string name="str1">We have sent verification code to your registered Mobile number</string>
+    <string name="tamil_str1">உங்கள் பதிவு செய்யப்பட்ட மொபைல் எண்ணுக்கு சரிபார்ப்புக் குறியீட்டை அனுப்பியுள்ளோம்</string>
     <string name="submit">SUBMIT</string>
+    <string name="tamil_submit">சமர்ப்பிக்க</string>
 
 
     <string name="date_and_time">Date &amp;Time</string>
+    <string name="tamil_date_and_time">தேதி &amp;நேரம்</string>
     <string name="booking_details">Booking Details</string>
+    <string name="tamil_booking_details">புக்கிங் விவரங்கள்</string>
     <string name="conformation">Conformation</string>
+    <string name="tamil_conformation">உறுதிப்படுத்தல்</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string name="select_city">Please Select Your City</string>
+    <string name="tamil_select_city">உங்கள் நகரத்தை தேர்வு செய்யவும்</string>
     <string name="available">Available</string>
     <string name="not_available">Not Available</string>
 
@@ -41,13 +50,18 @@
     <string name="english_transgender">Transgender</string>
     <string name="tamil_patient_mobile">நோயாளியின் கைப்பேசி எண்:</string>
     <string name="english_patient_mobile">Patient mobile number:</string>
+    <string name="english_patient_mobile1">Patient mobile number</string>
     <string name="tamil_applicant_mobile">விண்ணப்பதாரர் கைப்பேசி எண்:</string>
     <string name="english_applicant_mobile">Applicant mobile number:</string>
+    <string name="english_applicant_mobile1">Applicant mobile number</string>
     <string name="english_place">Place:</string>
+    <string name="english_place1">Place</string>
     <string name="tamil_place">இடம்:</string>
     <string name="english_e_mail">Email id:</string>
+    <string name="english_e_mail1">Email id</string>
     <string name="tamil_e_mail">மின்னஞ்சல் முகவரி்:</string>
     <string name="english_address">Short address:</string>
+    <string name="english_address1">Short address</string>
     <string name="tamil_address">குறுகிய முகவரி:</string>
     
     <string name="mr">Mr</string>
@@ -61,13 +75,33 @@
 
 
     <string name="next">Next</string>
+    <string name="tamil_next">அடுத்த</string>
     <string name="previous">Previous</string>
+    <string name="tamil_city">நகரம்</string>
+    <string name="tamil_mobile_number">கைப்பேசி எண்</string>
+    <string name="tamil_name1">பெயர்</string>
+    <string name="tamil_age1">வயது</string>
+    <string name="resend_otp">Resend OTP</string>
+    <string name="tamil_resend_otp">மீண்டும் அனுப்பி OTP</string>
+    <string name="tamil_book_appointment">பதிவை உறுதி செய்யவும்</string>
+    <string name="book_appointment">Book Your Appointment</string>
+    <string name="tamil_applicant_mobile1" >விண்ணப்பதாரர் கைப்பேசி எண்</string>
+    <string name="tamil_patient_mobile1">நோயாளியின் கைப்பேசி எண்</string>
+    <string name="tamil_place1" >இடம்</string>
+    <string name="tamil_e_mail1">மின்னஞ்சல் முகவரி்</string>
+    <string name="tamil_address1">குறுகிய முகவரி</string>
+    <string name="tamil_previous">முந்தைய</string>
     <string-array name="country_arrays">
         <item>Mr</item>
         <item>Mrs</item>
         <item>Ms</item>
         <item>Dr</item>
         <item>Er</item>
+    </string-array>
+
+    <string-array name="language">
+        <item>English</item>
+        <item>Tamil</item>
     </string-array>
 
     <!--time slot-->

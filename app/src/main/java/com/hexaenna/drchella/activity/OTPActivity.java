@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidadvance.topsnackbar.TSnackbar;
+import com.hexaenna.drchella.Db.DatabaseHandler;
 import com.hexaenna.drchella.Model.RegisterRequestAndResponse;
 import com.hexaenna.drchella.R;
 import com.hexaenna.drchella.api.ApiClient;
@@ -68,7 +69,16 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
         intentFilter.addAction(Constants.BROADCAST);
         this.registerReceiver(networkChangeReceiver,
                 intentFilter);
-        setContentView(R.layout.otp_activity);
+        final DatabaseHandler databaseHandler = new DatabaseHandler(getApplicationContext());
+        if (databaseHandler.getContact("0").equals("English"))
+        {
+            setContentView(R.layout.otp_activity);
+
+        }else if (databaseHandler.getContact("0").equals("Tamil"))
+        {
+            setContentView(R.layout.tamil_otp_activity);
+
+        }
 
         btnSubmit = (Button) findViewById(R.id.btnSubmit);
         btnSubmit.setOnClickListener(this);
@@ -127,6 +137,8 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
                         RegisterRequestAndResponse requestAndResponse = response.body();
                         if (requestAndResponse.getStatus_message() != null)
                         {
+                            progressBar.setVisibility(View.GONE);
+                            Toast.makeText(getApplicationContext(),requestAndResponse.getStatus_message(),Toast.LENGTH_LONG).show();
                         }
 
                     }
