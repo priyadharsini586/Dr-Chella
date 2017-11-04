@@ -274,9 +274,7 @@ public class DateAndTimeFragment extends Fragment implements View.OnClickListene
                         }else
                         {
                             getTimingList();
-                            gridView.setExpanded(true);
-                            gridView.setAdapter(new TimeSlotAdapter(getActivity(), getErodeTimeSlotList()));
-                            gridView.setVisibility(View.VISIBLE);
+
                         }
                     }else if (item[0].equals("Chennai") || item[0].equals("சென்னை"))
                     {
@@ -396,6 +394,10 @@ public class DateAndTimeFragment extends Fragment implements View.OnClickListene
                             {
                                 ArrayList<String> bookList = timeAndDateResponse.getBooked_Array();
                                 ArrayList<String> blockedList = timeAndDateResponse.getBlocked_Array();
+
+                                gridView.setExpanded(true);
+                                gridView.setAdapter(new TimeSlotAdapter(getActivity(), getErodeTimeSlotList(),blockedList,bookList));
+                                gridView.setVisibility(View.VISIBLE);
 
                             }else
                             {

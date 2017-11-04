@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.hexaenna.drchella.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by admin on 10/28/2017.
@@ -18,8 +19,9 @@ import java.util.ArrayList;
 public class TimeSlotAdapter extends BaseAdapter {
     private Context context;
     ArrayList<String>timeSlotList;
-
-    public TimeSlotAdapter(Context context, ArrayList<String>timeSlotList) {
+    ArrayList<String> blockedArray;
+    ArrayList<String> bookedArray;
+    public TimeSlotAdapter(Context context, ArrayList<String>timeSlotList, ArrayList<String> blockedArray , ArrayList<String> bookedArray) {
         this.context = context;
         this.timeSlotList = timeSlotList;
     }
@@ -40,6 +42,8 @@ public class TimeSlotAdapter extends BaseAdapter {
             // set value into textview
             TextView textView = (TextView) gridView
                     .findViewById(R.id.txtTimeSlot);
+
+
             textView.setText(timeSlotList.get(position));
 
             // set image based on selected text
