@@ -13,12 +13,12 @@ import java.util.List;
 
 public class TimeAndDateResponse {
     String status_code,status_message,success;
-    @SerializedName("Blocked_Array ")
+    @SerializedName("Blocked_Array")
     @Expose
     ArrayList<String> Blocked_Array = null ;
     @SerializedName("Booked_Array")
     @Expose
-    ArrayList<String> Booked_Array = null;
+    ArrayList<String> Booked_Array = new ArrayList<>();
 
     public String getStatus_code() {
         return status_code;

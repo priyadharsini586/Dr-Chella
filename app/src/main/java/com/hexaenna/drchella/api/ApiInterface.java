@@ -35,4 +35,9 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("check_time.php")
     Call<TimeAndDateResponse> check_time(@Field("x") JSONObject checkTimeObject);
+
+    @FormUrlEncoded
+    @POST("is_blocked.php")
+    Call<TimeAndDateResponse> isBlocked(@Field("x") JSONObject checkTimeObject);
 }
+
