@@ -50,7 +50,6 @@
             android:layout_height="wrap_content"
             app:ms_enableFloatingLabel="true"
             app:ms_enableErrorLabel="true"
-            app:ms_floatingLabelText="@string/title"
             app:ms_baseColor="@color/colorPrimary"
             app:ms_highlightColor="@color/colorPrimary"
             app:ms_errorColor="@android:color/holo_red_dark"
@@ -61,7 +60,6 @@
             app:ms_alignLabels="true"
             app:ms_floatingLabelColor="@color/colorPrimary"
             android:popupBackground="@android:color/white"
-            app:ms_hint="@string/title"
             app:ms_multiline="true"
             android:layout_gravity="center"/>
 
@@ -72,7 +70,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/txtInputName"
         android:layout_gravity="center"
-        android:layout_weight="0.5">
+        android:layout_weight="0.6"
+        app:errorTextAppearance="@style/error_appearance">
     <EditText
         android:id="@+id/input_name"
         android:layout_width="match_parent"
@@ -113,7 +112,8 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/txtInputAge"
                 android:layout_gravity="center"
-                android:layout_weight="0.3">
+                android:layout_weight="0.3"
+                app:errorTextAppearance="@style/error_appearance">
                 <EditText
                     android:id="@+id/edtAge"
                     android:layout_width="match_parent"
@@ -160,80 +160,86 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:weightSum="3">
+                    android:weightSum="3"
+                    android:id="@+id/radioSexGroup">
+
                     <RadioButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@android:color/black"
-                        android:layout_weight="1.2"
-                        android:layout_gravity="center"/>
+                        android:layout_gravity="center"
+                        android:id="@+id/radioMale"
+                       />
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical"
                             android:layout_gravity="center">
                             <TextView
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="@string/english_male"
                                 android:textColor="@android:color/black"
                                 android:textSize="@dimen/gender_text"/>
-                            <TextView
+                          <!--  <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/tamil_male"
                                 android:textColor="@android:color/black"
-                                android:textSize="@dimen/gender_text"/>
-                        </LinearLayout>
+                                android:textSize="@dimen/gender_text"/>-->
+
+                    </LinearLayout>
+
                     <RadioButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:textColor="@android:color/black"
-                        android:layout_gravity="center"/>
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_gravity="center">
-                        <TextView
+                        android:layout_gravity="center"
+                        android:id="@+id/radioFemale"/>
+                        <LinearLayout
                             android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center">
+                        <TextView
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/english_female"
                             android:textColor="@android:color/black"
                             android:textSize="@dimen/gender_text"/>
-                        <TextView
+                      <!--  <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/tamil_female"
                             android:textColor="@android:color/black"
-                            android:textSize="@dimen/gender_text"/>
+                            android:textSize="@dimen/gender_text"/>-->
                     </LinearLayout>
+
                     <RadioButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.8"
                         android:textColor="@android:color/black"
-                        android:layout_gravity="center"/>
+                        android:layout_gravity="center"
+                        android:id="@+id/radioTrans"
+                        />
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_gravity="center">
-                        <TextView
+                        <LinearLayout
                             android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center">
+                        <TextView
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/english_transgender"
                             android:textColor="@android:color/black"
-                            android:textSize="@dimen/gender_text"/>
-                        <TextView
+                            android:textSize="@dimen/gender_text"
+                            android:gravity="center"/>
+                     <!--   <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/tamil_transgender"
                             android:textColor="@android:color/black"
-                            android:textSize="@dimen/gender_text"/>
+                            android:textSize="@dimen/gender_text"/>-->
                     </LinearLayout>
+
                 </RadioGroup>
 
             </LinearLayout>
@@ -251,13 +257,15 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_weight="0.7">
+
                 <TextView
+                    android:id="@+id/textView2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/english_applicant_mobile"
-                    android:gravity="end"
                     android:textColor="@android:color/black"
-                    android:textSize="@dimen/register_text"/>
+                    android:textSize="@dimen/register_text"
+                   />
 
             </LinearLayout>
             <android.support.design.widget.TextInputLayout
@@ -265,7 +273,8 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/txtInputApplicantMobileNumber"
                 android:layout_gravity="center"
-                android:layout_weight="0.3">
+                android:layout_weight="0.3"
+                app:errorTextAppearance="@style/error_appearance">
                 <EditText
                     android:id="@+id/edtApplicantMobileNumber"
                     android:layout_width="match_parent"
@@ -273,7 +282,8 @@
                     android:inputType="number"
                     android:hint="@string/english_applicant_mobile1"
                     style="@style/App_Book_Appointment"
-                    android:maxLength="10"/>
+                    android:maxLength="10"
+                    />
             </android.support.design.widget.TextInputLayout>
         </LinearLayout>
         <LinearLayout
@@ -291,9 +301,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/english_patient_mobile"
-                    android:gravity="end"
                     android:textColor="@android:color/black"
-                    android:textSize="@dimen/register_text"/>
+                    android:textSize="@dimen/register_text"
+                    />
 
             </LinearLayout>
             <android.support.design.widget.TextInputLayout
@@ -301,7 +311,8 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/txtInputMobileNumber"
                 android:layout_gravity="center"
-                android:layout_weight="0.3">
+                android:layout_weight="0.3"
+                app:errorTextAppearance="@style/error_appearance">
                 <EditText
                     android:id="@+id/edtMobileNumber"
                     android:layout_width="match_parent"
@@ -340,7 +351,8 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/txtInputPlace"
                 android:layout_gravity="center"
-                android:layout_weight="0.3">
+                android:layout_weight="0.3"
+                app:errorTextAppearance="@style/error_appearance">
                 <EditText
                     android:id="@+id/edtPlace"
                     android:layout_width="match_parent"
@@ -379,7 +391,8 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/txtInputemail"
                 android:layout_gravity="center"
-                android:layout_weight="0.3">
+                android:layout_weight="0.3"
+                app:errorTextAppearance="@style/error_appearance">
                 <EditText
                     android:id="@+id/edtE_mail"
                     android:layout_width="match_parent"
@@ -387,7 +400,7 @@
                     android:inputType="textEmailAddress"
                     android:hint="@string/english_e_mail1"
                     style="@style/App_Book_Appointment"
-                    android:maxLength="10"/>
+                    />
             </android.support.design.widget.TextInputLayout>
         </LinearLayout>
 
@@ -418,7 +431,8 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/txtInputaddress"
                 android:layout_gravity="center"
-                android:layout_weight="0.3">
+                android:layout_weight="0.3"
+                app:errorTextAppearance="@style/error_appearance">
                 <EditText
                     android:id="@+id/edtaddress"
                     android:layout_width="match_parent"
@@ -456,6 +470,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="end">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/ldtNextFragment">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -469,7 +487,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@mipmap/ic_next"/>
-
+              </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

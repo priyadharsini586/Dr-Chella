@@ -27,4 +27,8 @@
     <dimen name="city_txt">12sp</dimen>
     <dimen name="booking_text">12sp</dimen>
     <dimen name="register_text">12sp</dimen>
+    <!--conformation-->
+    <dimen name="conform_text">15sp</dimen>
+    <dimen name="conform_text1">13sp</dimen>
+
 </resources>

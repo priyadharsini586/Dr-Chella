@@ -9,10 +9,9 @@ import java.util.ArrayList;
  */
 
 public class BookingDetails {
-    public String city,selectedCity,selectedDate,selectedTime;
-    int selectedPosition;
+    private String city,selectedCity,selectedDate,selectedTime,e_mail,appSeno;
+    int selectedPosition = -1;
     ArrayList<String> bookedList,blockedList;
-    View view;
     private static BookingDetails ourInstance = new BookingDetails();
     private BookingDetails(){}
 
@@ -77,11 +76,19 @@ public class BookingDetails {
         this.selectedPosition = selectedPosition;
     }
 
-    public View getView() {
-        return view;
+    public String getE_mail() {
+        return e_mail;
     }
 
-    public void setView(View view) {
-        this.view = view;
+    public void setE_mail(String e_mail) {
+        this.e_mail = e_mail;
+    }
+
+    public String getAppSeno() {
+        return appSeno;
+    }
+
+    public void setAppSeno(String appSeno) {
+        this.appSeno = appSeno;
     }
 }

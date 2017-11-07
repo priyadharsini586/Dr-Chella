@@ -1,6 +1,7 @@
 package com.hexaenna.drchella.adapter;
 
 import android.content.Context;
+import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.hexaenna.drchella.Model.BookingDetails;
 import com.hexaenna.drchella.R;
 
 import java.util.ArrayList;
@@ -85,7 +87,21 @@ public class TimeSlotAdapter extends BaseAdapter {
                 gridView.setEnabled(false);
 
             }
+            BookingDetails bookingDetails  = BookingDetails.getInstance();
+            if (bookingDetails.getSelectedPosition() != -1)
+            {
+                if (position == bookingDetails.getSelectedPosition()) {
+                    LinearLayout linearLayout = (LinearLayout) gridView.findViewById(R.id.ldtBackground);
 
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                        linearLayout.setBackground(context.getResources().getDrawable(R.drawable.selected_time_slot_bg));
+                        textView.setTextColor(context.getResources().getColor(R.color.black));
+                    } else {
+                        linearLayout.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.selected_time_slot_bg));
+                        textView.setTextColor(context.getResources().getColor(R.color.black));
+                    }
+                }
+            }
 
             // set image based on selected text
 

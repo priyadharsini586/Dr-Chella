@@ -103,6 +103,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         final AlertDialog.Builder[] builder = {new AlertDialog.Builder(RegistrationActivity.this,R.style.MyAlertDialogMaterialStyle)};
         final  String array[] = getApplicationContext().getResources().getStringArray(R.array.language);
         builder[0].setTitle("Select Your Language");
+        selected[0] = array[0].toString();
         builder[0].setSingleChoiceItems(R.array.language, 0,
                 new DialogInterface.OnClickListener(){
                     @Override
@@ -258,6 +259,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                                 if (login.getStatus_message() != null)
                                     Toast.makeText(getApplicationContext(),login.getStatus_message(),Toast.LENGTH_SHORT).show();
                             }
+                            progressBar.setVisibility(View.GONE);
 
                         }
 
@@ -379,14 +381,14 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
                 int selectedId = radioSexGroup.getCheckedRadioButtonId();
                 RadioButton radioSexButton = (RadioButton) findViewById(selectedId);
-                if (radioSexButton.getText().equals(getApplicationContext().getResources().getString(R.string.english_male)))
+                if (radioSexButton.getText().equals(getApplicationContext().getResources().getString(R.string.english_male))||radioSexButton.getText().equals(getApplicationContext().getResources().getString(R.string.tamil_male)))
                 {
                     checkGender = "1";
 
-                }else if(radioSexButton.getText().equals(getApplicationContext().getResources().getString(R.string.english_female)))
+                }else if(radioSexButton.getText().equals(getApplicationContext().getResources().getString(R.string.english_female))||radioSexButton.getText().equals(getApplicationContext().getResources().getString(R.string.tamil_female)))
                 {
                     checkGender = "2";
-                }else if (radioSexButton.getText().equals(getApplicationContext().getResources().getString(R.string.english_transgender)))
+                }else if (radioSexButton.getText().equals(getApplicationContext().getResources().getString(R.string.english_transgender))||radioSexButton.getText().equals(getApplicationContext().getResources().getString(R.string.tamil_transgender)))
                 {
                     checkGender = "3";
                 }

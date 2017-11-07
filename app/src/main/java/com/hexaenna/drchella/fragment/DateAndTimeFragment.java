@@ -1,5 +1,7 @@
 package com.hexaenna.drchella.fragment;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Dialog;
@@ -30,6 +32,7 @@ import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,6 +82,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.regex.Pattern;
 
 import fr.ganfra.materialspinner.MaterialSpinner;
 import retrofit2.Call;
@@ -413,7 +417,6 @@ public class DateAndTimeFragment extends Fragment implements View.OnClickListene
             }
             gridView.setVisibility(View.VISIBLE);
 
-            gridView.setOnItemClickListener(myOnItemClickListener);
 
         }
 
@@ -426,19 +429,33 @@ public class DateAndTimeFragment extends Fragment implements View.OnClickListene
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position,
                                 long id) {
-            if (bookingDetails.getSelectedPosition() == 0) {
-                String time = getErodeTimeSlotList().get(position);
+
+            String time = null;
+            if (selectCity.equals("1")) {
+                time = getChennaiTimeSlotList().get(position);
+            }else if (selectCity.equals("2"))
+            {
+                time = getErodeTimeSlotList().get(position);
+            }else if (selectCity.equals("3"))
+            {
+               time = getCoimbatoreTimeSlotList().get(position);
+            }else if (selectCity.equals("4"))
+            {
+                time = getNamakkalTimeSlotList().get(position);
+            }else if (selectCity.equals("5"))
+            {
+                time = getMayiladuthuraiTimeSlotList().get(position);
+            }else if (selectCity.equals("6"))
+            {
+                time = getKollidamTimeSlotList().get(position);
+            }
+
                 currentPosition = position;
-                selectTime = time;
-                bookingDetails.setView(view);
                 if (!time.equals("Lunch")) {
+                    selectTime = time;
                     checkAvaliableOrNot(selectCity, selectDate, time, view, position);
                 }
 
-            }else
-            {
-                Log.e("time", "call ontemclick");
-            }
 
         }};
 
@@ -536,8 +553,19 @@ public class DateAndTimeFragment extends Fragment implements View.OnClickListene
                 TextView changePrevious = (TextView) b.getChildAt(0);
                 changePrevious.setTextColor(Color.parseColor("#F28F20"));
 
-
             }
+        }
+
+        if (bookingDetails.getSelectedPosition() != -1)
+        {
+            LinearLayout selectedView = (LinearLayout) gridView.getChildAt(bookingDetails.getSelectedPosition());
+            selectedView.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.time_slot_bg));
+            LinearLayout b = (LinearLayout) selectedView.getChildAt(0);
+            Log.e("count", String.valueOf(b.getChildCount()));
+            TextView changePrevious = (TextView) b.getChildAt(0);
+            changePrevious.setTextColor(Color.parseColor("#F28F20"));
+
+            bookingDetails.setSelectedPosition(-1);
         }
         previousSelectedPosition = position;
 
@@ -931,8 +959,84 @@ public class DateAndTimeFragment extends Fragment implements View.OnClickListene
         {
             case R.id.ldtNext:
                 getNextFragment();
+//                sendRequest();
                 break;
         }
+    }
+
+    private void sendRequest() {
+
+        if (isConnection.equals(Constants.NETWORK_CONNECTED)) {
+            apiInterface = ApiClient.getClient().create(ApiInterface.class);
+            JSONObject jsonObject = new JSONObject();
+            try {
+                jsonObject.put("city",selectCity);
+                jsonObject.put("adate",selectDate);
+                jsonObject.put("atime",selectTime);
+                jsonObject.put("user_email_id",getE_mail());
+                if (bookingDetails.getAppSeno() != null)
+                {
+                    jsonObject.put("app_sno",bookingDetails.getAppSeno());
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            progressCalendar.setVisibility(View.VISIBLE);
+            Call<TimeAndDateResponse> call = apiInterface.block_appintment(jsonObject);
+            call.enqueue(new Callback<TimeAndDateResponse>() {
+                @Override
+                public void onResponse(Call<TimeAndDateResponse> call, Response<TimeAndDateResponse> response) {
+                    if (response.isSuccessful()) {
+                        TimeAndDateResponse timeAndDateResponse = response.body();
+
+                        if (timeAndDateResponse.getStatus_code() != null) {
+                            if (timeAndDateResponse.getStatus_code().equals(Constants.status_code1)) {
+                                Toast.makeText(getActivity(), timeAndDateResponse.getStatus_message(), Toast.LENGTH_SHORT).show();
+                                bookingDetails.setAppSeno(timeAndDateResponse.getApp_sno());
+                                getNextFragment();
+                            } else if (timeAndDateResponse.getStatus_code().equals(Constants.status_code_1))
+                            {
+                                if (timeAndDateResponse.getStatus_message() != null)
+                                    Toast.makeText(getActivity(), timeAndDateResponse.getStatus_message(), Toast.LENGTH_SHORT).show();
+                            } else if (timeAndDateResponse.getStatus_code().equals(Constants.status_code0))
+                            {
+                                if (timeAndDateResponse.getStatus_message() != null)
+                                    Toast.makeText(getActivity(), timeAndDateResponse.getStatus_message(), Toast.LENGTH_SHORT).show();
+                            }
+                            ldtNext.setEnabled(true);
+                            progressCalendar.setVisibility(View.GONE);
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<TimeAndDateResponse> call, Throwable t) {
+                    Log.e("output", t.getMessage());
+                }
+            });
+
+        }else
+        {
+            snackbar = TSnackbar
+                    .make(scltimeMain, "No Internet Connection !", TSnackbar.LENGTH_INDEFINITE)
+                    .setAction("Retry", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Log.d("Action Button", "onClick triggered");
+
+                        }
+                    });
+            snackbar.setActionTextColor(Color.parseColor("#4ecc00"));
+            snackbarView = snackbar.getView();
+            snackbarView.setBackgroundColor(Color.parseColor("#E43F3F"));
+            TextView textView = (TextView) snackbarView.findViewById(com.androidadvance.topsnackbar.R.id.snackbar_text);
+            textView.setTextColor(Color.YELLOW);
+            textView.setTypeface(null, Typeface.BOLD);
+            snackbar.show();
+        }
+
+
     }
 
     private void getNextFragment() {
@@ -1170,6 +1274,22 @@ public class DateAndTimeFragment extends Fragment implements View.OnClickListene
         return timeSlotList;
     }
 
+
+    public  String getE_mail()
+    {
+        Pattern gmailPattern = Patterns.EMAIL_ADDRESS;
+        Account[] accounts = AccountManager.get(getActivity()).getAccounts();
+        String e_mail = null;
+        for (Account account : accounts) {
+            if (gmailPattern.matcher(account.name).matches()) {
+                e_mail = account.name;
+                break;
+
+            }
+        }
+
+        return e_mail;
+    }
 
 
     private static class CoimbatoreDisableDcorator implements DayViewDecorator {

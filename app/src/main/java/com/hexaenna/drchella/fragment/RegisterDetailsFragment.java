@@ -4,31 +4,48 @@ import android.content.Context;
 import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.hexaenna.drchella.Db.DatabaseHandler;
+import com.hexaenna.drchella.Model.RegisterBookDetails;
 import com.hexaenna.drchella.R;
 import com.hexaenna.drchella.activity.BookAppointmentActivity;
+import com.hexaenna.drchella.activity.RegistrationActivity;
 
 import fr.ganfra.materialspinner.MaterialSpinner;
 
-public class RegisterDetailsFragment extends Fragment {
+public class RegisterDetailsFragment extends Fragment implements View.OnClickListener {
 
     View mainView;
     MaterialSpinner spnSirName;
     Toolbar mToolbar;
-    LinearLayout ldtCity,ldtPreviosFragment;
+    LinearLayout ldtCity,ldtPreviosFragment,ldtNextFragment;
+    EditText edtName,edtCity,edtE_mail,edtAge,edtPatientMobileNumber,edtApplicantNumber,edtPlace,edtAddress;
+    TextInputLayout txtInputName,txtInputAge,txtInputApplicantMobileNumber,txtInputMobileNumber,txtInputPlace,txtInputemail,txtInputaddress;
+    RadioButton radioMale,radioFemale,radioTrans;
+    RadioGroup radioSexGroup;
+    String checkGender ;
+    final boolean[] isGender = {false};
     public RegisterDetailsFragment() {
         // Required empty public constructor
     }
@@ -78,18 +95,53 @@ public class RegisterDetailsFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right);
-                fragmentTransaction.replace(R.id.fragment_container, new DateAndTimeFragment(), "DATE_AND_TIME_FRAGMENT");
-                fragmentTransaction.addToBackStack("DATE_AND_TIME_FRAGMENT");
-                fragmentTransaction.commit();
-                BookAppointmentActivity.ldtBookingDetails.setBackgroundColor(getActivity().getResources().getColor(R.color.white));
-                BookAppointmentActivity.txtBooking.setTextColor(getActivity().getResources().getColor(R.color.black));
+                getToPreviousFragment();
+
             }
         });
+        ldtNextFragment = (LinearLayout) mainView.findViewById(R.id.ldtNextFragment);
+        ldtNextFragment.setOnClickListener(this);
 
+        edtName =(EditText)mainView.findViewById(R.id.input_name);
+        edtAge = (EditText) mainView.findViewById(R.id.edtAge);
+        edtCity = (EditText)mainView.findViewById(R.id.edtCity);
+        edtE_mail = (EditText) mainView.findViewById(R.id.edtmail);
+        edtApplicantNumber = (EditText) mainView.findViewById(R.id.edtApplicantMobileNumber);
+        edtPatientMobileNumber = (EditText) mainView.findViewById(R.id.edtMobileNumber);
+        edtPlace = (EditText) mainView.findViewById(R.id.edtPlace);
+        edtE_mail = (EditText) mainView.findViewById(R.id.edtE_mail);
+        edtAddress = (EditText) mainView.findViewById(R.id.edtaddress);
+
+        txtInputName = (TextInputLayout) mainView.findViewById(R.id.txtInputName);
+        txtInputAge = (TextInputLayout) mainView.findViewById(R.id.txtInputAge);
+        txtInputApplicantMobileNumber = (TextInputLayout) mainView.findViewById(R.id.txtInputApplicantMobileNumber);
+        txtInputMobileNumber = (TextInputLayout) mainView.findViewById(R.id.txtInputMobileNumber);
+        txtInputPlace = (TextInputLayout) mainView.findViewById(R.id.txtInputPlace);
+        txtInputemail = (TextInputLayout) mainView.findViewById(R.id.txtInputemail);
+        txtInputaddress = (TextInputLayout) mainView.findViewById(R.id.txtInputaddress);
+
+        radioFemale = (RadioButton) mainView.findViewById(R.id.radioFemale);
+        radioMale = (RadioButton) mainView.findViewById(R.id.radioMale);
+        radioTrans = (RadioButton)mainView.findViewById(R.id.radioTrans);
+
+        radioSexGroup = (RadioGroup) mainView.findViewById(R.id.radioSexGroup);
+
+        isApplicantMobileValidate();
+        isPatientMobileValidate();
+        isE_mailValidate();
+        isGenderValidate();
         return mainView;
+    }
+
+    private void getToPreviousFragment() {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right);
+        fragmentTransaction.replace(R.id.fragment_container, new DateAndTimeFragment(), "DATE_AND_TIME_FRAGMENT");
+        fragmentTransaction.addToBackStack("DATE_AND_TIME_FRAGMENT");
+        fragmentTransaction.commit();
+        BookAppointmentActivity.ldtBookingDetails.setBackgroundColor(getActivity().getResources().getColor(R.color.white));
+        BookAppointmentActivity.txtBooking.setTextColor(getActivity().getResources().getColor(R.color.black));
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -107,5 +159,307 @@ public class RegisterDetailsFragment extends Fragment {
 
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId())
+        {
+            case R.id.ldtNextFragment:
+               boolean df= isNameEmpty();
+                boolean df1= isApplicantMobileValidate();
+                boolean df2= isAgeValidate();
+                boolean df3= isGender[0];
+                boolean df4= isPatientMobileValidate();
+                boolean df5= isAddressEmpty();
+                boolean df6= isE_mailValidate();
+                boolean df7= isPlaceEmpty();
+                if (isNameEmpty() && isAgeValidate() && isGender[0] && isApplicantMobileValidate() && isPatientMobileValidate() && isPlaceEmpty() && isE_mailValidate() && isAddressEmpty()) {
+                    getNextFragment();
+                }
+                break;
+        }
+    }
+
+    private void getNextFragment() {
+        RegisterBookDetails registerBookDetails =RegisterBookDetails.getInstance();
+        registerBookDetails.setName(edtName.getText().toString());
+        registerBookDetails.setAge(edtAge.getText().toString());
+        registerBookDetails.setApplicantNumber(edtApplicantNumber.getText().toString());
+        registerBookDetails.setPatientNumber(edtPatientMobileNumber.getText().toString());
+        registerBookDetails.setPlace(edtPlace.getText().toString());
+        registerBookDetails.setE_mailid(edtE_mail.getText().toString());
+        registerBookDetails.setAddress(edtAddress.getText().toString());
+
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.setCustomAnimations(R.anim.right_in, R.anim.left_out);
+        fragmentTransaction.replace(R.id.fragment_container, new ConformationFragment(), "CONGIRMATION_ FRAGMENT");
+        fragmentTransaction.addToBackStack("CONGIRMATION_ FRAGMENT");
+        fragmentTransaction.commit();
+        BookAppointmentActivity.ldtConformation.setBackgroundColor(getActivity().getResources().getColor(R.color.book_title_orange));
+        BookAppointmentActivity.txtConformation.setTextColor(getActivity().getResources().getColor(R.color.white));
+    }
+    public boolean isGenderValidate()
+    {
+        radioSexGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
+                isGender[0] = true;
+
+                int selectedId = radioSexGroup.getCheckedRadioButtonId();
+                RadioButton radioSexButton = (RadioButton) getActivity().findViewById(selectedId);
+                if (radioSexButton.getText().equals(getActivity().getResources().getString(R.string.english_male))||radioSexButton.getText().equals(getActivity().getResources().getString(R.string.tamil_male)))
+                {
+                    checkGender = "1";
+
+                }else if(radioSexButton.getText().equals(getActivity().getResources().getString(R.string.english_female))||radioSexButton.getText().equals(getActivity().getResources().getString(R.string.tamil_female)))
+                {
+                    checkGender = "2";
+                }else if (radioSexButton.getText().equals(getActivity().getResources().getString(R.string.english_transgender))||radioSexButton.getText().equals(getActivity().getResources().getString(R.string.tamil_transgender)))
+                {
+                    checkGender = "3";
+                }
+
+
+            }
+        });
+
+
+        return isGender[0];
+    }
+
+
+
+    public boolean isApplicantMobileValidate()
+    {
+        final boolean[] isMblNum = {false};
+        edtApplicantNumber.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                int length = s.length();
+
+                if (s.length() < 10)
+                {
+                    txtInputApplicantMobileNumber.setErrorEnabled(true);
+                    txtInputApplicantMobileNumber.setError("Enter the correct mobile number");
+                    isMblNum[0] = false;
+
+                }else
+                {
+                    isMblNum[0] = true;
+                    txtInputApplicantMobileNumber.setErrorEnabled(false);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) { }
+        });
+
+        if(edtApplicantNumber.getText().toString().isEmpty())
+        {
+
+
+            isMblNum[0] = false;
+
+        }else
+        {
+            isMblNum[0] = true;
+
+        }
+        return isMblNum[0];
+    }
+
+    public boolean isPatientMobileValidate()
+    {
+        final boolean[] isMblNum = {false};
+        edtPatientMobileNumber.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                int length = s.length();
+
+                if (s.length() < 10)
+                {
+                    txtInputMobileNumber.setErrorEnabled(true);
+                    txtInputMobileNumber.setError("Enter the correct mobile number");
+                    isMblNum[0] = false;
+
+                }else
+                {
+                    isMblNum[0] = true;
+                    txtInputMobileNumber.setErrorEnabled(false);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) { }
+        });
+
+        if(edtPatientMobileNumber.getText().toString().isEmpty())
+        {
+
+
+            isMblNum[0] = false;
+
+        }else
+        {
+            isMblNum[0] = true;
+
+        }
+        return isMblNum[0];
+    }
+
+    public boolean isAgeValidate()
+    {
+        final boolean[] isAgeNum = {false};
+        edtAge.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                int length = s.length();
+
+                if (s.length() == 0)
+                {
+                    txtInputAge.setErrorEnabled(true);
+                    txtInputAge.setError("Enter the City Name");
+                    isAgeNum[0] = false;
+
+                }else
+                {
+                    isAgeNum[0] = true;
+                    txtInputAge.setErrorEnabled(false);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) { }
+        });
+
+        if(edtAge.getText().toString().isEmpty())
+        {
+            txtInputAge.setErrorEnabled(true);
+            txtInputAge.setError("Enter the City Name");
+            isAgeNum[0] = false;
+
+        }else
+        {
+            isAgeNum[0] = true;
+            txtInputAge.setErrorEnabled(false);
+
+        }
+        return isAgeNum[0];
+    }
+
+    public boolean isE_mailValidate()
+    {
+        final boolean[] isE_mail = {false};
+        edtE_mail.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                int length = s.length();
+
+                if (s.length() == 0)
+                {
+                    txtInputemail.setErrorEnabled(true);
+                    txtInputemail.setError("Enter the correct e_mail");
+                    isE_mail[0] = false;
+
+                }else
+                {
+                    if (isValidEmail(s.toString()))
+                    {
+                        isE_mail[0] = true;
+                        txtInputemail.setErrorEnabled(false);
+
+                    }else {
+                        txtInputemail.setErrorEnabled(true);
+                        txtInputemail.setError("Enter the correct email");
+                        isE_mail[0] = false;
+                    }
+                }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) { }
+        });
+
+        if(edtE_mail.getText().toString().isEmpty())
+        {
+
+            isE_mail[0] = false;
+
+        }else
+        {
+            isE_mail[0] = true;
+
+        }
+
+        return isE_mail[0];
+    }
+
+
+    public boolean isPlaceEmpty()
+    {
+        final boolean[] isPlace = {false};
+
+        if (edtPlace.getText().toString().trim().isEmpty())
+        {
+            txtInputPlace.setErrorEnabled(true);
+            txtInputPlace.setError("Enter the correct e_mail");
+            isPlace[0] = false;
+        }else
+        {
+            isPlace[0] = true;
+            txtInputPlace.setErrorEnabled(false);
+        }
+        return isPlace[0];
+    }
+
+    public boolean isNameEmpty()
+    {
+        final boolean[] isPlace = {false};
+
+        if (edtName.getText().toString().trim().isEmpty())
+        {
+            txtInputName.setErrorEnabled(true);
+            txtInputName.setError("Enter the Name");
+            isPlace[0] = false;
+        }else
+        {
+            isPlace[0] = true;
+            txtInputName.setErrorEnabled(false);
+        }
+        return isPlace[0];
+    }
+    public boolean isAddressEmpty()
+    {
+        final boolean[] isPlace = {false};
+
+        if (edtAddress.getText().toString().trim().isEmpty())
+        {
+            txtInputaddress.setErrorEnabled(true);
+            txtInputaddress.setError("Enter the address");
+            isPlace[0] = false;
+        }else
+        {
+            isPlace[0] = true;
+            txtInputaddress.setErrorEnabled(false);
+        }
+        return isPlace[0];
+    }
+
+    private static boolean isValidEmail(String email) {
+        return !TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
 }
 

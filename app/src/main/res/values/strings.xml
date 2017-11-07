@@ -62,8 +62,8 @@
     <string name="tamil_e_mail">மின்னஞ்சல் முகவரி்:</string>
     <string name="english_address">Short address:</string>
     <string name="english_address1">Short address</string>
-    <string name="tamil_address">குறுகிய முகவரி:</string>
-    
+    <string name="tamil_address">முகவரி:</string>
+
     <string name="mr">Mr</string>
     <string name="mrs">Mrs</string>
     <string name="ms">Ms</string>
@@ -85,9 +85,9 @@
     <string name="tamil_resend_otp">மீண்டும் அனுப்பி OTP</string>
     <string name="tamil_book_appointment">பதிவை உறுதி செய்யவும்</string>
     <string name="book_appointment">Book Your Appointment</string>
-    <string name="tamil_applicant_mobile1" >விண்ணப்பதாரர் கைப்பேசி எண்</string>
+    <string name="tamil_applicant_mobile1">விண்ணப்பதாரர் கைப்பேசி எண்</string>
     <string name="tamil_patient_mobile1">நோயாளியின் கைப்பேசி எண்</string>
-    <string name="tamil_place1" >இடம்</string>
+    <string name="tamil_place1">இடம்</string>
     <string name="tamil_e_mail1">மின்னஞ்சல் முகவரி்</string>
     <string name="tamil_address1">குறுகிய முகவரி</string>
     <string name="tamil_previous">முந்தைய</string>
@@ -105,4 +105,8 @@
     </string-array>
 
     <!--time slot-->
+
+
+    <!--order summary-->
+    <string name="chella_dr_app">Dr.Chella Appointment Confirmation</string>
 </resources>

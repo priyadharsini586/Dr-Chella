@@ -12,7 +12,7 @@ import java.util.List;
  */
 
 public class TimeAndDateResponse {
-    String status_code,status_message,success;
+    String status_code,status_message,success,app_sno = null;
     @SerializedName("Blocked_Array")
     @Expose
     ArrayList<String> Blocked_Array = null ;
@@ -58,5 +58,13 @@ public class TimeAndDateResponse {
 
     public void setBooked_Array(ArrayList<String> booked_Array) {
         Booked_Array = booked_Array;
+    }
+
+    public String getApp_sno() {
+        return app_sno;
+    }
+
+    public void setApp_sno(String app_sno) {
+        this.app_sno = app_sno;
     }
 }

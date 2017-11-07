@@ -29,6 +29,7 @@ import android.widget.Toast;
 
 
 import com.androidadvance.topsnackbar.TSnackbar;
+import com.hexaenna.drchella.Model.BookingDetails;
 import com.hexaenna.drchella.R;
 import com.hexaenna.drchella.utils.Constants;
 import com.hexaenna.drchella.utils.NetworkChangeReceiver;
@@ -63,7 +64,11 @@ public class SplashActivity extends AppCompatActivity {
                 if (isConnection == null) {
                     Bundle b = intent.getExtras();
                     isConnection = b.getString(Constants.MESSAGE);
-                    Log.e("newmesage", "connection connection");
+                    getNetworkState();
+                }else
+                {
+                    Bundle b = intent.getExtras();
+                    isConnection = b.getString(Constants.MESSAGE);
                     getNetworkState();
                 }
 
@@ -94,13 +99,15 @@ public class SplashActivity extends AppCompatActivity {
                     @Override
                     public void run() {
 
-                        Intent intent = new Intent(getApplicationContext(),BookAppointmentActivity.class);
-                        Bundle bundle = new Bundle();
-                        bundle.putString("email", getE_mail());
-                        intent.putExtras(bundle);
-                        startActivity(intent);
-                        overridePendingTransition(R.anim.right_in, R.anim.left_out);
-                        SplashActivity.this.finish();
+                        if (isConnection.equals(Constants.NETWORK_CONNECTED)) {
+                            Intent intent = new Intent(getApplicationContext(), BookAppointmentActivity.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putString("email", getE_mail());
+                            intent.putExtras(bundle);
+                            startActivity(intent);
+                            overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                            SplashActivity.this.finish();
+                        }
                     }
                 },SPLASH_DISPLAY_LENGTH);
 
@@ -112,7 +119,7 @@ public class SplashActivity extends AppCompatActivity {
 
             }
         });
-        ldtSplash.startAnimation(animBounce);
+
 
         permissions.add(Manifest.permission.GET_ACCOUNTS);
         permissionsToRequest = findUnAskedPermissions(permissions);
@@ -125,16 +132,15 @@ public class SplashActivity extends AppCompatActivity {
                     if (isConnection.equals(Constants.NETWORK_CONNECTED)) {
                         if (snackbar != null) {
                             snackbar.dismiss();
+
+
                         }
 
                     }
                 }
             } else {
-//            Toast.makeText(getApplicationContext(),"Permissions already granted.", Toast.LENGTH_LONG).show();
                 Log.e("newmesage", "already granted");
-//                getE_mail();
-
-
+                ldtSplash.startAnimation(animBounce);
             }
 
 
@@ -167,8 +173,8 @@ public class SplashActivity extends AppCompatActivity {
                                                 requestPermissions(permissionsRejected.toArray(
                                                         new String[permissionsRejected.size()]), ALL_PERMISSIONS_RESULT);
 
-                                                Log.e("ok","ok");
-//                                                checkEmail();
+                                                ldtSplash.startAnimation(animBounce);
+//
                                             }
                                         }
                                     });
@@ -177,7 +183,7 @@ public class SplashActivity extends AppCompatActivity {
                     }
                 } else {
                     getE_mail();
-                    Toast.makeText(getApplicationContext(), "Permissions granted.", Toast.LENGTH_LONG).show();
+                    ldtSplash.startAnimation(animBounce);
                     Log.e("newmesage", "Permissions garanted.");
                 }
                 break;
@@ -191,7 +197,6 @@ public class SplashActivity extends AppCompatActivity {
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
 
                         finish();
                     }
@@ -233,6 +238,8 @@ public class SplashActivity extends AppCompatActivity {
         for (Account account : accounts) {
             if (gmailPattern.matcher(account.name).matches()) {
                 e_mail = account.name;
+                BookingDetails bookingDetails = BookingDetails.getInstance();
+                bookingDetails.setE_mail(e_mail);
                 break;
 
             }
@@ -305,6 +312,15 @@ public class SplashActivity extends AppCompatActivity {
             } else if (isConnection.equals(Constants.NETWORK_CONNECTED)) {
                 if (snackbar != null) {
                     snackbar.dismiss();
+
+                    Intent intent = new Intent(getApplicationContext(), RegistrationActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("email", getE_mail());
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                    SplashActivity.this.finish();
+
                 }
             }
         }

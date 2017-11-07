@@ -71,7 +71,8 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/txtInputName"
                     android:layout_gravity="center"
-                    android:layout_weight="0.5">
+                    android:layout_weight="0.5"
+                    app:errorTextAppearance="@style/error_appearance">
                     <EditText
                         android:id="@+id/input_name"
                         android:layout_width="match_parent"
@@ -111,7 +112,8 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/txtInputAge"
                     android:layout_gravity="center"
-                    android:layout_weight="0.4">
+                    android:layout_weight="0.4"
+                    app:errorTextAppearance="@style/error_appearance">
                     <EditText
                         android:id="@+id/edtAge"
                         android:layout_width="match_parent"
@@ -158,13 +160,15 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:weightSum="3">
+                        android:weightSum="3"
+                        android:id="@+id/radioSexGroup">
                         <RadioButton
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@android:color/black"
                             android:layout_weight="1.2"
-                            android:layout_gravity="center"/>
+                            android:layout_gravity="center"
+                            android:id="@+id/radioMale"/>
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -182,7 +186,8 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:textColor="@android:color/black"
-                            android:layout_gravity="center"/>
+                            android:layout_gravity="center"
+                            android:id="@+id/radioFemale"/>
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -201,7 +206,8 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="0.8"
                             android:textColor="@android:color/black"
-                            android:layout_gravity="center"/>
+                            android:layout_gravity="center"
+                            android:id="@+id/radioTrans"/>
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -248,7 +254,8 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/txtInputApplicantMobileNumber"
                     android:layout_gravity="center"
-                    android:layout_weight="0.4">
+                    android:layout_weight="0.4"
+                    app:errorTextAppearance="@style/error_appearance">
                     <EditText
                         android:id="@+id/edtApplicantMobileNumber"
                         android:layout_width="match_parent"
@@ -285,7 +292,8 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/txtInputMobileNumber"
                     android:layout_gravity="center"
-                    android:layout_weight="0.4">
+                    android:layout_weight="0.4"
+                    app:errorTextAppearance="@style/error_appearance">
                     <EditText
                         android:id="@+id/edtMobileNumber"
                         android:layout_width="match_parent"
@@ -324,7 +332,8 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/txtInputPlace"
                     android:layout_gravity="center"
-                    android:layout_weight="0.4">
+                    android:layout_weight="0.4"
+                    app:errorTextAppearance="@style/error_appearance">
                     <EditText
                         android:id="@+id/edtPlace"
                         android:layout_width="match_parent"
@@ -363,7 +372,8 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/txtInputemail"
                     android:layout_gravity="center"
-                    android:layout_weight="0.4">
+                    android:layout_weight="0.4"
+                    app:errorTextAppearance="@style/error_appearance">
                     <EditText
                         android:id="@+id/edtE_mail"
                         android:layout_width="match_parent"
@@ -402,7 +412,8 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/txtInputaddress"
                     android:layout_gravity="center"
-                    android:layout_weight="0.4">
+                    android:layout_weight="0.4"
+                    app:errorTextAppearance="@style/error_appearance">
                     <EditText
                         android:id="@+id/edtaddress"
                         android:layout_width="match_parent"
@@ -440,6 +451,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="end">
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/ldtNextFragment">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -453,7 +468,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@mipmap/ic_next"/>
-
+                        </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
