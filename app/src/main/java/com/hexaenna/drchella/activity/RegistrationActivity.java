@@ -229,7 +229,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             JSONObject jsonObject = new JSONObject();
             try {
                 jsonObject.put("name",edtName.getText().toString());
-                jsonObject.put("gender","1");
+                jsonObject.put("gender",checkGender);
                 jsonObject.put("age",edtAge.getText().toString());
                 jsonObject.put("city",edtCity.getText().toString());
                 jsonObject.put("mobile",edtMbl.getText().toString());
@@ -381,16 +381,21 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
                 int selectedId = radioSexGroup.getCheckedRadioButtonId();
                 RadioButton radioSexButton = (RadioButton) findViewById(selectedId);
-                if (radioSexButton.getText().equals(getApplicationContext().getResources().getString(R.string.english_male))||radioSexButton.getText().equals(getApplicationContext().getResources().getString(R.string.tamil_male)))
+
+
+                if (radioSexButton.equals(radioMale))
                 {
                     checkGender = "1";
 
-                }else if(radioSexButton.getText().equals(getApplicationContext().getResources().getString(R.string.english_female))||radioSexButton.getText().equals(getApplicationContext().getResources().getString(R.string.tamil_female)))
+
+                }else if(radioSexButton.equals(radioFemale))
                 {
                     checkGender = "2";
-                }else if (radioSexButton.getText().equals(getApplicationContext().getResources().getString(R.string.english_transgender))||radioSexButton.getText().equals(getApplicationContext().getResources().getString(R.string.tamil_transgender)))
+
+                }else if (radioSexButton.equals(radioTrans))
                 {
                     checkGender = "3";
+
                 }
 
 
@@ -417,7 +422,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 if (s.length() == 0)
                 {
                     txtInputCity.setErrorEnabled(true);
-                    txtInputCity.setError("Enter the City Name");
+                    txtInputCity.setError("Enter your City Name");
                     isCityName[0] = false;
 
                 }else
@@ -436,7 +441,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         {
 
             txtInputCity.setErrorEnabled(true);
-            txtInputCity.setError("Enter the City Name");
+            txtInputCity.setError("Enter your City Name");
             isCityName[0] = false;
 
         }else
@@ -462,7 +467,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 if (s.length() < 10)
                 {
                     txtInputMobile.setErrorEnabled(true);
-                    txtInputMobile.setError("Enter the correct mobile number");
+                    txtInputMobile.setError("Enter your correct mobile number");
                     isMblNum[0] = false;
 
                 }else

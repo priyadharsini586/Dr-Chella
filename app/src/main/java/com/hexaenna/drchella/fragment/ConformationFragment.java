@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.hexaenna.drchella.Db.DatabaseHandler;
 import com.hexaenna.drchella.Model.RegisterBookDetails;
 import com.hexaenna.drchella.R;
 
@@ -65,23 +66,41 @@ public class ConformationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        mainView = inflater.inflate(R.layout.fragment_conformation, container, false);
+
+        final DatabaseHandler databaseHandler = new DatabaseHandler(getActivity());
+        if (databaseHandler.getContact("0").equals("English"))
+        {
+            mainView = inflater.inflate(R.layout.fragment_conformation, container, false);
+
+
+        }else if (databaseHandler.getContact("0").equals("Tamil"))
+        {
+            mainView = inflater.inflate(R.layout.tamil_fragment_conformation, container, false);
+
+
+        }
+
+
         RegisterBookDetails registerBookDetails = RegisterBookDetails.getInstance();
 
         name = (TextView) mainView.findViewById(R.id.name);
         name.setText(registerBookDetails.getName());
         age = (TextView) mainView.findViewById(R.id.age);
         age.setText(registerBookDetails.getAge());
+
         appMblNum = (TextView) mainView.findViewById(R.id.apllicantNum);
-        appMblNum.setText(registerBookDetails.getApplicantNumber());
+        appMblNum.setText("+91 " +registerBookDetails.getApplicantNumber());
+
         patientMblNum = (TextView) mainView.findViewById(R.id.patientNum);
-        patientMblNum.setText(registerBookDetails.getPatientNumber());
+        patientMblNum.setText("+91 " +registerBookDetails.getPatientNumber());
         place = (TextView) mainView.findViewById(R.id.place);
         place.setText(registerBookDetails.getPlace());
         e_mail_id = (TextView) mainView.findViewById(R.id.e_mail);
         e_mail_id.setText(registerBookDetails.getE_mailid());
         address = (TextView) mainView.findViewById(R.id.address);
         address.setText(registerBookDetails.getAddress());
+        gender = (TextView) mainView.findViewById(R.id.gender);
+        gender.setText(registerBookDetails.getGender());
 
         return mainView;
     }

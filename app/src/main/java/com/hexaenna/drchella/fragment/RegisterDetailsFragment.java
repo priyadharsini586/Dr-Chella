@@ -44,7 +44,8 @@ public class RegisterDetailsFragment extends Fragment implements View.OnClickLis
     TextInputLayout txtInputName,txtInputAge,txtInputApplicantMobileNumber,txtInputMobileNumber,txtInputPlace,txtInputemail,txtInputaddress;
     RadioButton radioMale,radioFemale,radioTrans;
     RadioGroup radioSexGroup;
-    String checkGender ;
+    String checkGender,male,female,trans ;
+    RegisterBookDetails registerBookDetails =RegisterBookDetails.getInstance();
     final boolean[] isGender = {false};
     public RegisterDetailsFragment() {
         // Required empty public constructor
@@ -66,11 +67,17 @@ public class RegisterDetailsFragment extends Fragment implements View.OnClickLis
         if (databaseHandler.getContact("0").equals("English"))
         {
             mainView = inflater.inflate(R.layout.fragment_register_details, container, false);
+            male = getActivity().getResources().getString(R.string.english_male);
+            female = getActivity().getResources().getString(R.string.english_female);
+            trans = getActivity().getResources().getString(R.string.english_transgender);
 
 
         }else if (databaseHandler.getContact("0").equals("Tamil"))
         {
             mainView = inflater.inflate(R.layout.tamil_fragment_register_details, container, false);
+            male = getActivity().getResources().getString(R.string.tamil_male);
+            female = getActivity().getResources().getString(R.string.tamil_female);
+            trans = getActivity().getResources().getString(R.string.tamil_transgender);
 
         }
 
@@ -126,6 +133,8 @@ public class RegisterDetailsFragment extends Fragment implements View.OnClickLis
 
         radioSexGroup = (RadioGroup) mainView.findViewById(R.id.radioSexGroup);
 
+
+
         isApplicantMobileValidate();
         isPatientMobileValidate();
         isE_mailValidate();
@@ -164,14 +173,6 @@ public class RegisterDetailsFragment extends Fragment implements View.OnClickLis
         switch (v.getId())
         {
             case R.id.ldtNextFragment:
-               boolean df= isNameEmpty();
-                boolean df1= isApplicantMobileValidate();
-                boolean df2= isAgeValidate();
-                boolean df3= isGender[0];
-                boolean df4= isPatientMobileValidate();
-                boolean df5= isAddressEmpty();
-                boolean df6= isE_mailValidate();
-                boolean df7= isPlaceEmpty();
                 if (isNameEmpty() && isAgeValidate() && isGender[0] && isApplicantMobileValidate() && isPatientMobileValidate() && isPlaceEmpty() && isE_mailValidate() && isAddressEmpty()) {
                     getNextFragment();
                 }
@@ -180,7 +181,7 @@ public class RegisterDetailsFragment extends Fragment implements View.OnClickLis
     }
 
     private void getNextFragment() {
-        RegisterBookDetails registerBookDetails =RegisterBookDetails.getInstance();
+
         registerBookDetails.setName(edtName.getText().toString());
         registerBookDetails.setAge(edtAge.getText().toString());
         registerBookDetails.setApplicantNumber(edtApplicantNumber.getText().toString());
@@ -204,21 +205,24 @@ public class RegisterDetailsFragment extends Fragment implements View.OnClickLis
             @Override
             public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
                 isGender[0] = true;
-
+                
                 int selectedId = radioSexGroup.getCheckedRadioButtonId();
                 RadioButton radioSexButton = (RadioButton) getActivity().findViewById(selectedId);
-                if (radioSexButton.getText().equals(getActivity().getResources().getString(R.string.english_male))||radioSexButton.getText().equals(getActivity().getResources().getString(R.string.tamil_male)))
+
+                if (radioSexButton.equals(radioMale))
                 {
                     checkGender = "1";
+                    registerBookDetails.setGender(male);
 
-                }else if(radioSexButton.getText().equals(getActivity().getResources().getString(R.string.english_female))||radioSexButton.getText().equals(getActivity().getResources().getString(R.string.tamil_female)))
+                }else if(radioSexButton.equals(radioFemale))
                 {
                     checkGender = "2";
-                }else if (radioSexButton.getText().equals(getActivity().getResources().getString(R.string.english_transgender))||radioSexButton.getText().equals(getActivity().getResources().getString(R.string.tamil_transgender)))
+                    registerBookDetails.setGender(female);
+                }else if (radioSexButton.equals(radioTrans))
                 {
                     checkGender = "3";
+                    registerBookDetails.setGender(trans);
                 }
-
 
             }
         });
@@ -243,7 +247,7 @@ public class RegisterDetailsFragment extends Fragment implements View.OnClickLis
                 if (s.length() < 10)
                 {
                     txtInputApplicantMobileNumber.setErrorEnabled(true);
-                    txtInputApplicantMobileNumber.setError("Enter the correct mobile number");
+                    txtInputApplicantMobileNumber.setError("Enter your correct mobile number");
                     isMblNum[0] = false;
 
                 }else
@@ -285,7 +289,7 @@ public class RegisterDetailsFragment extends Fragment implements View.OnClickLis
                 if (s.length() < 10)
                 {
                     txtInputMobileNumber.setErrorEnabled(true);
-                    txtInputMobileNumber.setError("Enter the correct mobile number");
+                    txtInputMobileNumber.setError("Enter your correct mobile number");
                     isMblNum[0] = false;
 
                 }else
@@ -327,7 +331,7 @@ public class RegisterDetailsFragment extends Fragment implements View.OnClickLis
                 if (s.length() == 0)
                 {
                     txtInputAge.setErrorEnabled(true);
-                    txtInputAge.setError("Enter the City Name");
+                    txtInputAge.setError("Enter your age");
                     isAgeNum[0] = false;
 
                 }else
@@ -344,7 +348,7 @@ public class RegisterDetailsFragment extends Fragment implements View.OnClickLis
         if(edtAge.getText().toString().isEmpty())
         {
             txtInputAge.setErrorEnabled(true);
-            txtInputAge.setError("Enter the City Name");
+            txtInputAge.setError("Enter your age");
             isAgeNum[0] = false;
 
         }else
@@ -370,7 +374,7 @@ public class RegisterDetailsFragment extends Fragment implements View.OnClickLis
                 if (s.length() == 0)
                 {
                     txtInputemail.setErrorEnabled(true);
-                    txtInputemail.setError("Enter the correct e_mail");
+                    txtInputemail.setError("Enter your correct e_mail");
                     isE_mail[0] = false;
 
                 }else
@@ -382,7 +386,7 @@ public class RegisterDetailsFragment extends Fragment implements View.OnClickLis
 
                     }else {
                         txtInputemail.setErrorEnabled(true);
-                        txtInputemail.setError("Enter the correct email");
+                        txtInputemail.setError("Enter your correct email");
                         isE_mail[0] = false;
                     }
                 }
@@ -415,7 +419,7 @@ public class RegisterDetailsFragment extends Fragment implements View.OnClickLis
         if (edtPlace.getText().toString().trim().isEmpty())
         {
             txtInputPlace.setErrorEnabled(true);
-            txtInputPlace.setError("Enter the correct e_mail");
+            txtInputPlace.setError("Enter your place");
             isPlace[0] = false;
         }else
         {
@@ -429,10 +433,35 @@ public class RegisterDetailsFragment extends Fragment implements View.OnClickLis
     {
         final boolean[] isPlace = {false};
 
+        edtName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                int length = s.length();
+
+                if (s.length() == 0)
+                {
+                    txtInputName.setErrorEnabled(true);
+                    txtInputName.setError("Enter your Name");
+                    isPlace[0] = false;
+
+                }else
+                {
+                    isPlace[0] = true;
+                    txtInputName.setErrorEnabled(false);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) { }
+        });
+
         if (edtName.getText().toString().trim().isEmpty())
         {
             txtInputName.setErrorEnabled(true);
-            txtInputName.setError("Enter the Name");
+            txtInputName.setError("Enter your Name");
             isPlace[0] = false;
         }else
         {
@@ -448,7 +477,7 @@ public class RegisterDetailsFragment extends Fragment implements View.OnClickLis
         if (edtAddress.getText().toString().trim().isEmpty())
         {
             txtInputaddress.setErrorEnabled(true);
-            txtInputaddress.setError("Enter the address");
+            txtInputaddress.setError("Enter your address");
             isPlace[0] = false;
         }else
         {

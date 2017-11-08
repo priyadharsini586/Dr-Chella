@@ -24,7 +24,7 @@
     <string name="date_and_time">Date &amp;Time</string>
     <string name="tamil_date_and_time">தேதி &amp;நேரம்</string>
     <string name="booking_details">Booking Details</string>
-    <string name="tamil_booking_details">புக்கிங் விவரங்கள்</string>
+    <string name="tamil_booking_details">பதிவு விவரங்கள்</string>
     <string name="conformation">Conformation</string>
     <string name="tamil_conformation">உறுதிப்படுத்தல்</string>
 
@@ -41,6 +41,7 @@
     <string name="tamil_age">வயது:</string>
     <string name="english_age">Age:</string>
     <string name="tamil_gender">பாலினம்:</string>
+    <string name="tamil_gender1">பாலினம்</string>
     <string name="english_gender">Gender:</string>
     <string name="tamil_female">பெண்</string>
     <string name="english_female">Female</string>
@@ -106,7 +107,8 @@
 
     <!--time slot-->
 
-
+<string name="tamil_cancel">ரத்து</string>
+    <string name="tamil_conform">உறுதி</string>
     <!--order summary-->
-    <string name="chella_dr_app">Dr.Chella Appointment Confirmation</string>
+    <string name="chella_dr_app">Dr Chella - Appointment Confirmation</string>
 </resources>

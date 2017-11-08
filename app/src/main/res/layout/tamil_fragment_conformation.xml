@@ -2,7 +2,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#f4f4f4"
+    android:background="#ffffff"
     android:orientation="vertical">
 
 
@@ -15,32 +15,47 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="20dp"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
+            android:paddingTop="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:paddingBottom="0dp">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:background="@drawable/dotted"
+             >
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@android:color/black"
                     android:text="@string/chella_dr_app"
-                    android:textSize="25sp"
-                    android:textStyle="bold"/>
-
-
+                    android:textSize="@dimen/dr_chella_text"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:padding="10dp"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@drawable/line_dotted"
+                    android:layerType="software"/>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:paddingTop="10dp">
+                    android:paddingTop="15dp"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:paddingBottom="15dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    >
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/tamil_name"
+                        android:text="@string/tamil_name1"
                         android:textSize="@dimen/conform_text1"
                         android:textColor="#939393"/>
                     <TextView
@@ -48,7 +63,8 @@
                         android:layout_height="wrap_content"
                         android:text="@string/Name"
                         android:textSize="@dimen/conform_text"
-                        android:textColor="@android:color/black"/>
+                        android:textColor="@android:color/black"
+                        android:id="@+id/name"/>
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -73,7 +89,8 @@
                             android:layout_height="wrap_content"
                             android:text="@string/age"
                             android:textSize="@dimen/conform_text"
-                            android:textColor="@android:color/black"/>
+                            android:textColor="@android:color/black"
+                            android:id="@+id/age"/>
 
                     </LinearLayout>
                     <LinearLayout
@@ -84,7 +101,7 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@string/tamil_gender"
+                            android:text="@string/tamil_gender1"
                             android:textSize="@dimen/conform_text1"
                             android:textColor="#939393"/>
                         <TextView
@@ -92,26 +109,31 @@
                             android:layout_height="wrap_content"
                             android:text="@string/gender"
                             android:textSize="@dimen/conform_text"
-                            android:textColor="@android:color/black"/>
+                            android:textColor="@android:color/black"
+                            android:id="@+id/gender"/>
                     </LinearLayout>
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:paddingTop="10dp">
+
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/tamil_applicant_mobile"
-                        android:textSize="@dimen/conform_text1"
-                        android:textColor="#939393"/>
+                        android:text="@string/tamil_applicant_mobile1"
+                        android:textColor="#939393"
+                        android:textSize="@dimen/conform_text1" />
+
                     <TextView
+                        android:id="@+id/apllicantNum"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/english_applicant_mobile"
-                        android:textSize="@dimen/conform_text"
-                        android:textColor="@android:color/black"/>
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/conform_text" />
 
                 </LinearLayout>
 
@@ -124,7 +146,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/tamil_patient_mobile"
+                        android:text="@string/tamil_patient_mobile1"
                         android:textSize="@dimen/conform_text1"
                         android:textColor="#939393"/>
                     <TextView
@@ -132,7 +154,8 @@
                         android:layout_height="wrap_content"
                         android:text="@string/english_patient_mobile"
                         android:textSize="@dimen/conform_text"
-                        android:textColor="@android:color/black"/>
+                        android:textColor="@android:color/black"
+                        android:id="@+id/patientNum"/>
 
                 </LinearLayout>
                 <LinearLayout
@@ -144,7 +167,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/tamil_place"
+                        android:text="@string/tamil_place1"
                         android:textSize="@dimen/conform_text1"
                         android:textColor="#939393"/>
                     <TextView
@@ -152,7 +175,8 @@
                         android:layout_height="wrap_content"
                         android:text="@string/english_place1"
                         android:textSize="@dimen/conform_text"
-                        android:textColor="@android:color/black"/>
+                        android:textColor="@android:color/black"
+                        android:id="@+id/place"/>
 
                 </LinearLayout>
                 <LinearLayout
@@ -163,7 +187,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/tamil_e_mail"
+                        android:text="@string/tamil_e_mail1"
                         android:textSize="@dimen/conform_text1"
                         android:textColor="#939393"/>
                     <TextView
@@ -171,7 +195,8 @@
                         android:layout_height="wrap_content"
                         android:text="@string/english_e_mail"
                         android:textSize="@dimen/conform_text"
-                        android:textColor="@android:color/black"/>
+                        android:textColor="@android:color/black"
+                        android:id="@+id/e_mail"/>
 
                 </LinearLayout>
                 <LinearLayout
@@ -182,7 +207,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/tamil_address"
+                        android:text="@string/tamil_address1"
                         android:textSize="@dimen/conform_text1"
                         android:textColor="#939393"/>
                     <TextView
@@ -190,9 +215,11 @@
                         android:layout_height="wrap_content"
                         android:text="@string/english_address"
                         android:textSize="@dimen/conform_text"
-                        android:textColor="@android:color/black"/>
+                        android:textColor="@android:color/black"
+                        android:id="@+id/address"/>
 
                 </LinearLayout>
+                    </LinearLayout>
             </LinearLayout>
 
 
@@ -200,21 +227,46 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:gravity="bottom"
+            android:layout_height="match_parent"
             android:paddingTop="20dp"
-            android:paddingBottom="20dp">
+            android:paddingBottom="10dp"
+            android:orientation="horizontal"
+            android:weightSum="1">
 
-            <Button
-                android:id="@+id/button"
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:text="Conform"
-                android:background="@color/colorPrimary"
-                android:textColor="@android:color/white"
-                android:textStyle="bold"/>
+                android:layout_weight="0.5"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
+
+                <Button
+                    android:id="@+id/Cancelbutton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:background="@color/book_title_orange"
+                    android:text="@string/tamil_cancel"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
+                <Button
+                    android:id="@+id/button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:text="@string/tamil_conform"
+                    android:background="@color/colorPrimary"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"/>
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 

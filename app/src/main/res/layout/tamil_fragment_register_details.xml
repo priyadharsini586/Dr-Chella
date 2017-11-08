@@ -17,9 +17,10 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:weightSum="3"
                 >
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -27,29 +28,29 @@
                     android:layout_gravity="center"
                     android:layout_weight="1.2"
                     android:gravity="center">
-                    <TextView
+                 <!--   <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/tamil_name"
                         android:textColor="@android:color/black"
-                        android:gravity="end"
-                        android:textSize="@dimen/register_text"/>
+                        android:textSize="@dimen/register_text"/>-->
                 </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_gravity="center"
-                    android:layout_weight="1.2"
-                    android:gravity="center">
+                    android:layout_weight="1.4"
+                    >
 
                     <fr.ganfra.materialspinner.MaterialSpinner
                         android:id="@+id/surname"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:ms_enableFloatingLabel="true"
                         app:ms_enableErrorLabel="true"
-                        app:ms_floatingLabelText="@string/title"
                         app:ms_baseColor="@color/colorPrimary"
                         app:ms_highlightColor="@color/colorPrimary"
                         app:ms_errorColor="@android:color/holo_red_dark"
@@ -60,9 +61,8 @@
                         app:ms_alignLabels="true"
                         app:ms_floatingLabelColor="@color/colorPrimary"
                         android:popupBackground="@android:color/white"
-                        app:ms_hint="@string/title"
                         app:ms_multiline="true"
-                        android:layout_gravity="center"/>
+                        />
 
 
                 </LinearLayout>
@@ -71,7 +71,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/txtInputName"
                     android:layout_gravity="center"
-                    android:layout_weight="0.5"
+                    android:layout_weight="0.3"
                     app:errorTextAppearance="@style/error_appearance">
                     <EditText
                         android:id="@+id/input_name"
@@ -81,13 +81,14 @@
                         android:hint="@string/tamil_name1"
                         style="@style/App_Book_Appointment"/>
                 </android.support.design.widget.TextInputLayout>
+                    </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/icon_padding"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:weightSum="1">
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -99,13 +100,12 @@
                     android:paddingRight="10dp"
                     android:paddingLeft="0dp">
 
-                    <TextView
+              <!--      <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/tamil_age"
-                        android:gravity="end"
                         android:textColor="@android:color/black"
-                        android:textSize="@dimen/register_text"/>
+                        android:textSize="@dimen/register_text"/>-->
                 </LinearLayout>
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
@@ -129,7 +129,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/icon_padding"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:weightSum="1">
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -146,9 +146,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/tamil_gender"
-                        android:gravity="end"
-                        android:textColor="@android:color/black"
-                        android:textSize="@dimen/register_text"/>
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="12sp"/>
+
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -161,69 +161,91 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:weightSum="3"
-                        android:id="@+id/radioSexGroup">
+                        android:id="@+id/radioSexGroup"
+                        android:gravity="center">
+
                         <RadioButton
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@android:color/black"
-                            android:layout_weight="1.2"
                             android:layout_gravity="center"
-                            android:id="@+id/radioMale"/>
+                            android:id="@+id/radioMale"
+                            />
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical"
                             android:layout_gravity="center">
                             <TextView
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="@string/tamil_male"
                                 android:textColor="@android:color/black"
                                 android:textSize="@dimen/gender_text"/>
+                            <!--  <TextView
+                                  android:layout_width="wrap_content"
+                                  android:layout_height="wrap_content"
+                                  android:text="@string/tamil_male"
+                                  android:textColor="@android:color/black"
+                                  android:textSize="@dimen/gender_text"/>-->
+
                         </LinearLayout>
+
                         <RadioButton
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
                             android:textColor="@android:color/black"
                             android:layout_gravity="center"
                             android:id="@+id/radioFemale"/>
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical"
                             android:layout_gravity="center">
-
                             <TextView
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="@string/tamil_female"
                                 android:textColor="@android:color/black"
                                 android:textSize="@dimen/gender_text"/>
+                            <!--  <TextView
+                                  android:layout_width="wrap_content"
+                                  android:layout_height="wrap_content"
+                                  android:text="@string/tamil_female"
+                                  android:textColor="@android:color/black"
+                                  android:textSize="@dimen/gender_text"/>-->
                         </LinearLayout>
+
                         <RadioButton
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.8"
                             android:textColor="@android:color/black"
                             android:layout_gravity="center"
-                            android:id="@+id/radioTrans"/>
+                            android:id="@+id/radioTrans"
+                            />
 
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical"
                             android:layout_gravity="center">
-
                             <TextView
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="@string/tamil_transgender"
                                 android:textColor="@android:color/black"
-                                android:textSize="@dimen/gender_text"/>
+                                android:textSize="@dimen/gender_text"
+                                android:gravity="center"/>
+                            <!--   <TextView
+                                   android:layout_width="wrap_content"
+                                   android:layout_height="wrap_content"
+                                   android:text="@string/tamil_transgender"
+                                   android:textColor="@android:color/black"
+                                   android:textSize="@dimen/gender_text"/>-->
                         </LinearLayout>
-                    </RadioGroup>
 
+                    </RadioGroup>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/colorPrimary"/>
                 </LinearLayout>
 
 
@@ -232,7 +254,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/icon_padding"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:weightSum="1">
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -241,13 +263,12 @@
                     android:layout_weight="0.6"
                     android:layout_gravity="center"
                     android:gravity="center">
-                    <TextView
+                <!--    <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/tamil_applicant_mobile"
-                        android:gravity="end"
                         android:textColor="@android:color/black"
-                        android:textSize="@dimen/register_text"/>
+                        android:textSize="@dimen/register_text"/>-->
                 </LinearLayout>
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
@@ -270,7 +291,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/icon_padding"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:weightSum="1">
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -279,13 +300,12 @@
                     android:layout_weight="0.6"
                     android:layout_gravity="center">
 
-                    <TextView
+               <!--     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/tamil_patient_mobile"
-                        android:gravity="end"
                         android:textColor="@android:color/black"
-                        android:textSize="@dimen/register_text"/>
+                        android:textSize="@dimen/register_text"/>-->
                 </LinearLayout>
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
@@ -309,7 +329,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/icon_padding"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:weightSum="1">
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -319,13 +339,12 @@
                     android:layout_gravity="center"
                     android:gravity="center">
 
-                    <TextView
+                <!--    <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/tamil_place"
-                        android:gravity="end"
                         android:textColor="@android:color/black"
-                        android:textSize="@dimen/register_text"/>
+                        android:textSize="@dimen/register_text"/>-->
                 </LinearLayout>
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
@@ -349,7 +368,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/icon_padding"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:weightSum="1">
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -359,13 +378,12 @@
                     android:layout_gravity="center"
                     android:gravity="center">
 
-                    <TextView
+                   <!-- <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/tamil_e_mail"
-                        android:gravity="end"
                         android:textColor="@android:color/black"
-                        android:textSize="@dimen/register_text"/>
+                        android:textSize="@dimen/register_text"/>-->
                 </LinearLayout>
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
@@ -381,7 +399,7 @@
                         android:inputType="textEmailAddress"
                         android:hint="@string/tamil_e_mail1"
                         style="@style/App_Book_Appointment"
-                        android:maxLength="10"/>
+                        />
                 </android.support.design.widget.TextInputLayout>
             </LinearLayout>
 
@@ -389,7 +407,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/icon_padding"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:weightSum="1">
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -399,13 +417,12 @@
                     android:layout_gravity="center"
                     >
 
-                    <TextView
+                   <!-- <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/tamil_address"
-                        android:gravity="end"
                         android:textColor="@android:color/black"
-                        android:textSize="@dimen/register_text"/>
+                        android:textSize="@dimen/register_text"/>-->
                 </LinearLayout>
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
@@ -420,7 +437,12 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/tamil_address1"
                         style="@style/App_Book_Appointment"
-                        />
+                        android:inputType="textMultiLine"
+                        android:lines="2"
+                        android:minLines="1"
+                        android:gravity="top|left"
+                        android:maxLines="10"
+                        android:scrollbars="vertical" />
                 </android.support.design.widget.TextInputLayout>
             </LinearLayout>
             <LinearLayout

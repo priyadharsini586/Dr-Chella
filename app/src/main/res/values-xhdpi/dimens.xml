@@ -28,6 +28,7 @@
     <dimen name="booking_text">13sp</dimen>
     <dimen name="register_text">16sp</dimen>
     <!--conformation-->
-    <dimen name="conform_text">17sp</dimen>
-    <dimen name="conform_text1">14sp</dimen>
+    <dimen name="conform_text">16sp</dimen>
+    <dimen name="conform_text1">10sp</dimen>
+    <dimen name="dr_chella_text">19sp</dimen>
 </resources>

@@ -5,31 +5,32 @@
 
     <!--Splash screen dimen-->
     <dimen name="splash_width">180dp</dimen>
-    <dimen name="splash_height">160dp</dimen>
-
+    <dimen name="splash_height">180dp</dimen>
 
     <!--text size in sp-->
     <dimen name="splash_text">30sp</dimen>
     <dimen name="splast_text1">10sp</dimen>
 
     <!--Registration screen dimen-->
-    <dimen name="edtt_text_padding">15dp</dimen>
+    <dimen name="edtt_text_padding">30dp</dimen>
     <dimen name="icon_padding">10dp</dimen>
-    <dimen name="linearlayout_bg_padding">3dp</dimen>
-    <dimen name="edit_text_size">13sp</dimen>
+    <dimen name="linearlayout_bg_padding">5dp</dimen>
+    <dimen name="edit_text_size">17sp</dimen>
 
     <!--Booking Appiontment-->
     <dimen name="title_padding">20dp</dimen>
 
+
     <!--booking appointment text size-->
-    <dimen name="gender_text">18sp</dimen>
+    <dimen name="gender_text">15sp</dimen>
     <dimen name="book_title">13sp</dimen>
     <dimen name="city_txt">12sp</dimen>
     <dimen name="booking_text">12sp</dimen>
-    <dimen name="register_text">13sp</dimen>
+    <dimen name="register_text">12sp</dimen>
     <!--conformation-->
-    <dimen name="conform_text">16sp</dimen>
-    <dimen name="conform_text1">8sp</dimen>
-    <dimen name="dr_chella_text">15sp</dimen>
+    <dimen name="conform_text">15sp</dimen>
+    <dimen name="conform_text1">12sp</dimen>
+    <dimen name="dr_chella_text">13sp</dimen>
+
 
 </resources>

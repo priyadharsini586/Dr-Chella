@@ -29,6 +29,8 @@
     <dimen name="register_text">12sp</dimen>
     <!--conformation-->
     <dimen name="conform_text">15sp</dimen>
-    <dimen name="conform_text1">13sp</dimen>
+    <dimen name="conform_text1">1sp</dimen>
+    <dimen name="dr_chella_text">13sp</dimen>
+
 
 </resources>

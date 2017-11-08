@@ -17,7 +17,7 @@
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:weightSum="3"
     >
         <LinearLayout
@@ -27,21 +27,23 @@
             android:layout_gravity="center"
             android:layout_weight="1.2"
             android:gravity="center">
-            <TextView
+        <!--    <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/english_name"
                 android:textColor="@android:color/black"
-                android:gravity="end"
-                android:textSize="@dimen/register_text"/>
+                android:textSize="@dimen/register_text"/>-->
 
         </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_gravity="center"
-        android:layout_weight="1.2"
         android:gravity="center">
 
         <fr.ganfra.materialspinner.MaterialSpinner
@@ -70,7 +72,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/txtInputName"
         android:layout_gravity="center"
-        android:layout_weight="0.6"
         app:errorTextAppearance="@style/error_appearance">
     <EditText
         android:id="@+id/input_name"
@@ -80,13 +81,14 @@
         android:hint="@string/Name"
         style="@style/App_Book_Appointment"/>
     </android.support.design.widget.TextInputLayout>
+        </LinearLayout>
 </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/icon_padding"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:weightSum="1">
             <LinearLayout
                 android:layout_width="match_parent"
@@ -98,13 +100,12 @@
                 android:paddingRight="10dp"
                 android:paddingLeft="0dp">
 
-            <TextView
+         <!--   <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/english_age"
-                android:gravity="end"
                 android:textColor="@android:color/black"
-                android:textSize="@dimen/register_text" />
+                android:textSize="@dimen/register_text" />-->
 
             </LinearLayout>
             <android.support.design.widget.TextInputLayout
@@ -129,7 +130,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/icon_padding"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:weightSum="1">
             <LinearLayout
                 android:layout_width="match_parent"
@@ -145,9 +146,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/english_gender"
-                    android:gravity="end"
-                    android:textColor="@android:color/black"
-                    android:textSize="@dimen/register_text"/>
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="12sp"/>
 
             </LinearLayout>
             <LinearLayout
@@ -161,7 +161,8 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:weightSum="3"
-                    android:id="@+id/radioSexGroup">
+                    android:id="@+id/radioSexGroup"
+                    android:gravity="center">
 
                     <RadioButton
                         android:layout_width="wrap_content"
@@ -241,7 +242,10 @@
                     </LinearLayout>
 
                 </RadioGroup>
-
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/colorPrimary"/>
             </LinearLayout>
 
 
@@ -250,7 +254,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/icon_padding"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:weightSum="1">
             <LinearLayout
                 android:layout_width="match_parent"
@@ -258,14 +262,14 @@
                 android:orientation="vertical"
                 android:layout_weight="0.7">
 
-                <TextView
+            <!--    <TextView
                     android:id="@+id/textView2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/english_applicant_mobile"
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/register_text"
-                   />
+                   />-->
 
             </LinearLayout>
             <android.support.design.widget.TextInputLayout
@@ -290,20 +294,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/icon_padding"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:weightSum="1">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_weight="0.7">
-                <TextView
+            <!--    <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/english_patient_mobile"
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/register_text"
-                    />
+                    />-->
 
             </LinearLayout>
             <android.support.design.widget.TextInputLayout
@@ -328,7 +332,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/icon_padding"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:weightSum="1">
             <LinearLayout
                 android:layout_width="match_parent"
@@ -337,13 +341,12 @@
                 android:layout_weight="0.7"
                 android:layout_gravity="center"
                 android:gravity="center">
-                <TextView
+              <!--  <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/english_place"
-                    android:gravity="end"
                     android:textColor="@android:color/black"
-                    android:textSize="@dimen/register_text"/>
+                    android:textSize="@dimen/register_text"/>-->
 
             </LinearLayout>
             <android.support.design.widget.TextInputLayout
@@ -368,7 +371,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/icon_padding"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:weightSum="1">
             <LinearLayout
                 android:layout_width="match_parent"
@@ -377,13 +380,12 @@
                 android:layout_weight="0.7"
                 android:layout_gravity="center"
                 android:gravity="center">
-                <TextView
+            <!--    <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/english_e_mail"
-                    android:gravity="end"
                     android:textColor="@android:color/black"
-                    android:textSize="@dimen/register_text"/>
+                    android:textSize="@dimen/register_text"/>-->
 
             </LinearLayout>
             <android.support.design.widget.TextInputLayout
@@ -408,7 +410,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/icon_padding"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:weightSum="1">
             <LinearLayout
                 android:layout_width="match_parent"
@@ -417,13 +419,12 @@
                 android:layout_weight="0.7"
                 android:layout_gravity="center"
                 android:gravity="center">
-                <TextView
+              <!--  <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/english_address"
-                    android:gravity="end"
                     android:textColor="@android:color/black"
-                    android:textSize="@dimen/register_text"/>
+                    android:textSize="@dimen/register_text"/>-->
 
             </LinearLayout>
             <android.support.design.widget.TextInputLayout
@@ -439,7 +440,12 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/english_address"
                     style="@style/App_Book_Appointment"
-                    />
+                    android:inputType="textMultiLine"
+                    android:lines="2"
+                    android:minLines="1"
+                    android:gravity="top|left"
+                    android:maxLines="10"
+                    android:scrollbars="vertical" />
             </android.support.design.widget.TextInputLayout>
         </LinearLayout>
         <LinearLayout
