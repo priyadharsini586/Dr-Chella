@@ -30,5 +30,5 @@
     <!--conformation-->
     <dimen name="conform_text">16sp</dimen>
     <dimen name="conform_text1">10sp</dimen>
-    <dimen name="dr_chella_text">19sp</dimen>
+    <dimen name="dr_chella_text">15sp</dimen>
 </resources>

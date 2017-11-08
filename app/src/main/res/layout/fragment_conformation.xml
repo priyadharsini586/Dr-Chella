@@ -1,9 +1,10 @@
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ffffff"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:id="@+id/relBar">
 
 
     <LinearLayout
@@ -15,215 +16,392 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="10dp"
+            android:paddingBottom="0dp"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:paddingBottom="0dp">
+            android:paddingTop="10dp">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:background="@drawable/dotted"
+
 
                 >
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@android:color/black"
-                android:text="@string/chella_dr_app"
-                android:textSize="@dimen/dr_chella_text"
-                android:textStyle="bold"
-                android:gravity="center"
-                android:padding="10dp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:text="@string/chella_dr_app"
+                    android:textColor="#739240"
+                    android:textSize="17sp"
+                    android:textStyle="bold" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingBottom="10dp"                    android:text="@string/con"
+                    android:textColor="#739240"
+                    android:textSize="@dimen/dr_chella_text"
+                    android:textStyle="bold" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="2dp"
                     android:background="@drawable/line_dotted"
-                    android:layerType="software"/>
+                    android:layerType="software" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:paddingTop="15dp"
+                    android:paddingBottom="15dp"
                     android:paddingLeft="15dp"
-                    android:paddingRight="15dp"
-                    android:paddingBottom="15dp">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    >
+                    android:paddingRight="15dp">
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/Name"
-                        android:textColor="#939393"
-                        android:textSize="@dimen/conform_text1" />
-
-                    <TextView
-                        android:id="@+id/name"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/Name"
-                        android:textColor="@android:color/black"
-                        android:textSize="@dimen/conform_text" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="1"
-                    android:paddingTop="10dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_weight="0.5">
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/age"
-                        android:textSize="@dimen/conform_text1"
-                        android:textColor="#939393"/>
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/age"
-                        android:textSize="@dimen/conform_text"
-                        android:textColor="@android:color/black"
-                        android:id="@+id/age"/>
-
-                </LinearLayout>
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:layout_weight="0.5">
+                        android:paddingBottom="10dp">
+
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@string/gender"
-                             android:textSize="@dimen/conform_text1"
-                            android:textColor="#939393"/>
+                            android:text="@string/Name"
+                            android:textColor="#939393"
+                            android:textSize="@dimen/conform_text1" />
+
                         <TextView
+                            android:id="@+id/name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@string/gender"
-                            android:textSize="@dimen/conform_text"
+                            android:text="@string/Name"
                             android:textColor="@android:color/black"
-                            android:id="@+id/gender"/>
+                            android:textSize="@dimen/conform_text" />
                     </LinearLayout>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:paddingTop="10dp">
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/english_applicant_mobile"
-                         android:textSize="@dimen/conform_text1"
-                        android:textColor="#939393"/>
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/english_applicant_mobile"
-                        android:textSize="@dimen/conform_text"
-                        android:textColor="@android:color/black"
-                        android:id="@+id/apllicantNum"/>
 
-                </LinearLayout>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:background="@drawable/line_dotted"
+                        android:layerType="software" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_weight="0.5"
-                    android:paddingTop="10dp">
-                    <TextView
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/english_patient_mobile"
-                         android:textSize="@dimen/conform_text1"
-                        android:textColor="#939393"/>
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/english_patient_mobile"
-                        android:textSize="@dimen/conform_text"
-                        android:textColor="@android:color/black"
-                        android:id="@+id/patientNum"/>
+                        android:orientation="horizontal"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp"
+                        android:weightSum="1">
 
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_weight="0.5"
-                    android:paddingTop="10dp">
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/english_place"
-                         android:textSize="@dimen/conform_text1"
-                        android:textColor="#939393"/>
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/english_place1"
-                        android:textSize="@dimen/conform_text"
-                        android:textColor="@android:color/black"
-                        android:id="@+id/place"/>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.5"
+                            android:orientation="vertical">
 
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:paddingTop="10dp">
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/e_mail"
-                         android:textSize="@dimen/conform_text1"
-                        android:textColor="#939393"/>
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/english_e_mail"
-                        android:textSize="@dimen/conform_text"
-                        android:textColor="@android:color/black"
-                        android:id="@+id/e_mail"/>
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/age"
+                                android:textColor="#939393"
+                                android:textSize="@dimen/conform_text1" />
 
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:paddingTop="10dp">
-                    <TextView
+                            <TextView
+                                android:id="@+id/age"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/age"
+                                android:textColor="@android:color/black"
+                                android:textSize="@dimen/conform_text" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.5"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/gender"
+                                android:textColor="#939393"
+                                android:textSize="@dimen/conform_text1" />
+
+                            <TextView
+                                android:id="@+id/gender"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/gender"
+                                android:textColor="@android:color/black"
+                                android:textSize="@dimen/conform_text" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:background="@drawable/line_dotted"
+                        android:layerType="software" />
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/english_address"
-                         android:textSize="@dimen/conform_text1"
-                        android:textColor="#939393"/>
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/english_address"
-                        android:textSize="@dimen/conform_text"
-                        android:textColor="@android:color/black"
-                        android:id="@+id/address"/>
+                        android:orientation="horizontal"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp"
+                        android:weightSum="1">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.5"
+                            android:orientation="vertical">
 
-                </LinearLayout>
-            </LinearLayout>
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/hospital_name"
+                                android:textColor="#939393"
+                                android:textSize="@dimen/conform_text1" />
 
+                            <TextView
+                                android:id="@+id/hospital_name"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/age"
+                                android:textColor="@android:color/black"
+                                android:textSize="@dimen/conform_text" />
 </LinearLayout>
+
+                        </LinearLayout>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:background="@drawable/line_dotted"
+                        android:layerType="software" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp"
+                        android:weightSum="1">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.5"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/date"
+                                android:textColor="#939393"
+                                android:textSize="@dimen/conform_text1" />
+
+                            <TextView
+                                android:id="@+id/date"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/age"
+                                android:textColor="@android:color/black"
+                                android:textSize="@dimen/conform_text" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.5"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/time"
+                                android:textColor="#939393"
+                                android:textSize="@dimen/conform_text1" />
+
+                            <TextView
+                                android:id="@+id/timeCon"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/gender"
+                                android:textColor="@android:color/black"
+                                android:textSize="@dimen/conform_text" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:background="@drawable/line_dotted"
+                        android:layerType="software" />
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:weightSum="2">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/english_applicant_mobile"
+                            android:textColor="#939393"
+                            android:textSize="@dimen/conform_text1" />
+
+                        <TextView
+                            android:id="@+id/apllicantNum"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/english_applicant_mobile"
+                            android:textColor="@android:color/black"
+                            android:textSize="@dimen/conform_text" />
+
+                    </LinearLayout>
+
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp"
+                        >
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/english_patient_mobile"
+                            android:textColor="#939393"
+                            android:textSize="@dimen/conform_text1" />
+
+                        <TextView
+                            android:id="@+id/patientNum"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/english_patient_mobile"
+                            android:textColor="@android:color/black"
+                            android:textSize="@dimen/conform_text" />
+
+                    </LinearLayout>
+</LinearLayout>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:background="@drawable/line_dotted"
+                        android:layerType="software" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:orientation="vertical"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/english_place"
+                            android:textColor="#939393"
+                            android:textSize="@dimen/conform_text1" />
+
+                        <TextView
+                            android:id="@+id/place"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/english_place1"
+                            android:textColor="@android:color/black"
+                            android:textSize="@dimen/conform_text" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:background="@drawable/line_dotted"
+                        android:layerType="software" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/e_mail"
+                            android:textColor="#939393"
+                            android:textSize="@dimen/conform_text1" />
+
+                        <TextView
+                            android:id="@+id/e_mail"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/english_e_mail"
+                            android:textColor="@android:color/black"
+                            android:textSize="@dimen/conform_text" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:background="@drawable/line_dotted"
+                        android:layerType="software" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/english_address"
+                            android:textColor="#939393"
+                            android:textSize="@dimen/conform_text1" />
+
+                        <TextView
+                            android:id="@+id/address"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/english_address"
+                            android:textColor="@android:color/black"
+                            android:textSize="@dimen/conform_text" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:background="@drawable/line_dotted"
+                        android:layerType="software" />
+                </LinearLayout>
+
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -237,39 +415,50 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:layout_weight="0.5"
                 android:paddingLeft="10dp"
-                android:paddingRight="10dp">
+                android:paddingRight="10dp"
+                android:gravity="end">
                 <Button
-                    android:id="@+id/Cancelbutton"
-                    android:layout_width="match_parent"
+                    android:id="@+id/cancelbutton"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
+                    android:layout_gravity="center"
                     android:text="Cancel"
                     android:background="@color/book_title_orange"
                     android:textColor="@android:color/white"
-                    android:textStyle="bold"/>
+                    android:textStyle="normal"
+                    android:gravity="center"
+                    android:textSize="12sp"
+                    />
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:layout_weight="0.5"
                 android:paddingLeft="10dp"
-                android:paddingRight="10dp">
+                android:paddingRight="10dp"
+                android:gravity="start">
             <Button
-                android:id="@+id/button"
-                android:layout_width="match_parent"
+                android:id="@+id/btnConform"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:text="Confirm"
                 android:background="@color/colorPrimary"
                 android:textColor="@android:color/white"
-                android:textStyle="bold"/>
+                android:textStyle="normal"
+                android:textSize="12sp"/>
         </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 
+    <ProgressBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:id="@+id/progressConform"/>
 
 
-</LinearLayout>
+</RelativeLayout>

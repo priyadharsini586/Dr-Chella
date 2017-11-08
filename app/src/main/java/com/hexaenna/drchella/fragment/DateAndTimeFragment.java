@@ -36,9 +36,11 @@ import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -486,6 +488,12 @@ public class DateAndTimeFragment extends Fragment implements View.OnClickListene
                             if (timeAndDateResponse.getStatus_code().equals(Constants.status_code1)) {
                                 Toast.makeText(getActivity(), timeAndDateResponse.getStatus_message(), Toast.LENGTH_SHORT).show();
                                 changeGridLayout(view,pos);
+                                scltimeMain.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        scltimeMain.fullScroll(ScrollView.FOCUS_DOWN);
+                                    }
+                                }, 100L);
 
                             } else if (timeAndDateResponse.getStatus_code().equals(Constants.status_code_1))
                             {
@@ -959,7 +967,7 @@ public class DateAndTimeFragment extends Fragment implements View.OnClickListene
         {
             case R.id.ldtNext:
                 getNextFragment();
-//                sendRequest();
+                sendRequest();
                 break;
         }
     }

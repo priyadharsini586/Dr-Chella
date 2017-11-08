@@ -162,6 +162,8 @@ public class RegisterDetailsFragment extends Fragment implements View.OnClickLis
     }
 
 
+
+
     @Override
     public void onDetach() {
         super.onDetach();

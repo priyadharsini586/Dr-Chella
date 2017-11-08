@@ -68,6 +68,10 @@
                 android:textColor="@android:color/white"
                 android:id="@+id/txtDateTime"/>
             </LinearLayout>
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@android:color/white"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -81,6 +85,10 @@
                android:id="@+id/txtBooking"
                />
                 </LinearLayout>
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@android:color/white"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

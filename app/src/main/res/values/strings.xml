@@ -50,11 +50,11 @@
     <string name="tamil_transgender">திருநங்கை</string>
     <string name="english_transgender">Transgender</string>
     <string name="tamil_patient_mobile">நோயாளியின் கைப்பேசி எண்:</string>
-    <string name="english_patient_mobile">Patient mobile number:</string>
-    <string name="english_patient_mobile1">Patient mobile number</string>
+    <string name="english_patient_mobile">Patient Mobile Number:</string>
+    <string name="english_patient_mobile1">Patient Mobile Number</string>
     <string name="tamil_applicant_mobile">விண்ணப்பதாரர் கைப்பேசி எண்:</string>
-    <string name="english_applicant_mobile">Applicant mobile number:</string>
-    <string name="english_applicant_mobile1">Applicant mobile number</string>
+    <string name="english_applicant_mobile">Applicant Mobile Number:</string>
+    <string name="english_applicant_mobile1">Applicant Mobile Number</string>
     <string name="english_place">Place:</string>
     <string name="english_place1">Place</string>
     <string name="tamil_place">இடம்:</string>
@@ -110,5 +110,29 @@
 <string name="tamil_cancel">ரத்து</string>
     <string name="tamil_conform">உறுதி</string>
     <!--order summary-->
-    <string name="chella_dr_app">Dr Chella - Appointment Confirmation</string>
+    <string name="chella_dr_app">Dr. Chellakumarasamy MD.,</string>
+    <string name="con">Appointment Conformation</string>
+    <string name="tamil_chella_dr_app">டாக்டர். செல்லகுமாரசாமி MD.,</string>
+    <string name="tamil_chella_dr_app1">பதிவு உறுதிப்படுத்தல்</string>
+    <string name="date">Date</string>
+    <string name="hospital_name">Hospital Name</string>
+    <string name="tamil_hospital_name">மருத்துவமனை பெயர்</string>
+    <string name="time">Time</string>
+    <string name="tamil_date">தேதி</string>
+    <string name="tamil_time">நேரம்</string>
+
+    <!--hospital-->
+    <string name="erode_hospital">URC Hospital</string>
+    <string name="coimbatore_hospital">Geneomm Hospital</string>
+    <string name="namakkal_hospital">MM Hospital</string>
+    <string name="mayiladu_hospital">SA Medical Centre</string>
+    <string name="kollidam_hospital">SA Medical Centre</string>
+    <string name="chennai_hospital">Medway Medical Centre</string>
+
+    <string name="tamil_erode_hospital">URC ஹாஸ்பிடல்</string>
+    <string name="tamil_coimbatore_hospital">Geneomm ஹாஸ்பிடல்</string>
+    <string name="tamil_namakkal_hospital">MM ஹாஸ்பிடல்</string>
+    <string name="tamil_mayiladu_hospital">SA மெடிக்கல் சென்டர் </string>
+    <string name="tamil_kollidam_hospital">SA மெடிக்கல் சென்டர் </string>
+    <string name="tamil_chennai_hospital">Medway மெடிக்கல் சென்டர் </string>
 </resources>

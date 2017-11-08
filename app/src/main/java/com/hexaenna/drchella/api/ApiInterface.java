@@ -43,5 +43,13 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("block_appoinment.php")
     Call<TimeAndDateResponse> block_appintment(@Field("x") JSONObject checkTimeObject);
+
+    @FormUrlEncoded
+    @POST("book_appoinment.php")
+    Call<TimeAndDateResponse> book_appintment(@Field("x") JSONObject bookObject);
+
+    @FormUrlEncoded
+    @POST("delete_appointment.php")
+    Call<TimeAndDateResponse> cancel_appintment(@Field("x") JSONObject bookObject);
 }
 
