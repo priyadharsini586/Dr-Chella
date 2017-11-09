@@ -135,4 +135,10 @@
     <string name="tamil_mayiladu_hospital">SA மெடிக்கல் சென்டர் </string>
     <string name="tamil_kollidam_hospital">SA மெடிக்கல் சென்டர் </string>
     <string name="tamil_chennai_hospital">Medway மெடிக்கல் சென்டர் </string>
+
+
+    <string name="patient_details">Patient Details</string>
+    <string name="tamil_patient_details">நோயாளி விவரங்கள்</string>
+    <string name="conformation_of_your">Conformation Of Your Appointment</string>
+    <string name="tamil_conformation_of_your">உங்கள் பதிவு உறுதிப்படுத்தல்</string>
 </resources>

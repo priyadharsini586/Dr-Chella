@@ -24,7 +24,7 @@ public class BookAppointmentActivity extends AppCompatActivity {
 
 
    public static LinearLayout ldtBookingDetails,ldtDateTime,ldtConformation;
-    public static TextView txtDateTime,txtBooking,txtConformation;
+    public static TextView txtDateTime,txtBooking,txtConformation,txtToolbarText;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +49,8 @@ public class BookAppointmentActivity extends AppCompatActivity {
         txtDateTime  = (TextView) findViewById(R.id.txtDateTime);
         txtBooking = (TextView) findViewById(R.id.txtBooking);
         txtConformation = (TextView) findViewById(R.id.txtConformation);
+
+        txtToolbarText = (TextView) findViewById(R.id.txtToolbarText);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

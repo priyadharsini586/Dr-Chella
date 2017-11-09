@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/blocked_time_slot_bg"
-    android:id="@+id/ldtBooked_slot">
+    android:id="@+id/ldtBlocked_slot"
+    >
 
 
     <LinearLayout

@@ -26,6 +26,7 @@ import com.hexaenna.drchella.Model.BookingDetails;
 import com.hexaenna.drchella.Model.RegisterBookDetails;
 import com.hexaenna.drchella.Model.TimeAndDateResponse;
 import com.hexaenna.drchella.R;
+import com.hexaenna.drchella.activity.BookAppointmentActivity;
 import com.hexaenna.drchella.api.ApiClient;
 import com.hexaenna.drchella.api.ApiInterface;
 import com.hexaenna.drchella.utils.Constants;
@@ -123,6 +124,7 @@ public class ConformationFragment extends Fragment implements View.OnClickListen
         if (databaseHandler.getContact("0").equals("English"))
         {
             mainView = inflater.inflate(R.layout.fragment_conformation, container, false);
+            BookAppointmentActivity.txtToolbarText.setText(getActivity().getResources().getText(R.string.conformation_of_your));
             erodeHos = getActivity().getResources().getString(R.string.erode_hospital);
             coimHos = getActivity().getResources().getString(R.string.coimbatore_hospital);
             namHos = getActivity().getResources().getString(R.string.namakkal_hospital);
@@ -134,6 +136,8 @@ public class ConformationFragment extends Fragment implements View.OnClickListen
         }else if (databaseHandler.getContact("0").equals("Tamil"))
         {
             mainView = inflater.inflate(R.layout.tamil_fragment_conformation, container, false);
+            BookAppointmentActivity.txtToolbarText.setText(getActivity().getResources().getText(R.string.tamil_conformation_of_your));
+
             erodeHos = getActivity().getResources().getString(R.string.tamil_erode_hospital);
             coimHos = getActivity().getResources().getString(R.string.tamil_coimbatore_hospital);
             namHos = getActivity().getResources().getString(R.string.tamil_namakkal_hospital);

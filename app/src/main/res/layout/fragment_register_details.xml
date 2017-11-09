@@ -77,7 +77,7 @@
         android:id="@+id/input_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="text"
+        android:inputType="textCapWords"
         android:hint="@string/Name"
         style="@style/App_Book_Appointment"/>
     </android.support.design.widget.TextInputLayout>

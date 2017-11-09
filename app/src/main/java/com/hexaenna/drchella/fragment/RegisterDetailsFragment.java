@@ -67,6 +67,8 @@ public class RegisterDetailsFragment extends Fragment implements View.OnClickLis
         if (databaseHandler.getContact("0").equals("English"))
         {
             mainView = inflater.inflate(R.layout.fragment_register_details, container, false);
+            BookAppointmentActivity.txtToolbarText.setText(getActivity().getResources().getText(R.string.patient_details));
+
             male = getActivity().getResources().getString(R.string.english_male);
             female = getActivity().getResources().getString(R.string.english_female);
             trans = getActivity().getResources().getString(R.string.english_transgender);
@@ -75,6 +77,8 @@ public class RegisterDetailsFragment extends Fragment implements View.OnClickLis
         }else if (databaseHandler.getContact("0").equals("Tamil"))
         {
             mainView = inflater.inflate(R.layout.tamil_fragment_register_details, container, false);
+            BookAppointmentActivity.txtToolbarText.setText(getActivity().getResources().getText(R.string.tamil_patient_details));
+
             male = getActivity().getResources().getString(R.string.tamil_male);
             female = getActivity().getResources().getString(R.string.tamil_female);
             trans = getActivity().getResources().getString(R.string.tamil_transgender);

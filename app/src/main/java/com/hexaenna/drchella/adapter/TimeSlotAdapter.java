@@ -43,7 +43,7 @@ public class TimeSlotAdapter extends BaseAdapter {
 
 
             gridView = inflater.inflate(R.layout.time_slot_layout, null);
-            Log.e("equal", "adapter");
+
             // set value into textview
             TextView textView = (TextView) gridView
                     .findViewById(R.id.txtTimeSlot);
@@ -74,6 +74,8 @@ public class TimeSlotAdapter extends BaseAdapter {
                             TextView textblockedView = (TextView) gridView
                                     .findViewById(R.id.txtBlockedTimeSlot);
                             textblockedView.setText(timeSlotList.get(position));
+                            LinearLayout ldtBooked_slot = (LinearLayout) gridView.findViewById(R.id.ldtBlocked_slot);
+                            ldtBooked_slot.setEnabled(false);
                         }
                     }
                 }

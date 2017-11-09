@@ -341,7 +341,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 if (s.length() == 0)
                 {
                     txtInputName.setErrorEnabled(true);
-                    txtInputName.setError("Enter the Name");
+                    txtInputName.setError("Enter your Name");
                     isName[0] = false;
 
                 }else
@@ -359,7 +359,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         if(edtName.getText().toString().isEmpty())
         {
             txtInputName.setErrorEnabled(true);
-            txtInputName.setError("Enter the Name");
+            txtInputName.setError("Enter your Name");
             isName[0] = false;
 
         }else

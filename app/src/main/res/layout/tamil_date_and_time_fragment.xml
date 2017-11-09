@@ -12,13 +12,15 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingTop="2dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:id="@+id/ldtAvailable">
+            android:id="@+id/ldtAvailable"
+            android:background="@drawable/available_bg">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

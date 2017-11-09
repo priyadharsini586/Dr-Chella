@@ -12,6 +12,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.icu.util.Calendar;
 import android.icu.util.GregorianCalendar;
+import android.icu.util.TimeZone;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
@@ -78,12 +79,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.sql.Time;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.regex.Pattern;
 
 import fr.ganfra.materialspinner.MaterialSpinner;
@@ -160,12 +163,12 @@ public class DateAndTimeFragment extends Fragment implements View.OnClickListene
         if (databaseHandler.getContact("0").equals("English"))
         {
             mainView = inflater.inflate(R.layout.date_and_time_fragment, container, false);
-
+            BookAppointmentActivity.txtToolbarText.setText(getActivity().getResources().getText(R.string.booking_details));
 
         }else if (databaseHandler.getContact("0").equals("Tamil"))
         {
             mainView = inflater.inflate(R.layout.tamil_date_and_time_fragment, container, false);
-
+            BookAppointmentActivity.txtToolbarText.setText(getActivity().getResources().getText(R.string.tamil_booking_details));
 
         }
 
@@ -455,7 +458,20 @@ public class DateAndTimeFragment extends Fragment implements View.OnClickListene
                 currentPosition = position;
                 if (!time.equals("Lunch")) {
                     selectTime = time;
-                    checkAvaliableOrNot(selectCity, selectDate, time, view, position);
+
+                    if (blockedListArray != null) {
+                        if (blockedListArray.contains(time)) {
+                            Log.e("found", "Account found");
+
+                        } else {
+                            Log.e("found", "Account not found");
+                            checkAvaliableOrNot(selectCity, selectDate, time, view, position);
+                        }
+//
+                    }else
+                    {
+                        checkAvaliableOrNot(selectCity, selectDate, time, view, position);
+                    }
                 }
 
 
@@ -579,7 +595,7 @@ public class DateAndTimeFragment extends Fragment implements View.OnClickListene
 
     }
 
-    private void getTimingList(final String city, String date) {
+    private void getTimingList(final String city, final String date) {
         gridView.setVisibility(View.GONE);
 
         if (isConnection.equals(Constants.NETWORK_CONNECTED)) {
@@ -603,17 +619,72 @@ public class DateAndTimeFragment extends Fragment implements View.OnClickListene
                             if (timeAndDateResponse.getStatus_code().equals(Constants.status_code1)) {
                                 ArrayList<String> bookList = timeAndDateResponse.getBooked_Array();
                                 ArrayList<String> blockedList = timeAndDateResponse.getBlocked_Array();
+                                ArrayList<String> gridList = new ArrayList<String>();
+
+                                if (city.equals("1"))
+                                {
+
+                                    gridList = getChennaiTimeSlotList();
+
+                                }else if (city.equals("2"))
+                                {
+                                    gridList = getErodeTimeSlotList();
+
+                                }else if (city.equals("3"))
+                                {
+
+                                    gridList = getCoimbatoreTimeSlotList();
+
+                                }else if (city.equals("4"))
+                                {
+
+                                    gridList = getNamakkalTimeSlotList();
+
+                                }else if (city.equals("5"))
+                                {
+
+                                    gridList = getMayiladuthuraiTimeSlotList();
+
+                                }else if (city.equals("6"))
+                                {
+                                    gridList = getKollidamTimeSlotList();
+                                }
+
+
+                                ArrayList<String> modifyErodeList = new ArrayList<String>();
+
+                                java.util.Calendar calendar = java.util.Calendar.getInstance();
+                                DateFormat dateForRequest = new SimpleDateFormat("dd.MM.yyyy");
+                                String formattedDate1 = dateForRequest.format(calendar.getTime());
+
+                                if (date.equals(formattedDate1)) {
+                                    for (int i = 0; i < gridList.size(); i++) {
+                                        if (!gridList.get(i).equals("Lunch")) {
+                                            String compare = compareTime(gridList.get(i));
+                                            if (compare.equals("1")) {
+                                                blockedList.add(gridList.get(i));
+                                                modifyErodeList.add(gridList.get(i));
+                                            }
+                                        }
+                                    }
+                                    for (int i=0 ; i < gridList.size(); i++)
+                                    {
+
+                                    }
+                                }
                                 blockedListArray = new ArrayList<String>();
-                                blockedListArray = timeAndDateResponse.getBlocked_Array();
+                                blockedListArray = blockedList;
                                 bookedListArray = new ArrayList<String>();
                                 bookedListArray = timeAndDateResponse.getBooked_Array();
 
                                 gridView.setExpanded(true);
-                                if (city.equals("1")) {
+                                gridView.setAdapter(new TimeSlotAdapter(getActivity(), gridList, blockedList, bookList));
+
+                                /*if (city.equals("1")) {
                                     gridView.setAdapter(new TimeSlotAdapter(getActivity(), getChennaiTimeSlotList(), blockedList, bookList));
                                 }else if (city.equals("2"))
                                 {
-                                    gridView.setAdapter(new TimeSlotAdapter(getActivity(), getErodeTimeSlotList(), blockedList, bookList));
+                                    gridView.setAdapter(new TimeSlotAdapter(getActivity(), erodeList, blockedList, bookList));
                                 }else if (city.equals("3"))
                                 {
                                     gridView.setAdapter(new TimeSlotAdapter(getActivity(), getCoimbatoreTimeSlotList(), blockedList, bookList));
@@ -626,7 +697,7 @@ public class DateAndTimeFragment extends Fragment implements View.OnClickListene
                                 }else if (city.equals("6"))
                                 {
                                     gridView.setAdapter(new TimeSlotAdapter(getActivity(), getKollidamTimeSlotList(), blockedList, bookList));
-                                }
+                                }*/
                                 gridView.setVisibility(View.VISIBLE);
 
                             } else {
@@ -1126,31 +1197,31 @@ public class DateAndTimeFragment extends Fragment implements View.OnClickListene
     public ArrayList<String> getErodeTimeSlotList()
     {
         timeSlotList = new ArrayList<>();
-        timeSlotList.add("9.00AM");
-        timeSlotList.add("9.20AM");
-        timeSlotList.add("9.40AM");
-        timeSlotList.add("10.00AM");
-        timeSlotList.add("10.20AM");
-        timeSlotList.add("10.40AM");
-        timeSlotList.add("11.00AM");
-        timeSlotList.add("11.20AM");
-        timeSlotList.add("11.40AM");
-        timeSlotList.add("12.00PM");
-        timeSlotList.add("12.20PM");
-        timeSlotList.add("12.40PM");
-        timeSlotList.add("1.00PM");
+        timeSlotList.add("9:00 AM");
+        timeSlotList.add("9:20 AM");
+        timeSlotList.add("9:40 AM");
+        timeSlotList.add("10:00 AM");
+        timeSlotList.add("10:20 AM");
+        timeSlotList.add("10:40 AM");
+        timeSlotList.add("11:00 AM");
+        timeSlotList.add("11:20 AM");
+        timeSlotList.add("11:40 AM");
+        timeSlotList.add("12:00 PM");
+        timeSlotList.add("12:20 PM");
+        timeSlotList.add("12:40 PM");
+        timeSlotList.add("1:00 PM");
         timeSlotList.add("Lunch");
-        timeSlotList.add("1.40PM");
-        timeSlotList.add("2.00PM");
-        timeSlotList.add("2.20PM");
-        timeSlotList.add("2.40PM");
-        timeSlotList.add("3.00PM");
-        timeSlotList.add("3.20PM");
-        timeSlotList.add("3.40PM");
-        timeSlotList.add("4.00PM");
-        timeSlotList.add("4.20PM");
-        timeSlotList.add("4.40PM");
-        timeSlotList.add("5.00PM");
+        timeSlotList.add("1:40 PM");
+        timeSlotList.add("2:00 PM");
+        timeSlotList.add("2:20 PM");
+        timeSlotList.add("2:40 PM");
+        timeSlotList.add("3:00 PM");
+        timeSlotList.add("3:20 PM");
+        timeSlotList.add("3:40 PM");
+        timeSlotList.add("4:00 PM");
+        timeSlotList.add("4:20 PM");
+        timeSlotList.add("4:40 PM");
+        timeSlotList.add("5:00 PM");
         return timeSlotList;
     }
 
@@ -1158,127 +1229,126 @@ public class DateAndTimeFragment extends Fragment implements View.OnClickListene
     public ArrayList<String> getChennaiTimeSlotList()
     {
         timeSlotList = new ArrayList<>();
-        timeSlotList.add("9.00AM");
-        timeSlotList.add("9.20AM");
-        timeSlotList.add("9.40AM");
-        timeSlotList.add("10.00AM");
-        timeSlotList.add("10.20AM");
-        timeSlotList.add("10.40AM");
-        timeSlotList.add("11.00AM");
-        timeSlotList.add("11.20AM");
-        timeSlotList.add("11.40AM");
-        timeSlotList.add("12.00PM");
-        timeSlotList.add("12.20PM");
-        timeSlotList.add("12.40PM");
-        timeSlotList.add("1.00PM");
+        timeSlotList.add("9:00 AM");
+        timeSlotList.add("9:20 AM");
+        timeSlotList.add("9:40 AM");
+        timeSlotList.add("10:00 AM");
+        timeSlotList.add("10:20 AM");
+        timeSlotList.add("10:40 AM");
+        timeSlotList.add("11:00 AM");
+        timeSlotList.add("11:20 AM");
+        timeSlotList.add("11:40 AM");
+        timeSlotList.add("12:00 PM");
+        timeSlotList.add("12:20 PM");
+        timeSlotList.add("12:40 PM");
+        timeSlotList.add("1:00 PM");
         timeSlotList.add("Lunch");
-        timeSlotList.add("1.40PM");
-        timeSlotList.add("2.00PM");
-        timeSlotList.add("2.20PM");
-        timeSlotList.add("2.40PM");
-        timeSlotList.add("3.00PM");
-        timeSlotList.add("3.20PM");
-        timeSlotList.add("3.40PM");
-        timeSlotList.add("4.00PM");
-        timeSlotList.add("4.20PM");
-        timeSlotList.add("4.40PM");
-        timeSlotList.add("5.00PM");
+        timeSlotList.add("1:40 PM");
+        timeSlotList.add("2:00 PM");
+        timeSlotList.add("2:20 PM");
+        timeSlotList.add("2:40 PM");
+        timeSlotList.add("3:00 PM");
+        timeSlotList.add("3:20 PM");
+        timeSlotList.add("3:40 PM");
+        timeSlotList.add("4:00 PM");
+        timeSlotList.add("4:20 PM");
+        timeSlotList.add("4:40 PM");
+        timeSlotList.add("5:00 PM");
         return timeSlotList;
     }
 
     public ArrayList<String> getCoimbatoreTimeSlotList()
     {
         timeSlotList = new ArrayList<>();
-        timeSlotList.add("9.00AM");
-        timeSlotList.add("9.20AM");
-        timeSlotList.add("9.40AM");
-        timeSlotList.add("10.00AM");
-        timeSlotList.add("10.20AM");
-        timeSlotList.add("10.40AM");
-        timeSlotList.add("11.00AM");
-        timeSlotList.add("11.20AM");
-        timeSlotList.add("11.40AM");
-        timeSlotList.add("12.00PM");
-        timeSlotList.add("12.20PM");
-        timeSlotList.add("12.40PM");
-        timeSlotList.add("1.00PM");
+        timeSlotList.add("9:00 AM");
+        timeSlotList.add("9:20 AM");
+        timeSlotList.add("9:40 AM");
+        timeSlotList.add("10:00 AM");
+        timeSlotList.add("10:20 AM");
+        timeSlotList.add("10:40 AM");
+        timeSlotList.add("11:00 AM");
+        timeSlotList.add("11:20 AM");
+        timeSlotList.add("11:40 AM");
+        timeSlotList.add("12:00 PM");
+        timeSlotList.add("12:20 PM");
+        timeSlotList.add("12:40 PM");
+        timeSlotList.add("1:00 PM");
         timeSlotList.add("Lunch");
-        timeSlotList.add("1.40PM");
-        timeSlotList.add("2.00PM");
-        timeSlotList.add("2.20PM");
-        timeSlotList.add("2.40PM");
-        timeSlotList.add("3.00PM");
-        timeSlotList.add("3.20PM");
-        timeSlotList.add("3.40PM");
-        timeSlotList.add("4.00PM");
+        timeSlotList.add("1:40 PM");
+        timeSlotList.add("2:00 PM");
+        timeSlotList.add("2:20 PM");
+        timeSlotList.add("2:40 PM");
+        timeSlotList.add("3:00 PM");
+        timeSlotList.add("3:20 PM");
+        timeSlotList.add("3:40 PM");
+        timeSlotList.add("4:00 PM");
         return timeSlotList;
     }
 
     public ArrayList<String> getMayiladuthuraiTimeSlotList()
     {
         timeSlotList = new ArrayList<>();
-        timeSlotList.add("9.00AM");
-        timeSlotList.add("9.20AM");
-        timeSlotList.add("9.40AM");
-        timeSlotList.add("10.00AM");
-        timeSlotList.add("10.20AM");
-        timeSlotList.add("10.40AM");
-        timeSlotList.add("11.00AM");
-        timeSlotList.add("11.20AM");
-        timeSlotList.add("11.40AM");
-        timeSlotList.add("12.00PM");
-        timeSlotList.add("12.20PM");
-        timeSlotList.add("12.40PM");
-        timeSlotList.add("1.00PM");
+        timeSlotList.add("9:00 AM");
+        timeSlotList.add("9:20 AM");
+        timeSlotList.add("9:40 AM");
+        timeSlotList.add("10:00 AM");
+        timeSlotList.add("10:20 AM");
+        timeSlotList.add("10:40 AM");
+        timeSlotList.add("11:00 AM");
+        timeSlotList.add("11:20 AM");
+        timeSlotList.add("11:40 AM");
+        timeSlotList.add("12:00 PM");
+        timeSlotList.add("12:20 PM");
+        timeSlotList.add("12:40 PM");
+        timeSlotList.add("1:00 PM");
         timeSlotList.add("Lunch");
-        timeSlotList.add("1.40PM");
-        timeSlotList.add("2.00PM");
-        timeSlotList.add("2.20PM");
-        timeSlotList.add("2.40PM");
-        timeSlotList.add("3.00PM");
-        timeSlotList.add("3.20PM");
-        timeSlotList.add("3.40PM");
-        timeSlotList.add("4.00PM");
+        timeSlotList.add("1:40 PM");
+        timeSlotList.add("2:00 PM");
+        timeSlotList.add("2:20 PM");
+        timeSlotList.add("2:40 PM");
+        timeSlotList.add("3:00 PM");
+        timeSlotList.add("3:20 PM");
+        timeSlotList.add("3:40 PM");
+        timeSlotList.add("4:00 PM");
         return timeSlotList;
     }
 
     public ArrayList<String> getNamakkalTimeSlotList()
     {
         timeSlotList = new ArrayList<>();
-        timeSlotList.add("6.00PM");
-        timeSlotList.add("6.20PM");
-        timeSlotList.add("6.40PM");
-        timeSlotList.add("7.00PM");
-        timeSlotList.add("7.20PM");
-        timeSlotList.add("7.40PM");
-        timeSlotList.add("8.00PM");
-        timeSlotList.add("8.20PM");
-        timeSlotList.add("8.40PM");
-        timeSlotList.add("9.00PM");
-        timeSlotList.add("9.20PM");
-        timeSlotList.add("9.40PM");
-        timeSlotList.add("10.00PM");
-        timeSlotList.add("10.20PM");
-        timeSlotList.add("10.40PM");
-        timeSlotList.add("11.00PM");
+        timeSlotList.add("6:00 PM");
+        timeSlotList.add("6:20 PM");
+        timeSlotList.add("6:40 PM");
+        timeSlotList.add("7:00 PM");
+        timeSlotList.add("7:20 PM");
+        timeSlotList.add("7:40 PM");
+        timeSlotList.add("8:00 PM");
+        timeSlotList.add("8:20 PM");
+        timeSlotList.add("8:40 PM");
+        timeSlotList.add("9:00 PM");
+        timeSlotList.add("9:20 PM");
+        timeSlotList.add("9:40 PM");
+        timeSlotList.add("10:00 PM");
+        timeSlotList.add("10:20 PM");
+        timeSlotList.add("10:40 PM");
+        timeSlotList.add("11:00 PM");
         return timeSlotList;
     }
     public ArrayList<String> getKollidamTimeSlotList()
     {
-        timeSlotList = new ArrayList<>();
-        timeSlotList.add("6.00PM");
-        timeSlotList.add("6.20PM");
-        timeSlotList.add("6.40PM");
-        timeSlotList.add("7.00PM");
-        timeSlotList.add("7.20PM");
-        timeSlotList.add("7.40PM");
-        timeSlotList.add("8.00PM");
-        timeSlotList.add("8.20PM");
-        timeSlotList.add("8.40PM");
-        timeSlotList.add("9.00PM");
-        timeSlotList.add("9.20PM");
-        timeSlotList.add("9.40PM");
-        timeSlotList.add("10.00PM");
+        timeSlotList.add("6:00 PM");
+        timeSlotList.add("6:20 PM");
+        timeSlotList.add("6:40 PM");
+        timeSlotList.add("7:00 PM");
+        timeSlotList.add("7:20 PM");
+        timeSlotList.add("7:40 PM");
+        timeSlotList.add("8:00 PM");
+        timeSlotList.add("8:20 PM");
+        timeSlotList.add("8:40 PM");
+        timeSlotList.add("9:00 PM");
+        timeSlotList.add("9:20 PM");
+        timeSlotList.add("9:40 PM");
+        timeSlotList.add("10:00 PM");
         return timeSlotList;
     }
 
@@ -1733,5 +1803,159 @@ public class DateAndTimeFragment extends Fragment implements View.OnClickListene
             networkChangeReceiver = null;
         }
     }
+
+
+
+    public String compareTime(String strTimeToCompare)
+
+    {
+      /*  int hour,currentHour,isampm,iscurrentAmPm;
+        String strDate,ampm,currentAmPm,min,currentMin,isBeforeOrNot = null;
+        java.util.Calendar calendar = java.util.Calendar.getInstance();
+        SimpleDateFormat mdformat = new SimpleDateFormat("hh:mm a");
+        strDate = mdformat.format(calendar.getTime());
+
+        String[] minHour = strTimeToCompare.split(":");
+        hour = Integer.parseInt(minHour[0]);
+        String[] min1 = minHour[1].split(" ");
+        min = min1[0];
+        String[] amPm = strTimeToCompare.split(" ");
+        ampm = amPm[1];
+
+        if (ampm.equals("AM"))
+        {
+            isampm = 1;
+        }else
+        {
+            isampm = 2;
+        }
+        String[] currentminHour = strDate.split(":");
+        currentHour = Integer.parseInt(currentminHour[0]);
+        String[] currentmin1 = currentminHour[1].split(" ");
+        currentMin = currentmin1[0];
+        String[] currentamPm = strDate.split(" ");
+        currentAmPm =currentamPm[1];
+
+        if (currentAmPm.equals("AM"))
+        {
+            iscurrentAmPm = 1;
+        }else
+        {
+            iscurrentAmPm = 2;
+        }
+
+        if (hour < currentHour)
+        {
+            if (isampm < iscurrentAmPm)
+            {
+                isBeforeOrNot = "YES";
+
+            }else {
+                isBeforeOrNot = "NO";
+
+            }
+        }else
+        {
+            if (isampm < iscurrentAmPm)
+            {
+                isBeforeOrNot = "YES";
+
+            }else {
+                isBeforeOrNot = "NO";
+
+            }
+        }
+        return isBeforeOrNot;
+
+    }*/
+        java.util.Calendar cal = java.util.Calendar.getInstance(java.util.TimeZone.getDefault());
+
+        int dtHour;
+
+        int dtMin;
+
+        int iAMPM;
+
+        String strAMorPM=null;
+
+        Date dtCurrentDate;
+
+
+
+        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm aa", Locale.getDefault());
+
+
+
+        try {
+
+
+
+            Date TimeToCompare = sdf.parse(strTimeToCompare);
+
+            dtMin=cal.get(java.util.Calendar.MINUTE);
+
+            dtHour=cal.get(java.util.Calendar.HOUR);
+
+            iAMPM=cal.get(java.util.Calendar.AM_PM);
+
+            if (iAMPM == 1)
+
+            {
+
+                strAMorPM="PM";
+
+            }
+
+
+
+            if (iAMPM == 0)
+
+            {
+
+                strAMorPM="AM";
+
+            }
+
+
+
+            dtCurrentDate = sdf.parse(dtHour + ":" + dtMin + " " + strAMorPM);
+
+
+            if(dtCurrentDate.after(TimeToCompare))
+
+            {
+
+                return "1";
+
+            }
+
+            if (dtCurrentDate.before(TimeToCompare))
+
+            {
+
+                return "2";
+
+            }
+
+            if (dtCurrentDate.equals(TimeToCompare))
+
+            {
+
+                return "3";
+
+            }
+
+        } catch (ParseException e) {
+
+            // TODO Auto-generated catch block
+
+            e.printStackTrace();
+
+        }
+
+        return "4";
+
+    }
+
 }
 
