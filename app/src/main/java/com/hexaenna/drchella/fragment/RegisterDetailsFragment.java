@@ -1,9 +1,18 @@
 package com.hexaenna.drchella.fragment;
 
+import android.animation.ArgbEvaluator;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.Typeface;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.annotation.IdRes;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
@@ -14,39 +23,68 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.androidadvance.topsnackbar.TSnackbar;
 import com.hexaenna.drchella.Db.DatabaseHandler;
+import com.hexaenna.drchella.Model.BookingDetails;
 import com.hexaenna.drchella.Model.RegisterBookDetails;
+import com.hexaenna.drchella.Model.TimeAndDateResponse;
 import com.hexaenna.drchella.R;
 import com.hexaenna.drchella.activity.BookAppointmentActivity;
 import com.hexaenna.drchella.activity.RegistrationActivity;
+import com.hexaenna.drchella.api.ApiClient;
+import com.hexaenna.drchella.api.ApiInterface;
+import com.hexaenna.drchella.utils.Constants;
+import com.hexaenna.drchella.utils.NetworkChangeReceiver;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import fr.ganfra.materialspinner.MaterialSpinner;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class RegisterDetailsFragment extends Fragment implements View.OnClickListener {
 
     View mainView;
     MaterialSpinner spnSirName;
     Toolbar mToolbar;
-    LinearLayout ldtCity,ldtPreviosFragment,ldtNextFragment;
+    LinearLayout ldtPreviosFragment,ldtNextFragment;
     EditText edtName,edtCity,edtE_mail,edtAge,edtPatientMobileNumber,edtApplicantNumber,edtPlace,edtAddress;
     TextInputLayout txtInputName,txtInputAge,txtInputApplicantMobileNumber,txtInputMobileNumber,txtInputPlace,txtInputemail,txtInputaddress;
     RadioButton radioMale,radioFemale,radioTrans;
     RadioGroup radioSexGroup;
     String checkGender,male,female,trans ;
     RegisterBookDetails registerBookDetails =RegisterBookDetails.getInstance();
+    TextView txtCity,txttimer;
+    public static  CountDownTimer countDownTimer;
     final boolean[] isGender = {false};
+    String isConnection = null;
+    TSnackbar snackbar;
+    NetworkChangeReceiver networkChangeReceiver;
+    BookingDetails bookingDetails = BookingDetails.getInstance();
+    ApiInterface apiInterface;
+    View snackbarView;
+    ScrollView relBar;
     public RegisterDetailsFragment() {
         // Required empty public constructor
     }
@@ -62,7 +100,24 @@ public class RegisterDetailsFragment extends Fragment implements View.OnClickLis
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        networkChangeReceiver = new NetworkChangeReceiver()
+        {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                super.onReceive(context, intent);
 
+
+                Bundle b = intent.getExtras();
+                isConnection = b.getString(Constants.MESSAGE);
+                Log.e("newmesage", "" + isConnection);
+                getNetworkState();
+            }
+        };
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+        intentFilter.addAction(Constants.BROADCAST);
+        getActivity().registerReceiver(networkChangeReceiver,
+                intentFilter);
         final DatabaseHandler databaseHandler = new DatabaseHandler(getActivity());
         if (databaseHandler.getContact("0").equals("English"))
         {
@@ -98,8 +153,10 @@ public class RegisterDetailsFragment extends Fragment implements View.OnClickLis
         ((AppCompatActivity)getActivity()).setSupportActionBar(mToolbar);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        ldtCity = (LinearLayout) mToolbar.findViewById(R.id.ldtCity);
-        ldtCity.setVisibility(View.INVISIBLE);
+        txtCity = (TextView) mToolbar.findViewById(R.id.txtCity);
+        txtCity.setVisibility(View.GONE);
+        txttimer = (TextView) mToolbar.findViewById(R.id.txttimer);
+        txttimer.setVisibility(View.VISIBLE);
 
         ldtPreviosFragment = (LinearLayout) mainView.findViewById(R.id.ldtPreviosFragment);
         ldtPreviosFragment.setOnClickListener(new View.OnClickListener() {
@@ -137,7 +194,9 @@ public class RegisterDetailsFragment extends Fragment implements View.OnClickLis
 
         radioSexGroup = (RadioGroup) mainView.findViewById(R.id.radioSexGroup);
 
+        relBar = (ScrollView) mainView.findViewById(R.id.relBar);
 
+        startTimer();
 
         isApplicantMobileValidate();
         isPatientMobileValidate();
@@ -179,9 +238,10 @@ public class RegisterDetailsFragment extends Fragment implements View.OnClickLis
         switch (v.getId())
         {
             case R.id.ldtNextFragment:
-                if (isNameEmpty() && isAgeValidate() && isGender[0] && isApplicantMobileValidate() && isPatientMobileValidate() && isPlaceEmpty() && isE_mailValidate() && isAddressEmpty()) {
+               /* if (isNameEmpty() && isAgeValidate() && isGender[0] && isApplicantMobileValidate() && isPatientMobileValidate() && isPlaceEmpty() && isE_mailValidate() && isAddressEmpty()) {
                     getNextFragment();
-                }
+                }*/
+                getNextFragment();
                 break;
         }
     }
@@ -495,6 +555,144 @@ public class RegisterDetailsFragment extends Fragment implements View.OnClickLis
 
     private static boolean isValidEmail(String email) {
         return !TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
+
+    private void startTimer()
+    {
+        countDownTimer = new CountDownTimer(60*3*1000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+
+                String text = String.format(Locale.getDefault(), "%02d : %02d ",
+                        TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) % 60,
+                        TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) % 60);
+                txttimer.setText(text);
+                Log.e("text",String.valueOf(text));
+                if (text.equals("00 : 10 "))
+                {
+                    Animation startAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.blinking_animation);
+                    txttimer.startAnimation(startAnimation);
+                    txttimer.setTextColor(getActivity().getResources().getColor(R.color.red_not_avaliable));
+                }
+            }
+
+            @Override
+            public void onFinish() {
+                cancelAppointment();
+                Log.e("time finish","timer finished");
+
+            }
+        }.start();
+    }
+
+
+
+    public void cancelAppointment()
+    {
+
+        if (isConnection.equals(Constants.NETWORK_CONNECTED)) {
+            apiInterface = ApiClient.getClient().create(ApiInterface.class);
+            JSONObject jsonObject = new JSONObject();
+            try {
+                jsonObject.put("app_sno",bookingDetails.getAppSeno());
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            Call<TimeAndDateResponse> call = apiInterface.cancel_appintment(jsonObject);
+            call.enqueue(new Callback<TimeAndDateResponse>() {
+                @Override
+                public void onResponse(Call<TimeAndDateResponse> call, Response<TimeAndDateResponse> response) {
+                    if (response.isSuccessful()) {
+                        TimeAndDateResponse timeAndDateResponse = response.body();
+
+                        if (timeAndDateResponse.getStatus_code() != null) {
+                            if (timeAndDateResponse.getStatus_code().equals(Constants.status_code1)) {
+                                Toast.makeText(getActivity(), timeAndDateResponse.getStatus_message(), Toast.LENGTH_SHORT).show();
+                                getActivity().finish();
+                            } else if (timeAndDateResponse.getStatus_code().equals(Constants.status_code_1)) {
+                                if (timeAndDateResponse.getStatus_message() != null)
+                                    Toast.makeText(getActivity(), timeAndDateResponse.getStatus_message(), Toast.LENGTH_SHORT).show();
+                            } else if (timeAndDateResponse.getStatus_code().equals(Constants.status_code0)) {
+                                if (timeAndDateResponse.getStatus_message() != null)
+                                    Toast.makeText(getActivity(), timeAndDateResponse.getStatus_message(), Toast.LENGTH_SHORT).show();
+                            }
+
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<TimeAndDateResponse> call, Throwable t) {
+                    Log.e("output", t.getMessage());
+                }
+            });
+
+        }else
+        {
+            snackbar = TSnackbar
+                    .make(relBar, "No Internet Connection !", TSnackbar.LENGTH_INDEFINITE)
+                    .setAction("Retry", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Log.d("Action Button", "onClick triggered");
+
+                        }
+                    });
+            snackbar.setActionTextColor(Color.parseColor("#4ecc00"));
+            snackbarView = snackbar.getView();
+            snackbarView.setBackgroundColor(Color.parseColor("#E43F3F"));
+            TextView textView = (TextView) snackbarView.findViewById(com.androidadvance.topsnackbar.R.id.snackbar_text);
+            textView.setTextColor(Color.YELLOW);
+            textView.setTypeface(null, Typeface.BOLD);
+            snackbar.show();
+        }
+    }
+
+    private void getNetworkState() {
+
+        if (isConnection != null) {
+            if (isConnection.equals(Constants.NETWORK_NOT_CONNECTED)) {
+                snackbar = TSnackbar
+                        .make(relBar, "No Internet Connection !", TSnackbar.LENGTH_INDEFINITE)
+                        .setAction("Retry", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Log.d("Action Button", "onClick triggered");
+
+                            }
+                        });
+                snackbar.setActionTextColor(Color.parseColor("#4ecc00"));
+                snackbarView = snackbar.getView();
+                snackbarView.setBackgroundColor(Color.parseColor("#E43F3F"));
+                TextView textView = (TextView) snackbarView.findViewById(com.androidadvance.topsnackbar.R.id.snackbar_text);
+                textView.setTextColor(Color.YELLOW);
+                textView.setTypeface(null, Typeface.BOLD);
+                snackbar.show();
+
+
+            } else if (isConnection.equals(Constants.NETWORK_CONNECTED)) {
+                if (snackbar != null) {
+                    snackbar.dismiss();
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (networkChangeReceiver == null)
+        {
+            Log.e("reg","Do not unregister receiver as it was never registered");
+        }
+        else
+        {
+            Log.e("reg","Unregister receiver");
+            getActivity().unregisterReceiver(networkChangeReceiver);
+            networkChangeReceiver = null;
+        }
     }
 }
 

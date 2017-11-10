@@ -90,7 +90,7 @@
                 android:id="@+id/edtName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text"
+                android:inputType="textCapWords"
                 android:hint="@string/Name"
                style="@style/App_EditTextStyle"
                 android:background="@android:color/transparent"
@@ -240,8 +240,7 @@
                     <EditText android:id="@+id/edtCity"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="text"
-                        android:hint="@string/city"
+                        android:inputType="textCapWords"                        android:hint="@string/city"
                         style="@style/App_EditTextStyle"
                         android:background="@android:color/transparent"/>
                 </android.support.design.widget.TextInputLayout>

@@ -17,6 +17,7 @@ import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
@@ -87,6 +88,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
 import fr.ganfra.materialspinner.MaterialSpinner;
@@ -119,7 +121,7 @@ public class DateAndTimeFragment extends Fragment implements View.OnClickListene
     MayiladuthuraiDisableDcorator mayiladuthuraiDisableDcorator;
     ErodeDisableDcorator erodeDisableDcorator;
     ChennaiDisableDcorator chennaiDisableDcorator ;
-    TextView txtCity;
+    TextView txtCity,txttimer;
     ApiInterface apiInterface;
     String isConnection = null,selectCity = null,selectDate = null,selectTime = null;
     ScrollView sclRegisterMain;
@@ -176,10 +178,12 @@ public class DateAndTimeFragment extends Fragment implements View.OnClickListene
 
          mToolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
         ((AppCompatActivity)getActivity()).setSupportActionBar(mToolbar);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
+
 
         scltimeMain = (ScrollView) mainView.findViewById(R.id.scltimeMain);
         ldtCity = (LinearLayout) mToolbar.findViewById(R.id.ldtCity);
+        txttimer = (TextView) mToolbar.findViewById(R.id.txttimer);
+        txttimer.setVisibility(View.GONE);
         txtCity = (TextView) mToolbar.findViewById(R.id.txtCity);
         ldtCity.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -848,6 +852,7 @@ public class DateAndTimeFragment extends Fragment implements View.OnClickListene
 
     private void checkList(String city) {
 
+
         if (city.equals("Erode") || city.equals("ஈரோடு"))
         {
             calendarView.setVisibility(View.VISIBLE);
@@ -1037,7 +1042,7 @@ public class DateAndTimeFragment extends Fragment implements View.OnClickListene
         switch (v.getId())
         {
             case R.id.ldtNext:
-                getNextFragment();
+//                getNextFragment();
                 sendRequest();
                 break;
         }

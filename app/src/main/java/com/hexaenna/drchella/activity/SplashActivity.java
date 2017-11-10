@@ -100,7 +100,7 @@ public class SplashActivity extends AppCompatActivity {
                     public void run() {
 
                         if (isConnection.equals(Constants.NETWORK_CONNECTED)) {
-                            Intent intent = new Intent(getApplicationContext(), BookAppointmentActivity.class);
+                            Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                             Bundle bundle = new Bundle();
                             bundle.putString("email", getE_mail());
                             intent.putExtras(bundle);

@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:textColor="@android:color/white"
             android:textStyle="bold"
-            android:textSize="20sp"
+            android:textSize="@dimen/book_title"
             android:id="@+id/txtToolbarText"
             android:text="@string/book_appointment"/>
 
@@ -31,6 +31,16 @@
             android:layout_height="wrap_content"
             android:gravity="end"
             android:id="@+id/ldtCity">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:textColor="@color/white"
+                android:textSize="@dimen/edit_text_size"
+                android:textStyle="bold"
+                android:padding="10dp"
+                android:id="@+id/txttimer" />
 
         <TextView
             android:layout_width="wrap_content"

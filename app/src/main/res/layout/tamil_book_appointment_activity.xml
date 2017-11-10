@@ -31,11 +31,18 @@
                 android:layout_height="wrap_content"
                 android:gravity="end"
                 android:id="@+id/ldtCity">
-
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="கோயம்புத்தூர்"
+                    android:gravity="end"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/edit_text_size"
+                    android:textStyle="bold"
+                    android:padding="10dp"
+                    android:id="@+id/txttimer" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:gravity="end"
                     android:textColor="@color/white"
                     android:textSize="@dimen/city_txt"

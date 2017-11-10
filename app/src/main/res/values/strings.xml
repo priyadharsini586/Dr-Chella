@@ -107,7 +107,7 @@
 
     <!--time slot-->
 
-<string name="tamil_cancel">ரத்து</string>
+    <string name="tamil_cancel">ரத்து</string>
     <string name="tamil_conform">உறுதி</string>
     <!--order summary-->
     <string name="chella_dr_app">Dr. Chellakumarasamy MD.,</string>
@@ -141,4 +141,10 @@
     <string name="tamil_patient_details">நோயாளி விவரங்கள்</string>
     <string name="conformation_of_your">Conformation Of Your Appointment</string>
     <string name="tamil_conformation_of_your">உங்கள் பதிவு உறுதிப்படுத்தல்</string>
+    <string name="info_description">Do you want to cancel the Appointment ?</string>
+    <string name="tamil_info_description">பதிவு ரத்து செய்ய வேண்டுமா ?</string>
+    <string name="tamil_ok_button">சரி</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
 </resources>

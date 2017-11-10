@@ -1,6 +1,7 @@
 package com.hexaenna.drchella.fragment;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
@@ -9,6 +10,7 @@ import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,7 +49,7 @@ import retrofit2.Response;
  * Use the {@link ConformationFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ConformationFragment extends Fragment implements View.OnClickListener {
+public class ConformationFragment extends Fragment implements View.OnClickListener, BookAppointmentActivity.OnBackPressedListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 
@@ -66,6 +68,7 @@ public class ConformationFragment extends Fragment implements View.OnClickListen
     BookingDetails bookingDetails = BookingDetails.getInstance();
     RegisterBookDetails registerBookDetails = RegisterBookDetails.getInstance();
     Button btnConform,cancelbutton;
+    String title,info,ok,cancel;
 
     public ConformationFragment() {
         // Required empty public constructor
@@ -132,6 +135,12 @@ public class ConformationFragment extends Fragment implements View.OnClickListen
             kollihos = getActivity().getResources().getString(R.string.kollidam_hospital);
             cheHos = getActivity().getResources().getString(R.string.chennai_hospital);
 
+            title = getString(R.string.conformation);
+            info = getString(R.string.info_description);
+            ok= getString(R.string.ok_button);
+            cancel = getString(R.string.cancel_button);
+
+
 
         }else if (databaseHandler.getContact("0").equals("Tamil"))
         {
@@ -144,6 +153,11 @@ public class ConformationFragment extends Fragment implements View.OnClickListen
             mayHos = getActivity().getResources().getString(R.string.tamil_mayiladu_hospital);
             kollihos = getActivity().getResources().getString(R.string.tamil_kollidam_hospital);
             cheHos = getActivity().getResources().getString(R.string.tamil_chennai_hospital);
+
+            title = getString(R.string.tamil_conformation);
+            info = getString(R.string.tamil_info_description);
+            ok= getString(R.string.tamil_ok_button);
+            cancel = getString(R.string.tamil_cancel);
 
         }
 
@@ -203,6 +217,7 @@ public class ConformationFragment extends Fragment implements View.OnClickListen
         date.setText(bookingDetails.getSelectedDate());
         time = (TextView) mainView.findViewById(R.id.timeCon);
         time.setText(bookingDetails.getSelectedTime());
+        ((BookAppointmentActivity) getActivity()).setOnBackPressedListener(this);
         return mainView;
     }
 
@@ -233,8 +248,20 @@ public class ConformationFragment extends Fragment implements View.OnClickListen
                 break;
 
             case R.id.cancelbutton:
-                cancelAppointment();
+                showDialg();
                 break;
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        ConformationFragment conformationFragment = (ConformationFragment) getActivity().getSupportFragmentManager().findFragmentByTag("CONGIRMATION_ FRAGMENT");
+        if (conformationFragment != null && conformationFragment.isVisible()) {
+            //DO STUFF
+            showDialg();
+        }
+        else {
+            //Whatever
         }
     }
 
@@ -254,7 +281,7 @@ public class ConformationFragment extends Fragment implements View.OnClickListen
     }
 
 
-    private void cancelAppointment()
+    public void cancelAppointment()
     {
 
         if (isConnection.equals(Constants.NETWORK_CONNECTED)) {
@@ -436,5 +463,31 @@ public class ConformationFragment extends Fragment implements View.OnClickListen
             getActivity().unregisterReceiver(networkChangeReceiver);
             networkChangeReceiver = null;
         }
+    }
+
+
+    private void showDialg() {
+
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.MyDialogTheme);
+        builder.setTitle(title);
+        builder.setMessage(info);
+        builder.setPositiveButton(ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                dialog.cancel();
+                RegisterDetailsFragment.countDownTimer.cancel();
+                cancelAppointment();
+
+            }
+        });
+        builder.setNegativeButton(cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+
+            }
+        });
+        builder.show();
     }
 }
