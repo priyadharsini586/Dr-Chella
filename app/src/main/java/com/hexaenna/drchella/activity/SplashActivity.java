@@ -30,12 +30,22 @@ import android.widget.Toast;
 
 import com.androidadvance.topsnackbar.TSnackbar;
 import com.hexaenna.drchella.Model.BookingDetails;
+import com.hexaenna.drchella.Model.RegisterRequestAndResponse;
 import com.hexaenna.drchella.R;
+import com.hexaenna.drchella.api.ApiClient;
+import com.hexaenna.drchella.api.ApiInterface;
 import com.hexaenna.drchella.utils.Constants;
 import com.hexaenna.drchella.utils.NetworkChangeReceiver;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.regex.Pattern;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -51,6 +61,8 @@ public class SplashActivity extends AppCompatActivity {
     TSnackbar snackbar;
     View snackbarView;
     NetworkChangeReceiver networkChangeReceiver;
+    ApiInterface apiInterface;
+    String alreadySend = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,28 +101,12 @@ public class SplashActivity extends AppCompatActivity {
         animBounce.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
-
             }
 
             @Override
             public void onAnimationEnd(Animation animation) {
 
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        if (isConnection.equals(Constants.NETWORK_CONNECTED)) {
-                            Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-                            Bundle bundle = new Bundle();
-                            bundle.putString("email", getE_mail());
-                            intent.putExtras(bundle);
-                            startActivity(intent);
-                            overridePendingTransition(R.anim.right_in, R.anim.left_out);
-                            SplashActivity.this.finish();
-                        }
-                    }
-                },SPLASH_DISPLAY_LENGTH);
-
+                checkEmail();
 
             }
 
@@ -139,7 +135,6 @@ public class SplashActivity extends AppCompatActivity {
                     }
                 }
             } else {
-                Log.e("newmesage", "already granted");
                 ldtSplash.startAnimation(animBounce);
             }
 
@@ -184,7 +179,7 @@ public class SplashActivity extends AppCompatActivity {
                 } else {
                     getE_mail();
                     ldtSplash.startAnimation(animBounce);
-                    Log.e("newmesage", "Permissions garanted.");
+                    checkEmail();
                 }
                 break;
         }
@@ -251,6 +246,7 @@ public class SplashActivity extends AppCompatActivity {
     public void onPause() {
         super.onPause();
         Log.e("e_mail","onResume");
+        checkEmail();
         if (snackbar != null)
             snackbar.dismiss();
 
@@ -297,6 +293,7 @@ public class SplashActivity extends AppCompatActivity {
                             @Override
                             public void onClick(View v) {
                                 Log.d("Action Button", "onClick triggered");
+                                checkEmail();
 
                             }
                         });
@@ -313,17 +310,110 @@ public class SplashActivity extends AppCompatActivity {
                 if (snackbar != null) {
                     snackbar.dismiss();
 
-                    Intent intent = new Intent(getApplicationContext(), RegistrationActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putString("email", getE_mail());
-                    intent.putExtras(bundle);
-                    startActivity(intent);
-                    overridePendingTransition(R.anim.right_in, R.anim.left_out);
-                    SplashActivity.this.finish();
+                    if (getE_mail() != null)
+                        checkEmail();
 
                 }
             }
         }
     }
+    private void checkEmail() {
 
+        if (alreadySend.equals("")) {
+            if (isConnection != null) {
+                if (isConnection.equals(Constants.NETWORK_CONNECTED)) {
+                    final String e_mail = getE_mail();
+                    alreadySend = "send";
+//            Log.e("djjkdfdhd",e_mail);
+                    apiInterface = ApiClient.getClient().create(ApiInterface.class);
+
+                    JSONObject jsonObject = new JSONObject();
+                    try {
+                        jsonObject.put("email", e_mail);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    Call<RegisterRequestAndResponse> call = apiInterface.checkEmail(jsonObject);
+                    call.enqueue(new Callback<RegisterRequestAndResponse>() {
+                        @Override
+                        public void onResponse(Call<RegisterRequestAndResponse> call, Response<RegisterRequestAndResponse> response) {
+                            if (response.isSuccessful()) {
+                                RegisterRequestAndResponse login = response.body();
+
+                                if (login.getStatus_code() != null) {
+
+                                    Log.e("output from splash", login.getStatus_message());
+                                    if (login.getStatus_code().equals(Constants.status_code0)) {
+
+                                        new Handler().postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                Intent mainIntent = new Intent(SplashActivity.this, RegistrationActivity.class);
+                                                Bundle bundle = new Bundle();
+                                                bundle.putString("email", e_mail);
+                                                mainIntent.putExtras(bundle);
+                                                SplashActivity.this.startActivity(mainIntent);
+                                                overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
+                                                SplashActivity.this.finish();
+                                            }
+                                        }, 2500);
+                                    } else if (login.getStatus_code().equals(Constants.status_code_1)) {
+                                        new Handler().postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                Intent mainIntent = new Intent(SplashActivity.this, OTPActivity.class);
+                                                Bundle bundle = new Bundle();
+                                                bundle.putString("email", e_mail);
+                                                mainIntent.putExtras(bundle);
+                                                SplashActivity.this.startActivity(mainIntent);
+                                                overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
+                                                SplashActivity.this.finish();
+                                            }
+                                        }, 2500);
+
+                                    } else if (login.getStatus_code().equals(Constants.status_code1)) {
+                                        new Handler().postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                Intent mainIntent = new Intent(SplashActivity.this, HomeActivity.class);
+                                                SplashActivity.this.startActivity(mainIntent);
+                                                overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
+                                                SplashActivity.this.finish();
+                                            }
+                                        }, 2500);
+                                    }
+                                }
+
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<RegisterRequestAndResponse> call, Throwable t) {
+                            Log.e("output", t.getMessage());
+                        }
+                    });
+
+                } else {
+                    snackbar = TSnackbar
+                            .make(rldMainLayout, "No Internet Connection !", TSnackbar.LENGTH_INDEFINITE)
+                            .setAction("Retry", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Log.e("Action Button", "onClick triggered");
+                                    checkEmail();
+                                }
+                            });
+                    snackbar.setActionTextColor(Color.parseColor("#4ecc00"));
+                    snackbarView = snackbar.getView();
+                    snackbarView.setBackgroundColor(Color.parseColor("#E43F3F"));
+                    TextView textView = (TextView) snackbarView.findViewById(com.androidadvance.topsnackbar.R.id.snackbar_text);
+                    textView.setTextColor(Color.YELLOW);
+                    textView.setTypeface(null, Typeface.BOLD);
+                    Log.e("show", "show in checkmail");
+                    snackbar.show();
+                }
+            }
+        }
+    }
 }

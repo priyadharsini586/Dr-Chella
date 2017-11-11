@@ -197,7 +197,7 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
                         {
                             if (requestAndResponse.getStatus_code().equals(Constants.status_code1))
                             {
-                                Intent  intent = new Intent(getApplicationContext(),BookAppointmentActivity.class);
+                                Intent  intent = new Intent(getApplicationContext(),HomeActivity.class);
                                 startActivity(intent);
                                 progressBar.setVisibility(View.GONE);
                                 OTPActivity.this.finish();
