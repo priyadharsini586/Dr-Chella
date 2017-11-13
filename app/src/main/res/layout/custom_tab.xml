@@ -19,5 +19,5 @@
         android:text="Home"
         android:gravity="center"
         android:id="@+id/tabTitle"
-        android:textStyle="bold"/>
+        android:textSize="@dimen/menu_size"/>
 </LinearLayout>

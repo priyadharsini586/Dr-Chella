@@ -29,20 +29,21 @@ public class BadgeDrawable extends Drawable {
         float mTextSize = context.getResources().getDimension(R.dimen.edit_text_size);
 
         mBadgePaint = new Paint();
-        mBadgePaint.setColor(Color.RED);
+        mBadgePaint.setColor(Color.WHITE);
         mBadgePaint.setAntiAlias(true);
         mBadgePaint.setStyle(Paint.Style.FILL);
         mBadgePaint1 = new Paint();
-        mBadgePaint1.setColor(ContextCompat.getColor(context.getApplicationContext(), R.color.colorPrimary));
+        mBadgePaint1.setColor(ContextCompat.getColor(context.getApplicationContext(), R.color.white));
         mBadgePaint1.setAntiAlias(true);
         mBadgePaint1.setStyle(Paint.Style.FILL);
 
         mTextPaint = new Paint();
-        mTextPaint.setColor(Color.WHITE);
+        mTextPaint.setColor(context.getResources().getColor(R.color.colorPrimary));
         mTextPaint.setTypeface(Typeface.DEFAULT);
         mTextPaint.setTextSize(mTextSize);
         mTextPaint.setAntiAlias(true);
         mTextPaint.setTextAlign(Paint.Align.CENTER);
+
     }
 
     @Override

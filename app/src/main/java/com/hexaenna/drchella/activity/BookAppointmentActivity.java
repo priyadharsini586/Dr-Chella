@@ -95,8 +95,10 @@ public class BookAppointmentActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         onBackPressedListener = null;
-        RegisterDetailsFragment.countDownTimer.cancel();
-        RegisterDetailsFragment.countDownTimer = null;
+        if (RegisterDetailsFragment.countDownTimer != null) {
+            RegisterDetailsFragment.countDownTimer.cancel();
+            RegisterDetailsFragment.countDownTimer = null;
+        }
         super.onDestroy();
     }
 

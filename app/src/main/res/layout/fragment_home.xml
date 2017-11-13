@@ -1,14 +1,111 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    >
+   android:orientation="vertical"
+    android:id="@+id/ldtMainview">
 
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingTop="50dp"
+        android:orientation="vertical"
+        android:paddingBottom="10dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp"
+            android:background="@color/colorPrimary">
     <TextView
-        android:id="@+id/section_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Home"
-        android:textColor="@color/colorPrimary"/>
+        android:text="Your Appointment on "
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:id="@+id/txtBookAppointment"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:text="11.20 Am"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:id="@+id/txtTime"
+            android:gravity="center"
+            android:paddingTop="5dp"/>
+        </LinearLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+      android:text="@string/remaining"
+        android:gravity="center"
+        android:textColor="#b2b2b2"
+        android:padding="10dp"
+        android:id="@+id/txtRemaingDays"/>
 
-</RelativeLayout>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="View"
+            android:background="@drawable/rounded_corner"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:gravity="center"
+           />
+    </LinearLayout>
+
+
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#ededed"
+        android:elevation="1dp"
+        android:padding="10dp"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:padding="20dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:text="Hospital Name"
+            android:textColor="@android:color/black"
+            android:gravity="center"
+            android:textSize="17sp"
+            android:id="@+id/txtHospitalName"/>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="No 26/1, United India Colony, Kodambakkam, Chennai, Tamil Nadu 600024"
+            android:textSize="15sp"
+            android:gravity="center"
+            android:padding="10dp"
+            android:id="@+id/txtAddress"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="Phone No: +91 123455673"
+            android:textSize="15sp"
+            android:gravity="center"
+            android:id="@+id/txtPhone"/>
+    </LinearLayout>
+</LinearLayout>

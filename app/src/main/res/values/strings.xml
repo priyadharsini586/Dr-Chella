@@ -147,4 +147,21 @@
     <string name="title_activity_home">HomeActivity</string>
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
+    <string name="remaining">days remainig of your appointment</string>
+
+    <!--hospital address-->
+    <string name="erode_hospital_address">No: 12/29, Sate Bank Road, Opp.South Indian Bank, Erode-1</string>
+    <string name="erode_hospital_Phone">Phone No :+91 9750125555</string>
+    <string name="chennai_hospital_address">No: 26/1, United India Colony, Kodambakkam, Chennai 600024</string>
+    <string name="chennai_hospital_Phone">Phone No :+91 9750125555</string>
+    <string name="coimbatore_hospital_address">No: #320, Selva Towers, Avinashi Road, Next to FUN MALL,Pellamedu, Coimbatore 641004.</string>
+    <string name="coimbatore_hospital_Phone">Phone No :0422 25 75 666</string>
+    <string name="namakkal_hospital_address">No: 6/288, Tiruchy Road, Namakkal - 637001</string>
+    <string name="namakkal_hospital_Phone">Phone No :+91 9786650575</string>
+    <string name="may_hospital_address">Dr. Kaviarasan Clinic, Opp. to GH, Mayiladuthurai, Nagai District</string>
+    <string name="may_hospital_Phone">Phone No :+91 7373146666</string>
+    <string name="kollidam_hospital_address">No: 6/288, Tiruchy Road, Namakkal - 637001</string>
+    <string name="kollidam_hospital_Phone">Phone No :+91 9786650575</string>
+
+
 </resources>

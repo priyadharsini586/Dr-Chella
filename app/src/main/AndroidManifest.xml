@@ -45,7 +45,10 @@
         <activity
             android:name=".activity.HomeActivity"
             android:label="@string/title_activity_home"
-            android:theme="@style/AppTheme.Dark"/>
+            android:theme="@style/AppTheme.Dark" />
+        <activity android:name=".fragment.DrTalksActivity" />
+        <activity android:name=".fragment.AreaOfExpertiseFragment" />
+        <activity android:name=".fragment.MoreFragment"></activity>
     </application>
 
 </manifest>

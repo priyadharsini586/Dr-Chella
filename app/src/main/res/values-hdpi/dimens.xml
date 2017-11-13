@@ -32,4 +32,6 @@
     <dimen name="conform_text1">8sp</dimen>
     <dimen name="dr_chella_text">15sp</dimen>
 
+    <dimen name="menu_size">11sp</dimen>
+
 </resources>

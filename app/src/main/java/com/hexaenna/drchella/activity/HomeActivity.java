@@ -1,7 +1,11 @@
 package com.hexaenna.drchella.activity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
@@ -27,8 +31,14 @@ import android.widget.TextView;
 
 import com.hexaenna.drchella.R;
 import com.hexaenna.drchella.adapter.SectionsPagerAdapter;
+import com.hexaenna.drchella.custom_view.BadgeDrawable;
+import com.hexaenna.drchella.fragment.AreaOfExpertiseFragment;
+import com.hexaenna.drchella.fragment.DrTalksActivity;
 import com.hexaenna.drchella.fragment.HomeFragment;
+import com.hexaenna.drchella.fragment.MoreFragment;
 import com.hexaenna.drchella.fragment.ProfileFragment;
+
+import static com.hexaenna.drchella.utils.UtilsClass.setBadgeCount;
 
 public class HomeActivity extends AppCompatActivity  {
 
@@ -53,6 +63,8 @@ public class HomeActivity extends AppCompatActivity  {
         setContentView(R.layout.activity_home);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(),HomeActivity.this);
@@ -69,8 +81,11 @@ public class HomeActivity extends AppCompatActivity  {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+
+
+                Intent intent = new Intent(getApplicationContext(),BookAppointmentActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
             }
         });
 
@@ -86,7 +101,11 @@ public class HomeActivity extends AppCompatActivity  {
 
     private void setupViewPager() {
         mSectionsPagerAdapter.addFrag(new HomeFragment(), "Home");
+        mSectionsPagerAdapter.addFrag(new DrTalksActivity(), "Dr Talks");
+        mSectionsPagerAdapter.addFrag(new AreaOfExpertiseFragment(), "Expert");
         mSectionsPagerAdapter.addFrag(new ProfileFragment(), "Profile");
+        mSectionsPagerAdapter.addFrag(new MoreFragment(), "More");
+
     }
 
 
@@ -113,6 +132,14 @@ public class HomeActivity extends AppCompatActivity  {
     public boolean onCreateOptionsMenu(Menu menu) {
 
         getMenuInflater().inflate(R.menu.menu_home, menu);
+        MenuItem itemCart = menu.findItem(R.id.action_cart);
+        LayerDrawable icon = (LayerDrawable) itemCart.getIcon();
+        setBadgeCount(this, icon, "9");
+
         return true;
     }
+
+
+
+
 }

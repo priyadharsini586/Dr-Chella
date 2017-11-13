@@ -32,4 +32,6 @@
     <dimen name="dr_chella_text">13sp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="appbar_padding_top">8dp</dimen>
+
+    <dimen name="menu_size">11sp</dimen>
 </resources>

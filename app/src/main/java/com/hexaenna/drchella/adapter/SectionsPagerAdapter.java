@@ -22,8 +22,8 @@ import java.util.List;
  */
 
 public class SectionsPagerAdapter extends FragmentPagerAdapter {
-    private int[] imageResId = { R.mipmap.ic_home_tab, R.drawable.ic_arrow_right };
-    private int[] unSelectPosition = { R.mipmap.ic_home_tab_unselect, R.drawable.ic_arrow_left };
+    private int[] selectPosition = { R.mipmap.ic_home_tab_select, R.mipmap.ic_drtalk_tab_select,R.mipmap.ic_area_expertise_tab_select,R.mipmap.ic_profile_tab_select,R.mipmap.ic_more_tab_select };
+    private int[] unSelectPosition = { R.mipmap.ic_home_tab_unselect, R.mipmap.ic_drtalk_tab_unselect,R.mipmap.ic_area_expertise_tab_unselect,  R.mipmap.ic_profile_tab_unselect, R.mipmap.ic_more_tab_unselect};
     private final List<Fragment> mFragmentList = new ArrayList<>();
     private final List<String> mFragmentTitleList = new ArrayList<>();
     Context context;
@@ -44,7 +44,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 2;
+        return mFragmentTitleList.size();
     }
 
     @Override
@@ -57,9 +57,20 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
         // Given you have a custom layout in `res/layout/custom_tab.xml` with a TextView and ImageView
         View v = LayoutInflater.from(context).inflate(R.layout.custom_tab, null);
         TextView tv = (TextView) v.findViewById(R.id.tabTitle);
-        tv.setText(mFragmentTitleList.get(position));
         ImageView img = (ImageView) v.findViewById(R.id.tabImage);
-        img.setImageResource(imageResId[position]);
+
+        if (position == 0)
+        {
+            tv.setText(mFragmentTitleList.get(position));
+            tv.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
+            img.setImageResource(selectPosition[position]);
+        }else
+        {
+            tv.setText(mFragmentTitleList.get(position));
+            img.setImageResource(unSelectPosition[position]);
+            tv.setTextColor(context.getResources().getColor(R.color.unselected_tab));
+        }
+
         return v;
     }
 
@@ -68,9 +79,9 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
         TabLayout.Tab tab = tabLayout.getTabAt(position);
         View selected = tab.getCustomView();
         TextView iv_text = (TextView) selected.findViewById(R.id.tabTitle);
-        iv_text.setTextColor(context.getResources().getColor(R.color.white));
+        iv_text.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
         ImageView img = (ImageView) selected.findViewById(R.id.tabImage);
-        img.setImageResource(imageResId[position]);
+        img.setImageResource(selectPosition[position]);
     }
 
     public void SetUnSelectView(TabLayout tabLayout,int position)

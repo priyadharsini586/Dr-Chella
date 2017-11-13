@@ -12,13 +12,13 @@ import java.util.List;
  */
 
 public class TimeAndDateResponse {
-    String status_code,status_message,success,app_sno = null;
+   private   String status_code,status_message,success,app_sno = null,city_id,date,time;
     @SerializedName("Blocked_Array")
     @Expose
-    ArrayList<String> Blocked_Array = null ;
+   private ArrayList<String> Blocked_Array = null ;
     @SerializedName("Booked_Array")
     @Expose
-    ArrayList<String> Booked_Array = new ArrayList<>();
+  private   ArrayList<String> Booked_Array = new ArrayList<>();
 
     public String getStatus_code() {
         return status_code;
@@ -66,5 +66,29 @@ public class TimeAndDateResponse {
 
     public void setApp_sno(String app_sno) {
         this.app_sno = app_sno;
+    }
+
+    public String getCity_id() {
+        return city_id;
+    }
+
+    public void setCity_id(String city_id) {
+        this.city_id = city_id;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 }
