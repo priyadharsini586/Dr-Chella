@@ -1,5 +1,6 @@
 package com.hexaenna.drchella.api;
 
+import com.hexaenna.drchella.Model.MessageRequestAndResponse;
 import com.hexaenna.drchella.Model.RegisterRequestAndResponse;
 import com.hexaenna.drchella.Model.TimeAndDateResponse;
 
@@ -9,6 +10,7 @@ import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 
 /**
  * Created by admin on 10/13/2017.
@@ -56,5 +58,9 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("recent_apntmnt.php")
     Call<TimeAndDateResponse> recent_appintment(@Field("x") JSONObject bookObject);
+
+
+    @POST("sendmessage.aspx")
+    Call<String> sendMessage(@Query("account") String account, @Query("password") String password, @Query("sender") String sender, @Query("message") String message, @Query("mobile") String mobile, @Query("messageid") String messageid);
 }
 

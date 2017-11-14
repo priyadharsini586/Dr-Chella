@@ -6,7 +6,7 @@ package com.hexaenna.drchella.Model;
 
 public class RegisterRequestAndResponse {
 
-    public String status_code,status_message,success;
+    public String status_code,status_message,success,verify_code,unique_code;
 
     public String getStatus_code() {
         return status_code;
@@ -32,4 +32,19 @@ public class RegisterRequestAndResponse {
         this.success = success;
     }
 
+    public String getVerify_code() {
+        return verify_code;
+    }
+
+    public void setVerify_code(String verify_code) {
+        this.verify_code = verify_code;
+    }
+
+    public String getUnique_code() {
+        return unique_code;
+    }
+
+    public void setUnique_code(String unique_code) {
+        this.unique_code = unique_code;
+    }
 }

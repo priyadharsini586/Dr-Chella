@@ -33,6 +33,7 @@ import android.widget.Toast;
 import com.androidadvance.topsnackbar.TSnackbar;
 import com.hexaenna.drchella.Db.DatabaseHandler;
 import com.hexaenna.drchella.Model.RegisterRequestAndResponse;
+import com.hexaenna.drchella.Model.UserRegisterDetails;
 import com.hexaenna.drchella.R;
 import com.hexaenna.drchella.adapter.GenderSpinnerAdapter;
 import com.hexaenna.drchella.api.ApiClient;
@@ -249,9 +250,11 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                             if (login.getStatus_code().equals(Constants.status_code1))
                             {
                                 Intent intent = new Intent(getApplicationContext(),OTPActivity.class);
-                                Bundle bundle = new Bundle();
-                                bundle.putString("mobileNumber", edtMbl.getText().toString());
-                                intent.putExtras(bundle);
+                                UserRegisterDetails userRegisterDetails = UserRegisterDetails.getInstance();
+                                userRegisterDetails.setMobileNum(edtMbl.getText().toString());
+                                userRegisterDetails.setUniqueId(login.getUnique_code());
+                                userRegisterDetails.setOtp(login.getVerify_code());
+                                userRegisterDetails.setE_mail(edtE_mail.getText().toString());
                                 startActivity(intent);
                                 RegistrationActivity.this.finish();
                             }else

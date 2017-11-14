@@ -1,11 +1,13 @@
 package com.hexaenna.drchella.activity;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,12 +23,17 @@ import android.widget.Toast;
 
 import com.androidadvance.topsnackbar.TSnackbar;
 import com.hexaenna.drchella.Db.DatabaseHandler;
+import com.hexaenna.drchella.Model.MessageRequestAndResponse;
 import com.hexaenna.drchella.Model.RegisterRequestAndResponse;
+import com.hexaenna.drchella.Model.TimeAndDateResponse;
+import com.hexaenna.drchella.Model.UserRegisterDetails;
 import com.hexaenna.drchella.R;
 import com.hexaenna.drchella.api.ApiClient;
 import com.hexaenna.drchella.api.ApiInterface;
+import com.hexaenna.drchella.api.SendSMSApiClient;
 import com.hexaenna.drchella.utils.Constants;
 import com.hexaenna.drchella.utils.NetworkChangeReceiver;
+import com.hexaenna.drchella.utils.SMSBroadCastReceiver;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -48,6 +55,11 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
     EditText edtOTP;
     LinearLayout ldtResendOTP;
     String mobileNumber;
+    String userName = "urchospitals";
+    String password = "admin123";
+    String senderId = "URCmed";
+    String message = "";
+    UserRegisterDetails userRegisterDetails = UserRegisterDetails.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +81,9 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
         intentFilter.addAction(Constants.BROADCAST);
         this.registerReceiver(networkChangeReceiver,
                 intentFilter);
+
+
+
         final DatabaseHandler databaseHandler = new DatabaseHandler(getApplicationContext());
         if (databaseHandler.getContact("0").equals("English"))
         {
@@ -93,10 +108,12 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
         ldtResendOTP.setOnClickListener(this);
 
 
-        Bundle bundle = this.getIntent().getExtras();
+        mobileNumber =userRegisterDetails.getMobileNum();
+        /*Bundle bundle = this.getIntent().getExtras();
         if (bundle.getString("mobileNumber") != null) {
             mobileNumber = bundle.getString("mobileNumber");
-        }
+        }*/
+
     }
 
     @Override
@@ -181,7 +198,7 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
 
             JSONObject jsonObject = new JSONObject();
             try {
-                jsonObject.put("verify_code",edtOTP.getText().toString());
+                jsonObject.put("verify_code","DR-"+edtOTP.getText().toString());
                 jsonObject.put("mobile",mobileNumber);
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -266,7 +283,92 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
                 if (snackbar != null) {
                     snackbar.dismiss();
                 }
+                sendSms();
             }
         }
     }
+
+
+    public  void sendSms()
+    {
+        progressBar.setVisibility(View.VISIBLE);
+        UserRegisterDetails userRegisterDetails = UserRegisterDetails.getInstance();
+        message = userRegisterDetails.getOtp() +" is your Dr.Chella App Verification Code.";
+        if (isConnection.equals(Constants.NETWORK_CONNECTED)) {
+            apiInterface = SendSMSApiClient.getClient().create(ApiInterface.class);
+
+            Call<String> call = apiInterface.sendMessage(userName,password,senderId,message,userRegisterDetails.getMobileNum(),userRegisterDetails.getUniqueId());
+            call.enqueue(new Callback<String>() {
+                @Override
+                public void onResponse(Call<String> call, Response<String> response) {
+                    if (response.isSuccessful()) {
+                        progressBar.setVisibility(View.GONE);
+
+                        Log.e("response", response.body());
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<String> call, Throwable t) {
+                    Log.e("Failed",  t.getMessage());
+
+
+
+                }
+
+
+            });
+
+        }else
+        {
+            snackbar = TSnackbar
+                    .make(rldMainOtp, "No Internet Connection !", TSnackbar.LENGTH_INDEFINITE)
+                    .setAction("Retry", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Log.d("Action Button", "onClick triggered");
+
+                        }
+                    });
+            snackbar.setActionTextColor(Color.parseColor("#4ecc00"));
+            snackbarView = snackbar.getView();
+            snackbarView.setBackgroundColor(Color.parseColor("#E43F3F"));
+            TextView textView = (TextView) snackbarView.findViewById(com.androidadvance.topsnackbar.R.id.snackbar_text);
+            textView.setTextColor(Color.YELLOW);
+            textView.setTypeface(null, Typeface.BOLD);
+            snackbar.show();
+        }
+    }
+
+    private SMSBroadCastReceiver receiver = new SMSBroadCastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equalsIgnoreCase("otp")) {
+                String message = intent.getStringExtra("message");
+                String[] splitedMsg = message.split(" ");
+                message = splitedMsg[0];
+                splitedMsg = message.split("-");
+                message = splitedMsg[1];
+                edtOTP.setText(message);
+                sendOtp();
+                Log.e("message",message);
+
+            }
+        }
+    };
+
+    @Override
+    public void onResume() {
+        LocalBroadcastManager.getInstance(this).
+                registerReceiver(receiver, new IntentFilter("otp"));
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver);
+    }
+
 }

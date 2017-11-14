@@ -8,6 +8,9 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
 
     <application
         android:allowBackup="true"
@@ -42,13 +45,16 @@
             </intent-filter>
         </receiver>
 
+        <receiver android:name=".utils.SMSBroadCastReceiver">
+            <intent-filter>
+                <action android:name="android.provider.Telephony.SMS_RECEIVED"/>
+            </intent-filter>
+        </receiver>
         <activity
             android:name=".activity.HomeActivity"
             android:label="@string/title_activity_home"
             android:theme="@style/AppTheme.Dark" />
-        <activity android:name=".fragment.DrTalksActivity" />
-        <activity android:name=".fragment.AreaOfExpertiseFragment" />
-        <activity android:name=".fragment.MoreFragment"></activity>
+
     </application>
 
 </manifest>

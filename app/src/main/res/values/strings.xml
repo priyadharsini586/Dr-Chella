@@ -150,7 +150,7 @@
     <string name="remaining">days remainig of your appointment</string>
 
     <!--hospital address-->
-    <string name="erode_hospital_address">No: 12/29, Sate Bank Road, Opp.South Indian Bank, Erode-1</string>
+    <string name="erode_hospital_address">No: 12/29, Sate Bank Road, Opp.South Indian Bank, Erode 638001</string>
     <string name="erode_hospital_Phone">Phone No :+91 9750125555</string>
     <string name="chennai_hospital_address">No: 26/1, United India Colony, Kodambakkam, Chennai 600024</string>
     <string name="chennai_hospital_Phone">Phone No :+91 9750125555</string>
@@ -164,4 +164,6 @@
     <string name="kollidam_hospital_Phone">Phone No :+91 9786650575</string>
 
 
+
+    <string name="no_appointment">You Don\'t have an Appointment </string>
 </resources>

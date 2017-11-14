@@ -118,6 +118,9 @@ public class SplashActivity extends AppCompatActivity {
 
 
         permissions.add(Manifest.permission.GET_ACCOUNTS);
+        permissions.add(Manifest.permission.READ_SMS);
+        permissions.add(Manifest.permission.RECEIVE_SMS);
+        permissions.add(Manifest.permission.SEND_SMS);
         permissionsToRequest = findUnAskedPermissions(permissions);
 
         if (Build.VERSION.SDK_INT >= 23) {

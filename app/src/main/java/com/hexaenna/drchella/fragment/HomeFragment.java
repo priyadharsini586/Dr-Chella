@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.androidadvance.topsnackbar.TSnackbar;
 import com.hexaenna.drchella.Model.RegisterRequestAndResponse;
 import com.hexaenna.drchella.Model.TimeAndDateResponse;
+import com.hexaenna.drchella.Model.UserRegisterDetails;
 import com.hexaenna.drchella.R;
 import com.hexaenna.drchella.activity.OTPActivity;
 import com.hexaenna.drchella.activity.RegistrationActivity;
@@ -49,7 +50,7 @@ public class HomeFragment extends Fragment {
 
     View rootView;
     String isConnection = null;
-    LinearLayout rldMainLayout;
+    LinearLayout rldMainLayout,ldtNoAppoint,ldtAppointment;
     TSnackbar snackbar;
     View snackbarView;
     NetworkChangeReceiver networkChangeReceiver;
@@ -88,6 +89,11 @@ public class HomeFragment extends Fragment {
         txtHospitalName = (TextView) rootView.findViewById(R.id.txtHospitalName);
         txtAddress = (TextView) rootView.findViewById(R.id.txtAddress);
         txtTime = (TextView) rootView.findViewById(R.id.txtTime);
+
+        ldtNoAppoint = (LinearLayout) rootView.findViewById(R.id.ldtNoAppoint);
+        ldtNoAppoint.setVisibility(View.GONE);
+        ldtAppointment = (LinearLayout) rootView.findViewById(R.id.ldtAppointment);
+        ldtAppointment.setVisibility(View.GONE);
         return rootView;
     }
 
@@ -103,7 +109,8 @@ public class HomeFragment extends Fragment {
             final DateFormat[] dateForRequest = {new SimpleDateFormat("dd.MM.yyyy")};
             String formattedDate = dateForRequest[0].format(cal.getTime());
             try {
-                jsonObject.put("email","vnneelakandan@gmail.com");
+                UserRegisterDetails userRegisterDetails = UserRegisterDetails.getInstance();
+                jsonObject.put("email",userRegisterDetails.getMobileNum());
                 jsonObject.put("cur_date",formattedDate);
 
             } catch (JSONException e) {
@@ -119,7 +126,7 @@ public class HomeFragment extends Fragment {
 
                         if (timeAndDateResponse.getStatus_code() != null) {
                             if (timeAndDateResponse.getStatus_code().equals(Constants.status_code1)) {
-
+                                ldtAppointment.setVisibility(View.VISIBLE);
                                 try {
                                     Date newDate= dateForRequest[0].parse(timeAndDateResponse.getDate());
                                     dateForRequest[0] = new SimpleDateFormat("dd MMM yyyy");
@@ -142,6 +149,9 @@ public class HomeFragment extends Fragment {
                                     e.printStackTrace();
                                 }
 
+                            }else if (timeAndDateResponse.getStatus_code().equals(Constants.status_code0))
+                            {
+                                ldtNoAppoint.setVisibility(View.VISIBLE);
                             }
                         }
                     }
