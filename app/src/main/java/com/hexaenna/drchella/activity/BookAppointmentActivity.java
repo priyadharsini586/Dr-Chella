@@ -71,7 +71,6 @@ public class BookAppointmentActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-
         if (onBackPressedListener != null)
             onBackPressedListener.onBackPressed();
         else

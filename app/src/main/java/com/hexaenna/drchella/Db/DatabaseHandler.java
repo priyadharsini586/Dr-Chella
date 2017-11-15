@@ -24,10 +24,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     // Contacts table name
     private static final String TABLE_LANGUAGE = "language";
+    private static final String TABLE_USER_DETAILS= "user_details";
 
     // Contacts Table Columns names
     private static final String KEY_LANGUAGE = "language";
     private static final String KEY_ID = "id";
+
+    private static final String USER_NAME = "user_name";
+    private static final String USER_MBL = "mbl_number";
+    private static final String USER_ID = "user_id";
 
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -39,7 +44,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         String CREATE_CONTACTS_TABLE = "CREATE TABLE " + TABLE_LANGUAGE + "("
                 + KEY_ID + " TEXT ,"
                 + KEY_LANGUAGE + " TEXT " + ")";
+        String CREATE_USER_TABLE = "CREATE TABLE " + TABLE_USER_DETAILS + "("
+                + USER_ID + " TEXT ,"
+                + USER_NAME + " TEXT ,"
+                + USER_MBL + " TEXT " + ")";
         db.execSQL(CREATE_CONTACTS_TABLE);
+        db.execSQL(CREATE_USER_TABLE);
     }
 
     // Upgrading database
@@ -47,7 +57,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Drop older table if existed
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_LANGUAGE);
-
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_USER_DETAILS);
         // Create tables again
         onCreate(db);
     }
@@ -56,7 +66,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
      * All CRUD(Create, Read, Update, Delete) Operations
      */
 
-    // Adding new contact
+
    public void addLanguage(String lang,String id) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -69,7 +79,20 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close(); // Closing database connection
     }
 
-    // Getting single contact
+    public void addUser(String userNmae,String mbl,String id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(USER_NAME, userNmae);
+        values.put(USER_ID,id);
+        values.put(USER_MBL,mbl);
+
+        // Inserting Row
+        db.insert(TABLE_USER_DETAILS, null, values);
+        db.close(); // Closing database connection
+    }
+
+
    public  String getContact(String id) {
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -84,6 +107,23 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         // return contact
         return language;
     }
+
+    public String[] getUserName(String id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.query(TABLE_USER_DETAILS, new String[] { USER_NAME,
+                        USER_MBL }, USER_ID + "=?",
+                new String[] { String.valueOf(id) }, null, null, null, null);
+        if (cursor != null)
+            cursor.moveToFirst();
+
+
+        String[] userDetails = {cursor.getString(0),cursor.getString(1)};
+
+        // return contact
+        return userDetails;
+    }
+
 
     // Getting All Contacts
     /*public List<Contact> getAllContacts() {

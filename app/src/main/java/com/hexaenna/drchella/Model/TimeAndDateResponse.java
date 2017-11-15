@@ -12,7 +12,7 @@ import java.util.List;
  */
 
 public class TimeAndDateResponse {
-   private   String status_code,status_message,success,app_sno = null,city_id,date,time;
+   private   String status_code,status_message,success,app_sno = null,city_id,date,time,uniqid;
     @SerializedName("Blocked_Array")
     @Expose
    private ArrayList<String> Blocked_Array = null ;
@@ -90,5 +90,13 @@ public class TimeAndDateResponse {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public String getUniqid() {
+        return uniqid;
+    }
+
+    public void setUniqid(String uniqid) {
+        this.uniqid = uniqid;
     }
 }

@@ -44,17 +44,20 @@
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
-
         <receiver android:name=".utils.SMSBroadCastReceiver">
             <intent-filter>
-                <action android:name="android.provider.Telephony.SMS_RECEIVED"/>
+                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
         </receiver>
+
         <activity
             android:name=".activity.HomeActivity"
             android:label="@string/title_activity_home"
             android:theme="@style/AppTheme.Dark" />
-
+        <activity
+            android:name=".activity.ViewAppointmentActivity"
+            android:label="@string/title_activity_view_appointment"
+            android:theme="@style/AppTheme.Dark"/>
     </application>
 
 </manifest>

@@ -32,6 +32,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.ScrollView;
@@ -63,7 +64,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class RegisterDetailsFragment extends Fragment implements View.OnClickListener {
+public class RegisterDetailsFragment extends Fragment implements View.OnClickListener, BookAppointmentActivity.OnBackPressedListener {
 
     View mainView;
     MaterialSpinner spnSirName;
@@ -85,6 +86,7 @@ public class RegisterDetailsFragment extends Fragment implements View.OnClickLis
     ApiInterface apiInterface;
     View snackbarView;
     ScrollView relBar;
+    ProgressBar progressRegister;
     public RegisterDetailsFragment() {
         // Required empty public constructor
     }
@@ -196,12 +198,15 @@ public class RegisterDetailsFragment extends Fragment implements View.OnClickLis
 
         relBar = (ScrollView) mainView.findViewById(R.id.relBar);
 
+         progressRegister = (ProgressBar) mainView.findViewById(R.id.progressRegister);
+        progressRegister.setVisibility(View.GONE);
         startTimer();
 
         isApplicantMobileValidate();
         isPatientMobileValidate();
         isE_mailValidate();
         isGenderValidate();
+        ((BookAppointmentActivity) getActivity()).setOnBackPressedListener(this);
         return mainView;
     }
 
@@ -589,7 +594,7 @@ public class RegisterDetailsFragment extends Fragment implements View.OnClickLis
 
     public void cancelAppointment()
     {
-
+        progressRegister.setVisibility(View.VISIBLE);
         if (isConnection.equals(Constants.NETWORK_CONNECTED)) {
             apiInterface = ApiClient.getClient().create(ApiInterface.class);
             JSONObject jsonObject = new JSONObject();
@@ -620,6 +625,7 @@ public class RegisterDetailsFragment extends Fragment implements View.OnClickLis
                             }
 
                         }
+                        progressRegister.setVisibility(View.GONE);
                     }
                 }
 
@@ -693,6 +699,15 @@ public class RegisterDetailsFragment extends Fragment implements View.OnClickLis
             getActivity().unregisterReceiver(networkChangeReceiver);
             networkChangeReceiver = null;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Log.e("backpressed","register fragment");
+        countDownTimer.cancel();
+        countDownTimer = null;
+
+        cancelAppointment();
     }
 }
 

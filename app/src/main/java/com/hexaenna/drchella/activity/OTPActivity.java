@@ -371,4 +371,18 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
         LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver);
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (networkChangeReceiver == null)
+        {
+            Log.e("reg","Do not unregister receiver as it was never registered");
+        }
+        else
+        {
+            Log.e("reg","Unregister receiver");
+            unregisterReceiver(networkChangeReceiver);
+            networkChangeReceiver = null;
+        }
+    }
 }

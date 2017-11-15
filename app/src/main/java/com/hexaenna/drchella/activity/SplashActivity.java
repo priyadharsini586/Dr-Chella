@@ -31,6 +31,7 @@ import android.widget.Toast;
 import com.androidadvance.topsnackbar.TSnackbar;
 import com.hexaenna.drchella.Model.BookingDetails;
 import com.hexaenna.drchella.Model.RegisterRequestAndResponse;
+import com.hexaenna.drchella.Model.UserRegisterDetails;
 import com.hexaenna.drchella.R;
 import com.hexaenna.drchella.api.ApiClient;
 import com.hexaenna.drchella.api.ApiInterface;
@@ -347,6 +348,8 @@ public class SplashActivity extends AppCompatActivity {
                                 if (login.getStatus_code() != null) {
 
                                     Log.e("output from splash", login.getStatus_message());
+                                    UserRegisterDetails userRegisterDetails = UserRegisterDetails.getInstance();
+                                    userRegisterDetails.setE_mail(getE_mail());
                                     if (login.getStatus_code().equals(Constants.status_code0)) {
 
                                         new Handler().postDelayed(new Runnable() {
@@ -381,7 +384,7 @@ public class SplashActivity extends AppCompatActivity {
                                             public void run() {
                                                 Intent mainIntent = new Intent(SplashActivity.this, HomeActivity.class);
                                                 SplashActivity.this.startActivity(mainIntent);
-                                                overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
+                                                overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
                                                 SplashActivity.this.finish();
                                             }
                                         }, 2500);

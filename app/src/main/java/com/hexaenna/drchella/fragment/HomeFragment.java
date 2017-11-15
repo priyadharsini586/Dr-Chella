@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -24,6 +25,7 @@ import com.hexaenna.drchella.Model.UserRegisterDetails;
 import com.hexaenna.drchella.R;
 import com.hexaenna.drchella.activity.OTPActivity;
 import com.hexaenna.drchella.activity.RegistrationActivity;
+import com.hexaenna.drchella.activity.ViewAppointmentActivity;
 import com.hexaenna.drchella.api.ApiClient;
 import com.hexaenna.drchella.api.ApiInterface;
 import com.hexaenna.drchella.utils.Constants;
@@ -56,7 +58,7 @@ public class HomeFragment extends Fragment {
     NetworkChangeReceiver networkChangeReceiver;
     ApiInterface apiInterface;
     TextView txtBookAppointment,txtRemaingDays,txtHospitalName,txtAddress,txtTime;
-
+    Button btnView;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -67,7 +69,6 @@ public class HomeFragment extends Fragment {
             @Override
             public void onReceive(Context context, Intent intent) {
                 super.onReceive(context, intent);
-
 
 
                 Bundle b = intent.getExtras();
@@ -94,12 +95,22 @@ public class HomeFragment extends Fragment {
         ldtNoAppoint.setVisibility(View.GONE);
         ldtAppointment = (LinearLayout) rootView.findViewById(R.id.ldtAppointment);
         ldtAppointment.setVisibility(View.GONE);
+
+        btnView = (Button) rootView.findViewById(R.id.btnView);
+        btnView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), ViewAppointmentActivity.class);
+                startActivity(intent);
+            }
+        });
         return rootView;
     }
 
 
 
     private void registerDetails() {
+
 
         if (isConnection.equals(Constants.NETWORK_CONNECTED)) {
             apiInterface = ApiClient.getClient().create(ApiInterface.class);
@@ -110,7 +121,7 @@ public class HomeFragment extends Fragment {
             String formattedDate = dateForRequest[0].format(cal.getTime());
             try {
                 UserRegisterDetails userRegisterDetails = UserRegisterDetails.getInstance();
-                jsonObject.put("email",userRegisterDetails.getMobileNum());
+                jsonObject.put("email",userRegisterDetails.getE_mail());
                 jsonObject.put("cur_date",formattedDate);
 
             } catch (JSONException e) {
@@ -122,6 +133,7 @@ public class HomeFragment extends Fragment {
                 @Override
                 public void onResponse(Call<TimeAndDateResponse> call, Response<TimeAndDateResponse> response) {
                     if (response.isSuccessful()) {
+                        Log.e("successfull","success");
                         TimeAndDateResponse timeAndDateResponse = response.body();
 
                         if (timeAndDateResponse.getStatus_code() != null) {
@@ -131,7 +143,7 @@ public class HomeFragment extends Fragment {
                                     Date newDate= dateForRequest[0].parse(timeAndDateResponse.getDate());
                                     dateForRequest[0] = new SimpleDateFormat("dd MMM yyyy");
                                    String date = dateForRequest[0].format(newDate);
-                                    txtTime.setText(date +"at "+ timeAndDateResponse.getTime());
+                                    txtTime.setText(date +" at "+ timeAndDateResponse.getTime());
 
 
                                     Calendar calCurr = Calendar.getInstance();
@@ -244,6 +256,29 @@ public class HomeFragment extends Fragment {
                 registerDetails();
             }
         }
+    }
+
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (networkChangeReceiver == null)
+        {
+            Log.e("reg","Do not unregister receiver as it was never registered");
+        }
+        else
+        {
+            Log.e("reg","Unregister receiver");
+            getActivity().unregisterReceiver(networkChangeReceiver);
+            networkChangeReceiver = null;
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getNetworkState();
+
     }
 }
 

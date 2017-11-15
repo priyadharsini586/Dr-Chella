@@ -3,13 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
    android:orientation="vertical"
-    android:id="@+id/ldtMainview">
+    android:id="@+id/ldtMainview"
+    android:background="@android:color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:visibility="gone"
         android:id="@+id/ldtAppointment">
 
     <LinearLayout
@@ -31,7 +31,7 @@
             android:padding="10dp"
             android:background="@color/colorPrimary">
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Your Appointment on "
         android:textColor="@android:color/white"
@@ -65,7 +65,7 @@
             android:textColor="@android:color/white"
             android:textStyle="bold"
             android:gravity="center"
-           />
+          android:id="@+id/btnView" />
     </LinearLayout>
 
 
@@ -124,8 +124,8 @@
         android:orientation="vertical">
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/ic_no_appointment"/>
+            android:layout_height="150dp"
+            android:src="@drawable/schedule"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

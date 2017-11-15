@@ -6,6 +6,7 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
@@ -35,6 +36,7 @@ import android.text.style.StyleSpan;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.Patterns;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -97,7 +99,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class DateAndTimeFragment extends Fragment implements View.OnClickListener {
+public class DateAndTimeFragment extends Fragment implements View.OnClickListener, BookAppointmentActivity.OnBackPressedListener {
     // TODO: Rename parameter arguments, choose names that match
 
     ListView citySpinner;
@@ -428,7 +430,7 @@ public class DateAndTimeFragment extends Fragment implements View.OnClickListene
 
 
         }
-
+        ((BookAppointmentActivity) getActivity()).setOnBackPressedListener(this);
         return mainView;
     }
 
@@ -622,7 +624,13 @@ public class DateAndTimeFragment extends Fragment implements View.OnClickListene
                         if (timeAndDateResponse.getStatus_code() != null) {
                             if (timeAndDateResponse.getStatus_code().equals(Constants.status_code1)) {
                                 ArrayList<String> bookList = timeAndDateResponse.getBooked_Array();
-                                ArrayList<String> blockedList = timeAndDateResponse.getBlocked_Array();
+                                ArrayList<String> blockedList;
+                                if (timeAndDateResponse.getBlocked_Array() != null) {
+                                    blockedList = timeAndDateResponse.getBlocked_Array();
+                                }else
+                                {
+                                    blockedList = new ArrayList<String>();
+                                }
                                 ArrayList<String> gridList = new ArrayList<String>();
 
                                 if (city.equals("1"))
@@ -824,6 +832,17 @@ public class DateAndTimeFragment extends Fragment implements View.OnClickListene
         });
         dialog.setCancelable(false);
         dialog.show();
+        dialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
+            @Override
+            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
+
+                    dialog.dismiss();
+                    getActivity().finish();
+                }
+                return true;
+            }
+        });
     }
 
     @Override
@@ -1154,6 +1173,13 @@ public class DateAndTimeFragment extends Fragment implements View.OnClickListene
         fragmentTransaction.replace(R.id.fragment_container, new RegisterDetailsFragment(), "BOOKING_ FRAGMENT");
         fragmentTransaction.addToBackStack("BOOKING_ FRAGMENT");
         fragmentTransaction.commit();
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        getActivity().finish();
+
     }
 
     private static class PriviousDayDisableDecorator implements DayViewDecorator {

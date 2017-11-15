@@ -29,6 +29,7 @@ import android.view.ViewGroup;
 import android.widget.TabHost;
 import android.widget.TextView;
 
+import com.hexaenna.drchella.Db.DatabaseHandler;
 import com.hexaenna.drchella.R;
 import com.hexaenna.drchella.adapter.SectionsPagerAdapter;
 import com.hexaenna.drchella.custom_view.BadgeDrawable;
@@ -57,6 +58,7 @@ public class HomeActivity extends AppCompatActivity  {
      */
     private ViewPager mViewPager;
     private TabLayout tabLayout;
+    TextView txtName,txtMobileNumber;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,7 +84,6 @@ public class HomeActivity extends AppCompatActivity  {
             @Override
             public void onClick(View view) {
 
-
                 Intent intent = new Intent(getApplicationContext(),BookAppointmentActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
@@ -96,6 +97,13 @@ public class HomeActivity extends AppCompatActivity  {
         tabLayout.getTabAt(0).getCustomView().setSelected(true);
         tabLayout.addOnTabSelectedListener(OnTabSelectedListener);
         mSectionsPagerAdapter.SetOnSelectView(tabLayout,0);
+        txtMobileNumber = (TextView) findViewById(R.id.txtMobileNumber);
+        txtName = (TextView) findViewById(R.id.txtName);
+
+       DatabaseHandler databaseHandler = new DatabaseHandler(getApplicationContext());
+       String[] userDetails =  databaseHandler.getUserName("0");
+        txtMobileNumber.setText(userDetails[1]);
+        txtName.setText(userDetails[0]);
     }
 
 

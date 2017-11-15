@@ -27,10 +27,12 @@ import com.hexaenna.drchella.Db.DatabaseHandler;
 import com.hexaenna.drchella.Model.BookingDetails;
 import com.hexaenna.drchella.Model.RegisterBookDetails;
 import com.hexaenna.drchella.Model.TimeAndDateResponse;
+import com.hexaenna.drchella.Model.UserRegisterDetails;
 import com.hexaenna.drchella.R;
 import com.hexaenna.drchella.activity.BookAppointmentActivity;
 import com.hexaenna.drchella.api.ApiClient;
 import com.hexaenna.drchella.api.ApiInterface;
+import com.hexaenna.drchella.api.SendSMSApiClient;
 import com.hexaenna.drchella.utils.Constants;
 import com.hexaenna.drchella.utils.NetworkChangeReceiver;
 
@@ -69,6 +71,10 @@ public class ConformationFragment extends Fragment implements View.OnClickListen
     RegisterBookDetails registerBookDetails = RegisterBookDetails.getInstance();
     Button btnConform,cancelbutton;
     String title,info,ok,cancel;
+    String userName = "urchospitals";
+    String password = "admin123";
+    String senderId = "URCmed";
+    String message = "";
 
     public ConformationFragment() {
         // Required empty public constructor
@@ -351,10 +357,11 @@ public class ConformationFragment extends Fragment implements View.OnClickListen
             apiInterface = ApiClient.getClient().create(ApiInterface.class);
             JSONObject jsonObject = new JSONObject();
             try {
+                UserRegisterDetails userRegisterDetails = UserRegisterDetails.getInstance();
                 jsonObject.put("city",bookingDetails.getSelectedCity());
                 jsonObject.put("adate",bookingDetails.getSelectedDate());
                 jsonObject.put("atime",bookingDetails.getSelectedTime());
-                jsonObject.put("user_email_id",registerBookDetails.getE_mailid());
+                jsonObject.put("user_email_id",userRegisterDetails.getE_mail());
                 jsonObject.put("app_sno",bookingDetails.getAppSeno());
                 jsonObject.put("name",registerBookDetails.getName());
                 jsonObject.put("age",registerBookDetails.getAge());
@@ -380,6 +387,7 @@ public class ConformationFragment extends Fragment implements View.OnClickListen
                         if (timeAndDateResponse.getStatus_code() != null) {
                             if (timeAndDateResponse.getStatus_code().equals(Constants.status_code1)) {
                                 Toast.makeText(getActivity(), timeAndDateResponse.getStatus_message(), Toast.LENGTH_SHORT).show();
+                                sendSms(timeAndDateResponse.getUniqid());
                                 getActivity().finish();
                             } else if (timeAndDateResponse.getStatus_code().equals(Constants.status_code_1)) {
                                 if (timeAndDateResponse.getStatus_message() != null)
@@ -489,5 +497,58 @@ public class ConformationFragment extends Fragment implements View.OnClickListen
             }
         });
         builder.show();
+    }
+
+
+
+    public  void sendSms(String uniqueId)
+    {
+
+        BookingDetails bookingDetails  = BookingDetails.getInstance();
+        message =  "Dear "+ registerBookDetails.getName()+ ", You have an appointment with Dr.Chella on " +bookingDetails.getSelectedDate() + " at " + bookingDetails.getSelectedTime()+".GET WELL SOON";
+        if (isConnection.equals(Constants.NETWORK_CONNECTED)) {
+            apiInterface = SendSMSApiClient.getClient().create(ApiInterface.class);
+
+            Call<String> call = apiInterface.sendMessage(userName,password,senderId,message,registerBookDetails.getPatientNumber(),uniqueId);
+            call.enqueue(new Callback<String>() {
+                @Override
+                public void onResponse(Call<String> call, Response<String> response) {
+                    if (response.isSuccessful()) {
+
+                        Log.e("response", response.body());
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<String> call, Throwable t) {
+                    Log.e("Failed",  t.getMessage());
+
+
+
+                }
+
+
+            });
+
+        }else
+        {
+            snackbar = TSnackbar
+                    .make(relBar, "No Internet Connection !", TSnackbar.LENGTH_INDEFINITE)
+                    .setAction("Retry", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Log.d("Action Button", "onClick triggered");
+
+                        }
+                    });
+            snackbar.setActionTextColor(Color.parseColor("#4ecc00"));
+            snackbarView = snackbar.getView();
+            snackbarView.setBackgroundColor(Color.parseColor("#E43F3F"));
+            TextView textView = (TextView) snackbarView.findViewById(com.androidadvance.topsnackbar.R.id.snackbar_text);
+            textView.setTextColor(Color.YELLOW);
+            textView.setTypeface(null, Typeface.BOLD);
+            snackbar.show();
+        }
     }
 }
