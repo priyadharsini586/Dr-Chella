@@ -26,6 +26,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.ImageView;
 import android.widget.TabHost;
 import android.widget.TextView;
 
@@ -59,6 +60,7 @@ public class HomeActivity extends AppCompatActivity  {
     private ViewPager mViewPager;
     private TabLayout tabLayout;
     TextView txtName,txtMobileNumber;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,6 +101,7 @@ public class HomeActivity extends AppCompatActivity  {
         mSectionsPagerAdapter.SetOnSelectView(tabLayout,0);
         txtMobileNumber = (TextView) findViewById(R.id.txtMobileNumber);
         txtName = (TextView) findViewById(R.id.txtName);
+
 
        DatabaseHandler databaseHandler = new DatabaseHandler(getApplicationContext());
        String[] userDetails =  databaseHandler.getUserName("0");

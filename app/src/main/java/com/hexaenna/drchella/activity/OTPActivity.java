@@ -198,7 +198,7 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
 
             JSONObject jsonObject = new JSONObject();
             try {
-                jsonObject.put("verify_code","DR-"+edtOTP.getText().toString());
+                jsonObject.put("verify_code","Dr - "+edtOTP.getText().toString());
                 jsonObject.put("mobile",mobileNumber);
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -348,9 +348,9 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
                 String message = intent.getStringExtra("message");
                 String[] splitedMsg = message.split(" ");
                 message = splitedMsg[0];
-                splitedMsg = message.split("-");
-                message = splitedMsg[1];
-                edtOTP.setText(message);
+               /* splitedMsg = message.split("-");
+                message = splitedMsg[1];*/
+                edtOTP.setText(splitedMsg[2]);
                 sendOtp();
                 Log.e("message",message);
 

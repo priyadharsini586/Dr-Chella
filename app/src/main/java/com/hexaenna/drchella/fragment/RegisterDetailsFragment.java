@@ -29,6 +29,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -87,6 +88,7 @@ public class RegisterDetailsFragment extends Fragment implements View.OnClickLis
     View snackbarView;
     ScrollView relBar;
     ProgressBar progressRegister;
+    String sirNAme = "Mr";
     public RegisterDetailsFragment() {
         // Required empty public constructor
     }
@@ -143,13 +145,26 @@ public class RegisterDetailsFragment extends Fragment implements View.OnClickLis
         }
 
         spnSirName = (MaterialSpinner) mainView.findViewById(R.id.surname);
-        String[] SPINNERLIST = {"Mr", "Mrs", "Ms", "Dr","Er"};
+        final String[] SPINNERLIST = {"Mr", "Mrs", "Ms", "Dr","Er"};
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(),
                 R.layout.city_list_items, SPINNERLIST);
         spnSirName.setAdapter(arrayAdapter);
-        spnSirName.setSelection(1);
+        spnSirName.setSelection(0);
         spnSirName.setPaddingSafe(5,5,15,5);
+
+        spnSirName.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                sirNAme = SPINNERLIST[position];
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
 
         mToolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
         ((AppCompatActivity)getActivity()).setSupportActionBar(mToolbar);
@@ -253,7 +268,8 @@ public class RegisterDetailsFragment extends Fragment implements View.OnClickLis
 
     private void getNextFragment() {
 
-        registerBookDetails.setName(edtName.getText().toString());
+
+        registerBookDetails.setName(sirNAme +". "+edtName.getText().toString());
         registerBookDetails.setAge(edtAge.getText().toString());
         registerBookDetails.setApplicantNumber(edtApplicantNumber.getText().toString());
         registerBookDetails.setPatientNumber(edtPatientMobileNumber.getText().toString());

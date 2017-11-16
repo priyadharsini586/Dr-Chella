@@ -13,16 +13,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidadvance.topsnackbar.TSnackbar;
+import com.hexaenna.drchella.Model.AppointmentDetails;
 import com.hexaenna.drchella.Model.RegisterRequestAndResponse;
 import com.hexaenna.drchella.Model.TimeAndDateResponse;
 import com.hexaenna.drchella.Model.UserRegisterDetails;
 import com.hexaenna.drchella.R;
+import com.hexaenna.drchella.activity.BookAppointmentActivity;
 import com.hexaenna.drchella.activity.OTPActivity;
 import com.hexaenna.drchella.activity.RegistrationActivity;
 import com.hexaenna.drchella.activity.ViewAppointmentActivity;
@@ -59,6 +62,7 @@ public class HomeFragment extends Fragment {
     ApiInterface apiInterface;
     TextView txtBookAppointment,txtRemaingDays,txtHospitalName,txtAddress,txtTime;
     Button btnView;
+    ImageView imgScedule;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -104,6 +108,15 @@ public class HomeFragment extends Fragment {
                 startActivity(intent);
             }
         });
+        imgScedule = (ImageView) rootView.findViewById(R.id.imgScedule);
+        imgScedule.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(),BookAppointmentActivity.class);
+                startActivity(intent);
+                getActivity().overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
+            }
+        });
         return rootView;
     }
 
@@ -135,7 +148,8 @@ public class HomeFragment extends Fragment {
                     if (response.isSuccessful()) {
                         Log.e("successfull","success");
                         TimeAndDateResponse timeAndDateResponse = response.body();
-
+                        ldtNoAppoint.setVisibility(View.GONE);
+                        ldtAppointment.setVisibility(View.GONE);
                         if (timeAndDateResponse.getStatus_code() != null) {
                             if (timeAndDateResponse.getStatus_code().equals(Constants.status_code1)) {
                                 ldtAppointment.setVisibility(View.VISIBLE);
@@ -149,11 +163,26 @@ public class HomeFragment extends Fragment {
                                     Calendar calCurr = Calendar.getInstance();
                                     Calendar day = Calendar.getInstance();
                                     day.setTime(new SimpleDateFormat("dd.MM.yyyy").parse(timeAndDateResponse.getDate()));
+                                    SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+                                    String formattedDate = df.format(day.getTime());
+                                    String formattedDate1 = df.format(calCurr.getTime());
                                     if(day.after(calCurr)){
                                         Log.e("date","Days Left: " + (day.get(Calendar.DAY_OF_MONTH) -(calCurr.get(Calendar.DAY_OF_MONTH))));
                                         txtRemaingDays.setText(day.get(Calendar.DAY_OF_MONTH) -(calCurr.get(Calendar.DAY_OF_MONTH)) + " " +getActivity().getResources().getString(R.string.remaining));
 
+                                    }else if (formattedDate.equals(formattedDate1))
+                                    {
+                                        txtRemaingDays.setText("You Have an Appointment with doctor Today.");
                                     }
+
+
+                                    Log.e("date","Days Left: " + formattedDate);
+                                    Log.e("date","Days Left: " + formattedDate1);
+
+                                    AppointmentDetails appointmentDetails = AppointmentDetails.getInstance();
+                                    appointmentDetails.setCity(timeAndDateResponse.getCity_id());
+                                    appointmentDetails.setDate(timeAndDateResponse.getDate());
+                                    appointmentDetails.setTime(timeAndDateResponse.getTime());
 
                                     getAddress(timeAndDateResponse.getCity_id());
 

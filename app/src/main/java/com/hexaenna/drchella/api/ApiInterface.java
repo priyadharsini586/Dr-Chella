@@ -1,5 +1,6 @@
 package com.hexaenna.drchella.api;
 
+import com.hexaenna.drchella.Model.AppointmentDetails;
 import com.hexaenna.drchella.Model.MessageRequestAndResponse;
 import com.hexaenna.drchella.Model.RegisterRequestAndResponse;
 import com.hexaenna.drchella.Model.TimeAndDateResponse;
@@ -62,5 +63,10 @@ public interface ApiInterface {
 
     @POST("sendmessage.aspx")
     Call<String> sendMessage(@Query("account") String account, @Query("password") String password, @Query("sender") String sender, @Query("message") String message, @Query("mobile") String mobile, @Query("messageid") String messageid);
+
+
+    @FormUrlEncoded
+    @POST("get_appoinment_details.php")
+    Call<AppointmentDetails> appointment_details(@Field("x") JSONObject bookObject);
 }
 

@@ -164,6 +164,7 @@
     <string name="kollidam_hospital_Phone">Phone No :+91 9786650575</string>
 
 
-    <string name="no_appointment">You Don\'t have an Appointment </string>
+    <string name="no_appointment"> Would you like to have an Appointment ? </string>
     <string name="title_activity_view_appointment">ViewAppointmentActivity</string>
+    <string name="comming_soon">Coming Soon...</string>
 </resources>

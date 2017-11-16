@@ -10,7 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:id="@+id/ldtAppointment">
+        android:id="@+id/ldtAppointment"
+        android:visibility="gone">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -119,13 +120,20 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center_vertical"
-        android:gravity="center"
         android:id="@+id/ldtNoAppoint"
         android:orientation="vertical">
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:src="@drawable/schedule"/>
+            android:layout_height="200dp"
+            android:src="@drawable/chella"
+            android:background="@drawable/dr_bg"/>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="170dp"
+            android:src="@drawable/schedule"
+            android:id="@+id/imgScedule"
+            android:paddingTop="10dp"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -363,7 +363,7 @@ public class SplashActivity extends AppCompatActivity {
                                                 overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
                                                 SplashActivity.this.finish();
                                             }
-                                        }, 2500);
+                                        }, 2000);
                                     } else if (login.getStatus_code().equals(Constants.status_code_1)) {
                                         new Handler().postDelayed(new Runnable() {
                                             @Override
@@ -376,7 +376,7 @@ public class SplashActivity extends AppCompatActivity {
                                                 overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
                                                 SplashActivity.this.finish();
                                             }
-                                        }, 2500);
+                                        }, 2000);
 
                                     } else if (login.getStatus_code().equals(Constants.status_code1)) {
                                         new Handler().postDelayed(new Runnable() {
@@ -387,7 +387,7 @@ public class SplashActivity extends AppCompatActivity {
                                                 overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
                                                 SplashActivity.this.finish();
                                             }
-                                        }, 2500);
+                                        }, 2000);
                                     }
                                 }
 

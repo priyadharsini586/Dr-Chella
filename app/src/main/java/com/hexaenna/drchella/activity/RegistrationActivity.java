@@ -1,7 +1,7 @@
 package com.hexaenna.drchella.activity;
 
+import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
@@ -10,22 +10,18 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.support.annotation.IdRes;
 import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatDialog;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,7 +31,6 @@ import com.hexaenna.drchella.Db.DatabaseHandler;
 import com.hexaenna.drchella.Model.RegisterRequestAndResponse;
 import com.hexaenna.drchella.Model.UserRegisterDetails;
 import com.hexaenna.drchella.R;
-import com.hexaenna.drchella.adapter.GenderSpinnerAdapter;
 import com.hexaenna.drchella.api.ApiClient;
 import com.hexaenna.drchella.api.ApiInterface;
 import com.hexaenna.drchella.utils.Constants;
@@ -44,10 +39,6 @@ import com.hexaenna.drchella.utils.NetworkChangeReceiver;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
-import fr.ganfra.materialspinner.MaterialSpinner;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -100,7 +91,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     private void showLanguage() {
 
         final DatabaseHandler databaseHandler = new DatabaseHandler(getApplicationContext());
-        final String[] selected = new String[1];
+        /*final String[] selected = new String[1];
         final AlertDialog.Builder[] builder = {new AlertDialog.Builder(RegistrationActivity.this,R.style.MyAlertDialogMaterialStyle)};
         final  String array[] = getApplicationContext().getResources().getStringArray(R.array.language);
         builder[0].setTitle("Select Your Language");
@@ -139,10 +130,48 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 });
 
 
-        builder[0].setCancelable(false);
-        AppCompatDialog alertDialog = builder[0].create();
+        builder[0].setCancelable(false);*/
+        final Dialog alertDialog = new Dialog(RegistrationActivity.this);
+        alertDialog.setTitle("Select Your Language");
+        alertDialog.setContentView(R.layout.language_dialog_box);
+        alertDialog.setCancelable(false);
         alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(getApplicationContext().getResources().getColor(R.color.white)));
+       final RadioGroup radGroupLangu = (RadioGroup) alertDialog.findViewById(R.id.radGroupLangu);
+        radGroupLangu.check(R.id.radEnglish);
+        Button btnOk = (Button) alertDialog.findViewById(R.id.btnOk);
+
+
+        btnOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int selectedId=radGroupLangu.getCheckedRadioButtonId();
+                String selected = "English";
+                if (selectedId == R.id.radEnglish)
+                {
+                    selected = "English";
+                }else if (selectedId == R.id.radTamil)
+                {
+                    selected = "Tamil";
+                }
+                Log.e("selected",selected);
+                databaseHandler.addLanguage(selected,"0");
+                alertDialog.dismiss();
+                if (databaseHandler.getContact("0").equals("English"))
+                {
+                    setContentView(R.layout.registration_activity);
+                    setView();
+
+
+                }else if (databaseHandler.getContact("0").equals("Tamil"))
+                {
+                    setContentView(R.layout.tamil_registration_activity);
+                    setView();
+                }
+            }
+        });
+
         alertDialog.show();
+
 
 
 

@@ -5,9 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/rldMainLayout"
-    android:background="@android:color/white">
+    >
 
-
+<ImageView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:src="@drawable/home"
+    android:scaleType="centerCrop" />
     <LinearLayout
         android:layout_width="@dimen/splash_width"
         android:layout_height="@dimen/splash_height"
@@ -16,7 +20,7 @@
         android:id="@+id/ldtSplash"
         android:background="@drawable/splash_image1"
         android:orientation="vertical"
-        >
+        android:visibility="gone">
 
        <!-- <TextView
             android:layout_width="wrap_content"

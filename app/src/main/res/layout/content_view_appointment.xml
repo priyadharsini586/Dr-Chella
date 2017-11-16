@@ -28,126 +28,170 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Priya"
+                android:text="Ms. Priya"
                 android:textColor="@android:color/black"
                 android:textSize="17sp"
                 android:textStyle="bold"
-                android:gravity="center"/>
+                android:gravity="center"
+                android:id="@+id/txtName"/>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:weightSum="2"
-            >
+            android:paddingTop="10dp"
+            android:layout_gravity="center">
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Date"
-                android:textColor="#bdbdbd"/>
+                android:textColor="#999999"
+                android:gravity="center"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Time"
-                android:textColor="#bdbdbd"/>
+                android:textColor="#999999"
+                android:paddingLeft="20dp"
+                />
         </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:weightSum="2">
+                android:weightSum="2"
+                android:paddingBottom="10dp"
+                android:paddingLeft="15dp">
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="11 Nov 2017"
-                    android:textColor="@android:color/black"/>
+                    android:textColor="@android:color/black"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:id="@+id/txtDate"/>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="11.30Am"
-                    android:textColor="@android:color/black"/>
+                    android:text="11.30 AM"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold"
+                    android:id="@+id/txtTime"/>
             </LinearLayout>
             <View
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
                 android:background="@drawable/line_dotted"
-                android:paddingTop="20dp"
+
                />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Doctor Name"
-                android:textColor="#bdbdbd"
-                android:paddingTop="20dp"/>
+                android:textColor="#999999"
+                android:paddingTop="10dp"
+                android:gravity="center"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Dr.ChellaKumarasamy"
-                android:textColor="@android:color/black"/>
+                android:text="Dr. ChellaKumarasamy. M.D.,"
+                android:textColor="@android:color/black"
+                android:gravity="center"
+                android:paddingBottom="10dp"
+                android:textStyle="bold"/>
+            <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@drawable/line_dotted"
+
+            />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Hospital Name"
-                android:textColor="#bdbdbd"
-                android:paddingTop="20dp"/>
+                android:textColor="#999999"
+                android:paddingTop="10dp"
+                android:gravity="center"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Medway Medical Center"
-                android:textColor="@android:color/black"/>
+                android:textColor="@android:color/black"
+                android:gravity="center"
+                android:paddingBottom="10dp"
+                android:textStyle="bold"
+                android:id="@+id/txtHospital"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@drawable/line_dotted"
 
+                />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:weightSum="2"
-                android:paddingTop="20dp">
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:gravity="center">
               <LinearLayout
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                   android:orientation="vertical"
-                  android:layout_weight="0.8">
+                  android:layout_weight="0.7"
+                  android:gravity="center">
                   <TextView
                       android:layout_width="match_parent"
                       android:layout_height="wrap_content"
                       android:text="Medway Medical Center"
                       android:textColor="@android:color/black"
-                      />
+                      android:gravity="center" />
 
                   <TextView
                       android:layout_width="match_parent"
                       android:layout_height="wrap_content"
                       android:text="@string/chennai_hospital_address"
-                      android:textColor="#bdbdbd"/>
+                      android:textColor="#999999"
+                      android:gravity="center"
+                      android:id="@+id/txtHospitalName"/>
               </LinearLayout>
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_weight="1.2"
-                    android:src="@mipmap/ic_star"
+                    android:layout_weight="1.3"
+                    android:src="@mipmap/ic_maps"
                     android:layout_gravity="center"/>
             </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@drawable/line_dotted"
 
+                />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="20dp"
+                android:paddingTop="10dp"
                 android:orientation="vertical">
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Conformation No:12354545732465785"
-                    android:textColor="#bdbdbd"/>
+                    android:text="Conformation No : 12354545732465785"
+                    android:textColor="#999999"
+                    android:id="@+id/txtConfirmationNumber"/>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Transaction Time:10.10 AM,Wed,18 OCT"
-                    android:textColor="#bdbdbd"
-                    android:paddingTop="10dp"/>
+                    android:text="Transaction Time : 10.10 AM, Wed, 18 OCT"
+                    android:textColor="#999999"
+                    android:paddingTop="10dp"
+                    android:id="@+id/txtTransactionNumber"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -157,8 +201,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
                     android:gravity="center"
-                    android:text="***Please show Appointment Token at the Hospital Reception"
-                    android:textColor="#bdbdbd"
+                    android:text="*** APPOINTMENT TOKEN at the Hospital Reception"
+                    android:textColor="#999999"
                     android:padding="20dp"/>
             </LinearLayout>
         </LinearLayout>

@@ -62,7 +62,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="DR-"
+                    android:text="Dr - "
                     android:textSize="17sp"
                     android:textColor="@android:color/black"
                     android:layout_weight="0.2"/>
