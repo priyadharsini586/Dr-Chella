@@ -122,6 +122,8 @@ public class SplashActivity extends AppCompatActivity {
         permissions.add(Manifest.permission.READ_SMS);
         permissions.add(Manifest.permission.RECEIVE_SMS);
         permissions.add(Manifest.permission.SEND_SMS);
+        permissions.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+        permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
         permissionsToRequest = findUnAskedPermissions(permissions);
 
         if (Build.VERSION.SDK_INT >= 23) {
@@ -132,8 +134,6 @@ public class SplashActivity extends AppCompatActivity {
                     if (isConnection.equals(Constants.NETWORK_CONNECTED)) {
                         if (snackbar != null) {
                             snackbar.dismiss();
-
-
                         }
 
                     }

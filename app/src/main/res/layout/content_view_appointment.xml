@@ -150,7 +150,8 @@
                       android:layout_height="wrap_content"
                       android:text="Medway Medical Center"
                       android:textColor="@android:color/black"
-                      android:gravity="center" />
+                      android:gravity="center"
+                      android:id="@+id/txtHospitalAddressName"/>
 
                   <TextView
                       android:layout_width="match_parent"

@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
+import android.net.Uri;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
@@ -27,8 +28,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TabHost;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.hexaenna.drchella.Db.DatabaseHandler;
 import com.hexaenna.drchella.R;
@@ -39,6 +42,10 @@ import com.hexaenna.drchella.fragment.DrTalksActivity;
 import com.hexaenna.drchella.fragment.HomeFragment;
 import com.hexaenna.drchella.fragment.MoreFragment;
 import com.hexaenna.drchella.fragment.ProfileFragment;
+import com.soundcloud.android.crop.Crop;
+
+
+import java.io.File;
 
 import static com.hexaenna.drchella.utils.UtilsClass.setBadgeCount;
 
@@ -60,6 +67,8 @@ public class HomeActivity extends AppCompatActivity  {
     private ViewPager mViewPager;
     private TabLayout tabLayout;
     TextView txtName,txtMobileNumber;
+    ImageView ic_profile;
+    LinearLayout ldtCircle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,11 +111,22 @@ public class HomeActivity extends AppCompatActivity  {
         txtMobileNumber = (TextView) findViewById(R.id.txtMobileNumber);
         txtName = (TextView) findViewById(R.id.txtName);
 
+        ic_profile=(ImageView) findViewById(R.id.ic_profile);
+        ldtCircle = (LinearLayout) findViewById(R.id.ldtCircle);
+        ldtCircle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ic_profile.setImageDrawable(null);
+                Crop.pickImage(HomeActivity.this);
+            }
+        });
 
        DatabaseHandler databaseHandler = new DatabaseHandler(getApplicationContext());
        String[] userDetails =  databaseHandler.getUserName("0");
         txtMobileNumber.setText(userDetails[1]);
         txtName.setText(userDetails[0]);
+
+
     }
 
 
@@ -152,5 +172,26 @@ public class HomeActivity extends AppCompatActivity  {
 
 
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent result) {
+        if (requestCode == Crop.REQUEST_PICK && resultCode == RESULT_OK) {
+            beginCrop(result.getData());
+        } else if (requestCode == Crop.REQUEST_CROP) {
+            handleCrop(resultCode, result);
+        }
+    }
+
+    private void beginCrop(Uri source) {
+        Uri destination = Uri.fromFile(new File(getCacheDir(), "cropped"));
+        Crop.of(source, destination).asSquare().start(this);
+    }
+
+    private void handleCrop(int resultCode, Intent result) {
+        if (resultCode == RESULT_OK) {
+            ic_profile.setImageURI(Crop.getOutput(result));
+        } else if (resultCode == Crop.RESULT_ERROR) {
+            Toast.makeText(this, Crop.getError(result).getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
 
 }

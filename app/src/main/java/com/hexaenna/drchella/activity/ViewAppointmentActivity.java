@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -34,9 +35,10 @@ import retrofit2.Response;
 
 public class ViewAppointmentActivity extends AppCompatActivity {
 
-    TextView txtName,txtDate,txtTime,txtHospital,txtHospitalName,txtConfirmationNumber,txtTransactionNumber;
+    TextView txtName,txtDate,txtTime,txtHospital,txtHospitalName,txtConfirmationNumber,txtTransactionNumber,txtHospitalAddressName;
     ProgressBar proConfirm;
     ApiInterface apiInterface;
+    ImageView btnBack;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,10 +51,17 @@ public class ViewAppointmentActivity extends AppCompatActivity {
         txtHospitalName= (TextView) findViewById(R.id.txtHospitalName);
         txtConfirmationNumber= (TextView) findViewById(R.id.txtConfirmationNumber);
         txtTransactionNumber= (TextView) findViewById(R.id.txtTransactionNumber);
+        txtHospitalAddressName = (TextView) findViewById(R.id.txtHospitalAddressName);
 
         proConfirm = (ProgressBar) findViewById(R.id.proConfirma);
         proConfirm.setVisibility(View.GONE);
-
+        btnBack = (ImageView) findViewById(R.id.btnBack);
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         getPatientDetails();
 
     }
@@ -86,7 +95,7 @@ public class ViewAppointmentActivity extends AppCompatActivity {
                     txtName.setText(appointmentDetails.getPatient_name());
                     txtTime.setText(appointmentDetails.getTime());
                     txtConfirmationNumber.setText("Conformation No : "+appointmentDetails.getConfm_no());
-                    txtConfirmationNumber.setText("Transaction Time : "+appointmentDetails.getBooking_time());
+                    txtTransactionNumber.setText("Transaction Time : "+appointmentDetails.getBooking_time());
                     DateFormat dateForRequest = new SimpleDateFormat("dd.MM.yyyy");
                     Date newDate= null;
                     try {
@@ -97,6 +106,7 @@ public class ViewAppointmentActivity extends AppCompatActivity {
                     dateForRequest = new SimpleDateFormat("dd MMM yyyy");
                     String date = dateForRequest.format(newDate);
                     txtDate.setText(date);
+                    getAddress(appointmentDetails.getCity_id());
                 }
             }
 
@@ -113,27 +123,38 @@ public class ViewAppointmentActivity extends AppCompatActivity {
         if (city.equals("1"))
         {
             txtHospital.setText(getString(R.string.chennai_hospital));
+            txtHospitalAddressName.setText(R.string.chennai_hospital);
             txtHospitalName.setText(getString(R.string.chennai_hospital_address));
         }else if (city.equals("2"))
         {
             txtHospital.setText(getString(R.string.erode_hospital));
+            txtHospitalAddressName.setText(R.string.erode_hospital);
             txtHospitalName.setText(getString(R.string.erode_hospital_address));
         }else if (city.equals("3"))
         {
             txtHospital.setText(getString(R.string.coimbatore_hospital));
+            txtHospitalAddressName.setText(R.string.coimbatore_hospital);
             txtHospitalName.setText(getString(R.string.coimbatore_hospital_address));
         }else if (city.equals("4"))
         {
             txtHospital.setText(getString(R.string.namakkal_hospital));
+            txtHospitalAddressName.setText(R.string.namakkal_hospital);
             txtHospitalName.setText(getString(R.string.namakkal_hospital_address));
         }else if (city.equals("5"))
         {
             txtHospital.setText(getString(R.string.mayiladu_hospital));
+            txtHospitalAddressName.setText(R.string.mayiladu_hospital);
             txtHospitalName.setText(getString(R.string.may_hospital_address));
         }else if (city.equals("6"))
         {
             txtHospital.setText(getString(R.string.kollidam_hospital));
+            txtHospitalAddressName.setText(R.string.kollidam_hospital);
             txtHospitalName.setText(getString(R.string.kollidam_hospital_address));
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }

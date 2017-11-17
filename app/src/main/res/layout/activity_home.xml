@@ -26,12 +26,23 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/image_rounded">
-                <ImageView
+                android:id="@+id/ldtCircle">
+                <de.hdodenhof.circleimageview.CircleImageView
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@mipmap/ic_profile"
+                    app:civ_border_width="1dp"
+                    app:civ_border_color="#FFFFFF"
+                    android:id="@+id/ic_profile"
+                    />
+                <!--<ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@mipmap/ic_profile"
-                   android:padding="10dp"/>
+                   android:padding="10dp"
+                    android:id="@+id/ic_profile"
+                    android:background="@drawable/image_rounded"/>-->
             </LinearLayout>
 
             <LinearLayout

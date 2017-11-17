@@ -34,4 +34,8 @@
 
     <dimen name="menu_size">11sp</dimen>
 
+    <dimen name="dr_size">180dp</dimen>
+    <dimen name="tag_size">150dp</dimen>
+
+
 </resources>

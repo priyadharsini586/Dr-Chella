@@ -167,4 +167,11 @@
     <string name="no_appointment"> Would you like to have an Appointment ? </string>
     <string name="title_activity_view_appointment">ViewAppointmentActivity</string>
     <string name="comming_soon">Coming Soon...</string>
+
+    <string name="dr_chella1">Dr. T. S. Chellakumarasamy</string>
+    <string name="dr_chella2">MBBS., DPMR., MD(PMR)., FIPM.,</string>
+    <string name="dr_chella3">Consultant PHYSIATRIST,</string>
+    <string name="dr_chella4">(Physical Medicine  &amp; Rehabilitation Specialist)</string>
+    <string name="dr_chella5">URC Hospitals, ERODE. </string>
+
 </resources>

@@ -28,7 +28,8 @@
         android:layout_height="match_parent"
         android:src="@mipmap/ic_back"
         android:paddingTop="20dp"
-        android:paddingLeft="20dp"/>
+        android:paddingLeft="20dp"
+        android:id="@+id/btnBack"/>
     </LinearLayout>
     <ProgressBar
         android:layout_width="match_parent"

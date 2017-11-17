@@ -58,6 +58,7 @@
             android:name=".activity.ViewAppointmentActivity"
             android:label="@string/title_activity_view_appointment"
             android:theme="@style/AppTheme.Dark"/>
+        <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
     </application>
 
 </manifest>
