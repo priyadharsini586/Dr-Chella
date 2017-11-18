@@ -1,42 +1,94 @@
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.hexaenna.drchella.fragment.AreaOfExpertiseFragment">
+    tools:context="com.hexaenna.drchella.fragment.AreaOfExpertiseFragment"
+    android:orientation="vertical">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="2">
+        android:layout_weight="2"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:id="@+id/ldtMain"
+        android:orientation="horizontal">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:layout_weight="0.7"
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            android:gravity="center">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/dr_chella1"/>
+            android:text="@string/dr_chella1"
+            android:textColor="@android:color/black"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textSize="15sp"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/dr_chella2"/>
+                android:text="@string/dr_chella2"
+                android:textColor="@android:color/black"
+                android:gravity="center"
+                android:textSize="12sp"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/dr_chella3"/>
+                android:text="@string/dr_chella3"
+                android:textColor="@android:color/black"
+                android:gravity="center"
+                android:textSize="12sp"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/dr_chella4"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/dr_chella5"/>
+                android:text="@string/dr_chella4"
+                android:textColor="@android:color/black"
+                android:gravity="center"
+                android:textSize="10sp"/>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.3"
+            android:layout_gravity="center"
+            android:gravity="center">
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/chella"
+                />
         </LinearLayout>
 
     </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@drawable/shadow_line"
+                android:layout_below="@+id/ldtMain"
+                android:id="@+id/view"
+                android:paddingBottom="10dp"/>
 
-</LinearLayout>
+    <WebView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/webHome"
+        android:layout_below="@+id/view"
+      />
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>

@@ -179,24 +179,49 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="10dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingBottom="10dp">
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Conformation No : 12354545732465785"
+                    android:text="Conformation No : 123532465785"
                     android:textColor="#999999"
-                    android:id="@+id/txtConfirmationNumber"/>
+                    android:id="@+id/txtConfirmationNumber"
+                    android:gravity="center"/>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Transaction Time : 10.10 AM, Wed, 18 OCT"
                     android:textColor="#999999"
                     android:paddingTop="10dp"
-                    android:id="@+id/txtTransactionNumber"/>
+                    android:id="@+id/txtTransactionNumber"
+                    android:gravity="center"/>
             </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@drawable/line_dotted"
+
+                />
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingTop="20dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="bottom"
+                    android:paddingBottom="30dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:gravity="center"
+                    android:text="Kindly show this"
+                    android:textColor="#999999"
+                   />
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -204,8 +229,9 @@
                     android:gravity="center"
                     android:text="*** APPOINTMENT TOKEN at the Hospital Reception"
                     android:textColor="#999999"
-                    android:padding="20dp"/>
+                   />
             </LinearLayout>
+                </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

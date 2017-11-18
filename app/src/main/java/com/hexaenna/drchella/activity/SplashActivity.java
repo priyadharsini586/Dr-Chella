@@ -355,7 +355,7 @@ public class SplashActivity extends AppCompatActivity {
                                         new Handler().postDelayed(new Runnable() {
                                             @Override
                                             public void run() {
-                                                Intent mainIntent = new Intent(SplashActivity.this, RegistrationActivity.class);
+                                                Intent mainIntent = new Intent(SplashActivity.this, HomeActivity.class);
                                                 Bundle bundle = new Bundle();
                                                 bundle.putString("email", e_mail);
                                                 mainIntent.putExtras(bundle);

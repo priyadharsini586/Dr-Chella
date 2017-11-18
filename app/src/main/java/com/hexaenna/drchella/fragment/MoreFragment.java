@@ -6,15 +6,49 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
 import com.hexaenna.drchella.R;
+import com.hexaenna.drchella.adapter.MoreAdapter;
+
+import java.util.ArrayList;
 
 public class MoreFragment extends Fragment {
 
+    View rootView;
+    ListView lstMore;
+    MoreAdapter moreAdapter;
+    ArrayList<String> moreList = new ArrayList<>();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.activity_more_fragment, container, false);
+        rootView = inflater.inflate(R.layout.activity_more_fragment, container, false);
+
+        lstMore = (ListView) rootView.findViewById(R.id.lstMore);
+
+        moreAdapter = new MoreAdapter(getActivity(),getMoreList());
+
+        lstMore.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+        });
+        lstMore.setAdapter(moreAdapter);
         return rootView;
+    }
+
+    public ArrayList getMoreList()
+    {
+        moreList.add("Your Appointment");
+        moreList.add("Change Language");
+        moreList.add("Testimony");
+        moreList.add("Daily Health Tips");
+        moreList.add("Consultation Location");
+        moreList.add("Refer Friends");
+        moreList.add("Setting");
+
+        return moreList;
     }
 }
