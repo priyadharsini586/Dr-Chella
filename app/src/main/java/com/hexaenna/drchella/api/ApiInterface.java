@@ -68,5 +68,7 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("get_appoinment_details.php")
     Call<AppointmentDetails> appointment_details(@Field("x") JSONObject bookObject);
+
+
 }
 

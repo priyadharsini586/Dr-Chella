@@ -147,7 +147,7 @@
     <string name="title_activity_home">HomeActivity</string>
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
-    <string name="remaining">days remainig of your appointment</string>
+    <string name="remaining">day(s) remainig of your appointment</string>
 
     <!--hospital address-->
     <string name="erode_hospital_address">No: 12/29, Sate Bank Road, Opp.South Indian Bank, Erode 638001</string>

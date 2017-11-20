@@ -32,7 +32,7 @@
     <dimen name="conform_text1">10sp</dimen>
     <dimen name="dr_chella_text">15sp</dimen>
 
-    <dimen name="menu_size">12sp</dimen>
+    <dimen name="menu_size">11sp</dimen>
 
     <dimen name="dr_size">200dp</dimen>
     <dimen name="tag_size">170dp</dimen>

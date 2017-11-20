@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -55,14 +56,16 @@ public class HomeFragment extends Fragment {
 
     View rootView;
     String isConnection = null;
-    LinearLayout rldMainLayout,ldtNoAppoint,ldtAppointment;
+    LinearLayout ldtNoAppoint,ldtAppointment;
     TSnackbar snackbar;
+    RelativeLayout rldMainLayout;
     View snackbarView;
     NetworkChangeReceiver networkChangeReceiver;
     ApiInterface apiInterface;
     TextView txtBookAppointment,txtRemaingDays,txtHospitalName,txtAddress,txtTime;
     Button btnView;
     ImageView imgScedule;
+    ProgressBar progressHome;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -88,7 +91,7 @@ public class HomeFragment extends Fragment {
         getActivity().registerReceiver(networkChangeReceiver,
                 intentFilter);
 
-        rldMainLayout = (LinearLayout) rootView.findViewById(R.id.ldtMainview);
+        rldMainLayout = (RelativeLayout) rootView.findViewById(R.id.ldtMainview);
         txtBookAppointment = (TextView) rootView.findViewById(R.id.txtBookAppointment);
         txtRemaingDays = (TextView) rootView.findViewById(R.id.txtRemaingDays);
         txtHospitalName = (TextView) rootView.findViewById(R.id.txtHospitalName);
@@ -117,6 +120,9 @@ public class HomeFragment extends Fragment {
                 getActivity().overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
             }
         });
+
+        progressHome =(ProgressBar) rootView.findViewById(R.id.progressHome);
+        progressHome.setVisibility(View.GONE);
         return rootView;
     }
 
@@ -124,7 +130,7 @@ public class HomeFragment extends Fragment {
 
     private void registerDetails() {
 
-
+        progressHome.setVisibility(View.VISIBLE);
         if (isConnection.equals(Constants.NETWORK_CONNECTED)) {
             apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
@@ -150,6 +156,7 @@ public class HomeFragment extends Fragment {
                         TimeAndDateResponse timeAndDateResponse = response.body();
                         ldtNoAppoint.setVisibility(View.GONE);
                         ldtAppointment.setVisibility(View.GONE);
+                        progressHome.setVisibility(View.GONE);
                         if (timeAndDateResponse.getStatus_code() != null) {
                             if (timeAndDateResponse.getStatus_code().equals(Constants.status_code1)) {
                                 ldtAppointment.setVisibility(View.VISIBLE);
@@ -200,7 +207,7 @@ public class HomeFragment extends Fragment {
 
                 @Override
                 public void onFailure(Call<TimeAndDateResponse> call, Throwable t) {
-                    Log.e("output", t.getMessage());
+
                 }
             });
 

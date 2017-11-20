@@ -20,6 +20,17 @@ public class MoreFragment extends Fragment {
     ListView lstMore;
     MoreAdapter moreAdapter;
     ArrayList<String> moreList = new ArrayList<>();
+    int[] imgList = {R.drawable.your_appointment
+            ,R.drawable.lang
+            ,R.drawable.testimony
+            ,R.drawable.daily_health_tips
+            ,R.drawable.con_location
+            ,R.drawable.contact
+            ,R.drawable.refer_friend
+            ,R.drawable.tearm_conditions
+            ,R.drawable.lock
+            ,R.drawable.settings};
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -27,7 +38,7 @@ public class MoreFragment extends Fragment {
 
         lstMore = (ListView) rootView.findViewById(R.id.lstMore);
 
-        moreAdapter = new MoreAdapter(getActivity(),getMoreList());
+        moreAdapter = new MoreAdapter(getActivity(),getMoreList(),imgList);
 
         lstMore.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -46,9 +57,13 @@ public class MoreFragment extends Fragment {
         moreList.add("Testimony");
         moreList.add("Daily Health Tips");
         moreList.add("Consultation Location");
+        moreList.add("Contact");
         moreList.add("Refer Friends");
-        moreList.add("Setting");
-
+        moreList.add("Terms And Conditions");
+        moreList.add("Privcy Policy");
+        moreList.add("Settings");
         return moreList;
     }
+
+
 }
