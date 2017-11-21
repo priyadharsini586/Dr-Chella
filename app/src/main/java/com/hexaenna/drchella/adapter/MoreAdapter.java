@@ -21,9 +21,9 @@ public class MoreAdapter extends BaseAdapter {
     Context context;
     ArrayList<String> moreArraylist;
     private LayoutInflater mInflater;
-    int[] imgList ;
+    ArrayList imgList ;
 
-    public MoreAdapter(Context context, ArrayList <String> moreList,int[] img) {
+    public MoreAdapter(Context context, ArrayList <String> moreList,ArrayList img) {
         this.context= context;
         this.moreArraylist = moreList;
         this.imgList = img;
@@ -47,14 +47,12 @@ public class MoreAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
-        Log.e("list",moreArraylist.get(position));
+        
         if(convertView == null) {
             convertView = mInflater.inflate(R.layout.more_list, null);
             holder = new ViewHolder();
             holder.tvGender = (TextView) convertView.findViewById(R.id.moreItems);
             holder.imgIcon = (ImageView) convertView.findViewById(R.id.imgChangeImg);
-
-
 
             convertView.setTag(holder);
         } else {
@@ -62,7 +60,7 @@ public class MoreAdapter extends BaseAdapter {
         }
 
         holder.tvGender.setText(moreArraylist.get(position));
-        holder.imgIcon.setImageResource(imgList[position]);
+        holder.imgIcon.setImageResource((Integer) imgList.get(position));
         return convertView;
     }
 

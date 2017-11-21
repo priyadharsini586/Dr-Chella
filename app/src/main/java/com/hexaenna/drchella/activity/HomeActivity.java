@@ -36,6 +36,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -109,6 +111,8 @@ public class HomeActivity extends AppCompatActivity  {
     View snackbarView;
     CoordinatorLayout main_content;
     ProgressBar progress_app;
+    ImageView imgNext;
+    Animation animSlide;
     TimeAndDateResponse dateResponse = new TimeAndDateResponse();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -188,14 +192,24 @@ public class HomeActivity extends AppCompatActivity  {
         progress_app.setVisibility(View.GONE);
         main_content = (CoordinatorLayout) findViewById(R.id.main_content);
 
+
+        imgNext = (ImageView) findViewById(R.id.imgNext);
+
+// Load the animation like this
+        animSlide = AnimationUtils.loadAnimation(getApplicationContext(),
+                R.anim.slide);
+
+// Start the animation like this
+        animSlide.setRepeatCount(Animation.INFINITE);
+        imgNext.startAnimation(animSlide);
     }
 
 
     private void setupViewPager() {
         mSectionsPagerAdapter.addFrag(new HomeFragment(), "Home");
+        mSectionsPagerAdapter.addFrag(new ProfileFragment(), "Dr Profile");
         mSectionsPagerAdapter.addFrag(new DrTalksActivity(), "Dr Talks");
         mSectionsPagerAdapter.addFrag(new AreaOfExpertiseFragment(), "Expert");
-        mSectionsPagerAdapter.addFrag(new ProfileFragment(), "Dr Profile");
         mSectionsPagerAdapter.addFrag(new MoreFragment(), "More");
 
     }

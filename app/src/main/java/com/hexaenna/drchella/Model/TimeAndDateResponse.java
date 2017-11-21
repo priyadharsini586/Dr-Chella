@@ -13,6 +13,7 @@ import java.util.List;
 
 public class TimeAndDateResponse {
    private   String status_code,status_message,success,app_sno = null,city_id,date,time,uniqid,photo;
+    private List<appoinments> appoinments;
     @SerializedName("Blocked_Array")
     @Expose
    private ArrayList<String> Blocked_Array = null ;
@@ -106,5 +107,42 @@ public class TimeAndDateResponse {
 
     public void setPhoto(String photo) {
         this.photo = photo;
+    }
+
+    public List<TimeAndDateResponse.appoinments> getAppoinments() {
+        return appoinments;
+    }
+
+    public void setAppoinments(List<appoinments> appoinments) {
+        this.appoinments = appoinments;
+    }
+
+    public class appoinments
+    {
+        private String city_id,date,time;
+
+        public String getCity_id() {
+            return city_id;
+        }
+
+        public void setCity_id(String city_id) {
+            this.city_id = city_id;
+        }
+
+        public String getDate() {
+            return date;
+        }
+
+        public void setDate(String date) {
+            this.date = date;
+        }
+
+        public String getTime() {
+            return time;
+        }
+
+        public void setTime(String time) {
+            this.time = time;
+        }
     }
 }

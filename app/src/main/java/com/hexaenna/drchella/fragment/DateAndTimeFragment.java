@@ -1110,6 +1110,12 @@ public class DateAndTimeFragment extends Fragment implements View.OnClickListene
                             ldtNext.setEnabled(true);
                             progressCalendar.setVisibility(View.GONE);
                         }
+                    }else
+                    {
+
+                        Toast.makeText(getActivity(), "Internal Server Error", Toast.LENGTH_SHORT).show();
+                        progressCalendar.setVisibility(View.GONE);
+
                     }
                 }
 

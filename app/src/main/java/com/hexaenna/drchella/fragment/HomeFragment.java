@@ -141,7 +141,6 @@ public class HomeFragment extends Fragment {
             try {
                 UserRegisterDetails userRegisterDetails = UserRegisterDetails.getInstance();
                 jsonObject.put("email",userRegisterDetails.getE_mail());
-                jsonObject.put("cur_date",formattedDate);
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -160,41 +159,42 @@ public class HomeFragment extends Fragment {
                         if (timeAndDateResponse.getStatus_code() != null) {
                             if (timeAndDateResponse.getStatus_code().equals(Constants.status_code1)) {
                                 ldtAppointment.setVisibility(View.VISIBLE);
-                                try {
-                                    Date newDate= dateForRequest[0].parse(timeAndDateResponse.getDate());
-                                    dateForRequest[0] = new SimpleDateFormat("dd MMM yyyy");
-                                   String date = dateForRequest[0].format(newDate);
-                                    txtTime.setText(date +" at "+ timeAndDateResponse.getTime());
+                                if (timeAndDateResponse.getDate() != null) {
+                                    try {
+                                        Date newDate = dateForRequest[0].parse(timeAndDateResponse.getDate());
+                                        dateForRequest[0] = new SimpleDateFormat("dd MMM yyyy");
+                                        String date = dateForRequest[0].format(newDate);
+                                        txtTime.setText(date + " at " + timeAndDateResponse.getTime());
 
 
-                                    Calendar calCurr = Calendar.getInstance();
-                                    Calendar day = Calendar.getInstance();
-                                    day.setTime(new SimpleDateFormat("dd.MM.yyyy").parse(timeAndDateResponse.getDate()));
-                                    SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
-                                    String formattedDate = df.format(day.getTime());
-                                    String formattedDate1 = df.format(calCurr.getTime());
-                                    if(day.after(calCurr)){
-                                        Log.e("date","Days Left: " + (day.get(Calendar.DAY_OF_MONTH) -(calCurr.get(Calendar.DAY_OF_MONTH))));
-                                        txtRemaingDays.setText(day.get(Calendar.DAY_OF_MONTH) -(calCurr.get(Calendar.DAY_OF_MONTH)) + " " +getActivity().getResources().getString(R.string.remaining));
+                                        Calendar calCurr = Calendar.getInstance();
+                                        Calendar day = Calendar.getInstance();
+                                        day.setTime(new SimpleDateFormat("dd.MM.yyyy").parse(timeAndDateResponse.getDate()));
+                                        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+                                        String formattedDate = df.format(day.getTime());
+                                        String formattedDate1 = df.format(calCurr.getTime());
+                                        if (day.after(calCurr)) {
+                                            Log.e("date", "Days Left: " + (day.get(Calendar.DAY_OF_MONTH) - (calCurr.get(Calendar.DAY_OF_MONTH))));
+                                            txtRemaingDays.setText(day.get(Calendar.DAY_OF_MONTH) - (calCurr.get(Calendar.DAY_OF_MONTH)) + " " + getActivity().getResources().getString(R.string.remaining));
 
-                                    }else if (formattedDate.equals(formattedDate1))
-                                    {
-                                        txtRemaingDays.setText("You Have an Appointment with doctor Today.");
+                                        } else if (formattedDate.equals(formattedDate1)) {
+                                            txtRemaingDays.setText("You Have an Appointment with doctor Today.");
+                                        }
+
+
+                                        Log.e("date", "Days Left: " + formattedDate);
+                                        Log.e("date", "Days Left: " + formattedDate1);
+
+                                        AppointmentDetails appointmentDetails = AppointmentDetails.getInstance();
+                                        appointmentDetails.setCity(timeAndDateResponse.getCity_id());
+                                        appointmentDetails.setDate(timeAndDateResponse.getDate());
+                                        appointmentDetails.setTime(timeAndDateResponse.getTime());
+
+                                        getAddress(timeAndDateResponse.getCity_id());
+
+                                    } catch (ParseException e) {
+                                        e.printStackTrace();
                                     }
-
-
-                                    Log.e("date","Days Left: " + formattedDate);
-                                    Log.e("date","Days Left: " + formattedDate1);
-
-                                    AppointmentDetails appointmentDetails = AppointmentDetails.getInstance();
-                                    appointmentDetails.setCity(timeAndDateResponse.getCity_id());
-                                    appointmentDetails.setDate(timeAndDateResponse.getDate());
-                                    appointmentDetails.setTime(timeAndDateResponse.getTime());
-
-                                    getAddress(timeAndDateResponse.getCity_id());
-
-                                } catch (ParseException e) {
-                                    e.printStackTrace();
                                 }
 
                             }else if (timeAndDateResponse.getStatus_code().equals(Constants.status_code0))
