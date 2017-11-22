@@ -1,6 +1,5 @@
 package com.hexaenna.drchella.activity;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -17,23 +16,20 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidadvance.topsnackbar.TSnackbar;
 import com.hexaenna.drchella.Db.DatabaseHandler;
-import com.hexaenna.drchella.Model.MessageRequestAndResponse;
 import com.hexaenna.drchella.Model.RegisterRequestAndResponse;
-import com.hexaenna.drchella.Model.TimeAndDateResponse;
 import com.hexaenna.drchella.Model.UserRegisterDetails;
 import com.hexaenna.drchella.R;
 import com.hexaenna.drchella.api.ApiClient;
 import com.hexaenna.drchella.api.ApiInterface;
 import com.hexaenna.drchella.api.SendSMSApiClient;
 import com.hexaenna.drchella.utils.Constants;
-import com.hexaenna.drchella.utils.NetworkChangeReceiver;
-import com.hexaenna.drchella.utils.SMSBroadCastReceiver;
+import com.hexaenna.drchella.service.NetworkChangeReceiver;
+import com.hexaenna.drchella.service.SMSBroadCastReceiver;
 
 import org.json.JSONException;
 import org.json.JSONObject;

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingTop="20dp"
+        android:orientation="vertical"
+        android:paddingBottom="10dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mr.Priya "
+                android:padding="10dp"
+                android:textSize="@dimen/edit_text_size"
+                android:textColor="@android:color/darker_gray"
+                android:id="@+id/txtName"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="10dp"
+                android:background="@color/colorPrimary">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Your Appointment on "
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    android:id="@+id/txtBookAppointment"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorPrimary"
+                    android:text=" "
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    android:id="@+id/txtTime"
+                    android:gravity="center"
+                    android:paddingTop="5dp"/>
+            </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/remaining"
+                android:gravity="center"
+                android:textColor="#b2b2b2"
+                android:padding="10dp"
+                android:id="@+id/txtRemaingDays"/>
+
+           <!-- <Button
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="View"
+                android:background="@drawable/rounded_corner"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:id="@+id/btnView" />-->
+        </LinearLayout>
+
+
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#ededed"
+        android:elevation="1dp"/>
+</LinearLayout>

@@ -34,7 +34,7 @@ import com.hexaenna.drchella.R;
 import com.hexaenna.drchella.api.ApiClient;
 import com.hexaenna.drchella.api.ApiInterface;
 import com.hexaenna.drchella.utils.Constants;
-import com.hexaenna.drchella.utils.NetworkChangeReceiver;
+import com.hexaenna.drchella.service.NetworkChangeReceiver;
 
 import org.json.JSONException;
 import org.json.JSONObject;

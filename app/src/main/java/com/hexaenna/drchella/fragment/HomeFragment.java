@@ -18,22 +18,17 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.androidadvance.topsnackbar.TSnackbar;
 import com.hexaenna.drchella.Model.AppointmentDetails;
-import com.hexaenna.drchella.Model.RegisterRequestAndResponse;
 import com.hexaenna.drchella.Model.TimeAndDateResponse;
 import com.hexaenna.drchella.Model.UserRegisterDetails;
 import com.hexaenna.drchella.R;
 import com.hexaenna.drchella.activity.BookAppointmentActivity;
-import com.hexaenna.drchella.activity.OTPActivity;
-import com.hexaenna.drchella.activity.RegistrationActivity;
-import com.hexaenna.drchella.activity.ViewAppointmentActivity;
 import com.hexaenna.drchella.api.ApiClient;
 import com.hexaenna.drchella.api.ApiInterface;
 import com.hexaenna.drchella.utils.Constants;
-import com.hexaenna.drchella.utils.NetworkChangeReceiver;
+import com.hexaenna.drchella.service.NetworkChangeReceiver;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -43,6 +38,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -56,13 +52,13 @@ public class HomeFragment extends Fragment {
 
     View rootView;
     String isConnection = null;
-    LinearLayout ldtNoAppoint,ldtAppointment;
+    LinearLayout ldtNoAppoint,ldtAppointment,ldtAddAppointment;
     TSnackbar snackbar;
     RelativeLayout rldMainLayout;
     View snackbarView;
     NetworkChangeReceiver networkChangeReceiver;
     ApiInterface apiInterface;
-    TextView txtBookAppointment,txtRemaingDays,txtHospitalName,txtAddress,txtTime;
+    TextView txtBookAppointment,txtRemaingDays,txtHospitalName,txtAddress,txtTime,txtName;
     Button btnView;
     ImageView imgScedule;
     ProgressBar progressHome;
@@ -92,25 +88,25 @@ public class HomeFragment extends Fragment {
                 intentFilter);
 
         rldMainLayout = (RelativeLayout) rootView.findViewById(R.id.ldtMainview);
-        txtBookAppointment = (TextView) rootView.findViewById(R.id.txtBookAppointment);
-        txtRemaingDays = (TextView) rootView.findViewById(R.id.txtRemaingDays);
+//        txtBookAppointment = (TextView) rootView.findViewById(R.id.txtBookAppointment);
+//        txtRemaingDays = (TextView) rootView.findViewById(R.id.txtRemaingDays);
         txtHospitalName = (TextView) rootView.findViewById(R.id.txtHospitalName);
         txtAddress = (TextView) rootView.findViewById(R.id.txtAddress);
-        txtTime = (TextView) rootView.findViewById(R.id.txtTime);
+//        txtTime = (TextView) rootView.findViewById(R.id.txtTime);
 
         ldtNoAppoint = (LinearLayout) rootView.findViewById(R.id.ldtNoAppoint);
         ldtNoAppoint.setVisibility(View.GONE);
         ldtAppointment = (LinearLayout) rootView.findViewById(R.id.ldtAppointment);
         ldtAppointment.setVisibility(View.GONE);
 
-        btnView = (Button) rootView.findViewById(R.id.btnView);
+        /*btnView = (Button) rootView.findViewById(R.id.btnView);
         btnView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), ViewAppointmentActivity.class);
                 startActivity(intent);
             }
-        });
+        });*/
         imgScedule = (ImageView) rootView.findViewById(R.id.imgScedule);
         imgScedule.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,6 +119,7 @@ public class HomeFragment extends Fragment {
 
         progressHome =(ProgressBar) rootView.findViewById(R.id.progressHome);
         progressHome.setVisibility(View.GONE);
+        ldtAddAppointment = (LinearLayout) rootView.findViewById(R.id.ldtAddAppointment);
         return rootView;
     }
 
@@ -136,11 +133,10 @@ public class HomeFragment extends Fragment {
 
             JSONObject jsonObject = new JSONObject();
             Calendar cal = Calendar.getInstance();
-            final DateFormat[] dateForRequest = {new SimpleDateFormat("dd.MM.yyyy")};
-            String formattedDate = dateForRequest[0].format(cal.getTime());
+
             try {
                 UserRegisterDetails userRegisterDetails = UserRegisterDetails.getInstance();
-                jsonObject.put("email",userRegisterDetails.getE_mail());
+                jsonObject.put("user_email",userRegisterDetails.getE_mail());
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -156,16 +152,70 @@ public class HomeFragment extends Fragment {
                         ldtNoAppoint.setVisibility(View.GONE);
                         ldtAppointment.setVisibility(View.GONE);
                         progressHome.setVisibility(View.GONE);
+
                         if (timeAndDateResponse.getStatus_code() != null) {
                             if (timeAndDateResponse.getStatus_code().equals(Constants.status_code1)) {
                                 ldtAppointment.setVisibility(View.VISIBLE);
-                                if (timeAndDateResponse.getDate() != null) {
+                                List<TimeAndDateResponse.appoinments> appointmentLit = timeAndDateResponse.getAppoinments();
+                                if (appointmentLit.size() != 0)
+                                {
+                                    for (int i=0 ; i < appointmentLit.size() ; i ++)
+                                    {
+                                        TimeAndDateResponse.appoinments  appoinments = appointmentLit.get(i);
+                                        Log.e("appointment",appoinments.getDate());
+                                        LayoutInflater layoutInflater =
+                                                (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                                        View addView = layoutInflater.inflate(R.layout.add_appointment_layout, null);
+                                        txtTime = (TextView) addView.findViewById(R.id.txtTime);
+                                        txtRemaingDays = (TextView) addView.findViewById(R.id.txtRemaingDays);
+                                        txtName = (TextView) addView.findViewById(R.id.txtName);
+                                        if (appoinments.getDate() != null) {
+                                        try {
+                                            DateFormat dateForRequest = new SimpleDateFormat("dd.MM.yyyy");
+                                            String requestdate = appoinments.getDate().trim();
+                                            Date newDate = dateForRequest.parse(requestdate);
+                                            dateForRequest = new SimpleDateFormat("dd MMM yyyy");
+                                            String date = dateForRequest.format(newDate);
+                                            txtTime.setText(date + " at " + appoinments .getTime());
+
+                                            Calendar calCurr = Calendar.getInstance();
+                                            Calendar day = Calendar.getInstance();
+                                            day.setTime(new SimpleDateFormat("dd.MM.yyyy").parse(appoinments.getDate()));
+                                            SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+                                            String formattedDate = df.format(day.getTime());
+                                            String formattedDate1 = df.format(calCurr.getTime());
+                                            if (day.after(calCurr)) {
+                                                Log.e("date", "Days Left: " + (day.get(Calendar.DAY_OF_MONTH) - (calCurr.get(Calendar.DAY_OF_MONTH))));
+                                                txtRemaingDays.setText(day.get(Calendar.DAY_OF_MONTH) - (calCurr.get(Calendar.DAY_OF_MONTH)) + " " + getActivity().getResources().getString(R.string.remaining));
+
+                                            } else if (formattedDate.equals(formattedDate1)) {
+                                                txtRemaingDays.setText("You Have an Appointment with doctor Today.");
+                                            }
+
+
+                                            Log.e("date", "Days Left: " + formattedDate);
+                                            Log.e("date", "Days Left: " + formattedDate1);
+
+                                            AppointmentDetails appointmentDetails = AppointmentDetails.getInstance();
+                                            appointmentDetails.setCity(appoinments.getCity_id());
+                                            appointmentDetails.setDate(appoinments.getDate());
+                                            appointmentDetails.setTime(appoinments.getTime());
+
+                                            getAddress(appoinments.getCity_id());
+
+                                        } catch (ParseException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                        ldtAddAppointment.addView(addView);
+                                    }
+                                }
+                               /* if (timeAndDateResponse.getDate() != null) {
                                     try {
                                         Date newDate = dateForRequest[0].parse(timeAndDateResponse.getDate());
                                         dateForRequest[0] = new SimpleDateFormat("dd MMM yyyy");
                                         String date = dateForRequest[0].format(newDate);
                                         txtTime.setText(date + " at " + timeAndDateResponse.getTime());
-
 
                                         Calendar calCurr = Calendar.getInstance();
                                         Calendar day = Calendar.getInstance();
@@ -195,7 +245,7 @@ public class HomeFragment extends Fragment {
                                     } catch (ParseException e) {
                                         e.printStackTrace();
                                     }
-                                }
+                                }*/
 
                             }else if (timeAndDateResponse.getStatus_code().equals(Constants.status_code0))
                             {
@@ -313,7 +363,6 @@ public class HomeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        getNetworkState();
 
     }
 }

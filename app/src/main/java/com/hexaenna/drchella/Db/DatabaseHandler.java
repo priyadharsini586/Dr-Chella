@@ -164,5 +164,24 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     // Deleting single contact
+    public boolean checkForTables(){
 
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM " +TABLE_USER_DETAILS, null);
+
+        if(cursor != null){
+
+            cursor.moveToFirst();
+
+            int count = cursor.getInt(0);
+
+            if(count > 0){
+                return true;
+            }
+
+            cursor.close();
+        }
+
+        return false;
+    }
 }

@@ -1,16 +1,11 @@
 package com.hexaenna.drchella.fragment;
 
-import android.animation.ArgbEvaluator;
-import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.IdRes;
@@ -37,7 +32,6 @@ import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.ScrollView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,11 +42,10 @@ import com.hexaenna.drchella.Model.RegisterBookDetails;
 import com.hexaenna.drchella.Model.TimeAndDateResponse;
 import com.hexaenna.drchella.R;
 import com.hexaenna.drchella.activity.BookAppointmentActivity;
-import com.hexaenna.drchella.activity.RegistrationActivity;
 import com.hexaenna.drchella.api.ApiClient;
 import com.hexaenna.drchella.api.ApiInterface;
 import com.hexaenna.drchella.utils.Constants;
-import com.hexaenna.drchella.utils.NetworkChangeReceiver;
+import com.hexaenna.drchella.service.NetworkChangeReceiver;
 
 import org.json.JSONException;
 import org.json.JSONObject;

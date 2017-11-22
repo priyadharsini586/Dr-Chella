@@ -3,10 +3,12 @@ package com.hexaenna.drchella.activity;
 import android.Manifest;
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -14,9 +16,11 @@ import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
@@ -29,14 +33,18 @@ import android.widget.Toast;
 
 
 import com.androidadvance.topsnackbar.TSnackbar;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.hexaenna.drchella.Db.DatabaseHandler;
 import com.hexaenna.drchella.Model.BookingDetails;
 import com.hexaenna.drchella.Model.RegisterRequestAndResponse;
 import com.hexaenna.drchella.Model.UserRegisterDetails;
 import com.hexaenna.drchella.R;
 import com.hexaenna.drchella.api.ApiClient;
 import com.hexaenna.drchella.api.ApiInterface;
+import com.hexaenna.drchella.utils.Config;
 import com.hexaenna.drchella.utils.Constants;
-import com.hexaenna.drchella.utils.NetworkChangeReceiver;
+import com.hexaenna.drchella.service.NetworkChangeReceiver;
+import com.hexaenna.drchella.utils.NotificationUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -64,34 +72,40 @@ public class SplashActivity extends AppCompatActivity {
     NetworkChangeReceiver networkChangeReceiver;
     ApiInterface apiInterface;
     String alreadySend = "";
+
+    private static final String TAG = SplashActivity.class.getSimpleName();
+    private BroadcastReceiver mRegistrationBroadcastReceiver;
+    private TextView txtRegId, txtMessage;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        networkChangeReceiver = new NetworkChangeReceiver()
-        {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                super.onReceive(context, intent);
+        final DatabaseHandler databaseHandler = new DatabaseHandler(getApplicationContext());
+
+        if (!databaseHandler.checkForTables()) {
+            networkChangeReceiver = new NetworkChangeReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    super.onReceive(context, intent);
 
 
-                if (isConnection == null) {
-                    Bundle b = intent.getExtras();
-                    isConnection = b.getString(Constants.MESSAGE);
-                    getNetworkState();
-                }else
-                {
-                    Bundle b = intent.getExtras();
-                    isConnection = b.getString(Constants.MESSAGE);
-                    getNetworkState();
+                    if (isConnection == null) {
+                        Bundle b = intent.getExtras();
+                        isConnection = b.getString(Constants.MESSAGE);
+                        getNetworkState();
+                    } else {
+                        Bundle b = intent.getExtras();
+                        isConnection = b.getString(Constants.MESSAGE);
+                        getNetworkState();
+                    }
+
                 }
-
-            }
-        };
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
-        intentFilter.addAction(Constants.BROADCAST);
-        this.registerReceiver(networkChangeReceiver,
-                intentFilter);
+            };
+            IntentFilter intentFilter = new IntentFilter();
+            intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+            intentFilter.addAction(Constants.BROADCAST);
+            this.registerReceiver(networkChangeReceiver,
+                    intentFilter);
+        }
         setContentView(R.layout.splash_activity);
 
         ldtSplash = (LinearLayout) findViewById(R.id.ldtSplash);
@@ -107,7 +121,21 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void onAnimationEnd(Animation animation) {
 
-                checkEmail();
+                if (!databaseHandler.checkForTables()) {
+                    checkEmail();
+                }else
+                {
+                    UserRegisterDetails userRegisterDetails = UserRegisterDetails.getInstance();
+                    userRegisterDetails.setE_mail(getE_mail());
+
+                    Intent mainIntent = new Intent(SplashActivity.this, HomeActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("email", getE_mail());
+                    mainIntent.putExtras(bundle);
+                    SplashActivity.this.startActivity(mainIntent);
+                    overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
+                    SplashActivity.this.finish();
+                }
 
             }
 
@@ -117,6 +145,10 @@ public class SplashActivity extends AppCompatActivity {
             }
         });
 
+        if (!databaseHandler.checkForTables())
+        {
+            ldtSplash.startAnimation(animBounce);
+        }
 
         permissions.add(Manifest.permission.GET_ACCOUNTS);
         permissions.add(Manifest.permission.READ_SMS);
@@ -144,6 +176,41 @@ public class SplashActivity extends AppCompatActivity {
 
 
         }
+
+        mRegistrationBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+
+                // checking for type intent filter
+                if (intent.getAction().equals(Config.REGISTRATION_COMPLETE)) {
+                    // gcm successfully registered
+                    // now subscribe to `global` topic to receive app wide notifications
+                    FirebaseMessaging.getInstance().subscribeToTopic(Config.TOPIC_GLOBAL);
+
+                    displayFirebaseRegId();
+
+                } else if (intent.getAction().equals(Config.PUSH_NOTIFICATION)) {
+                    // new push notification is received
+
+                    String message = intent.getStringExtra("message");
+
+                    Toast.makeText(getApplicationContext(), "Push notification: " + message, Toast.LENGTH_LONG).show();
+
+
+                }
+            }
+        };
+        displayFirebaseRegId();
+    }
+
+    // and displays on the screen
+    private void displayFirebaseRegId() {
+        SharedPreferences pref = getApplicationContext().getSharedPreferences(Config.SHARED_PREF, 0);
+        String regId = pref.getString("regId", null);
+
+        Log.e(TAG, "Firebase reg id: " + regId);
+
+
     }
 
 
@@ -251,6 +318,8 @@ public class SplashActivity extends AppCompatActivity {
         super.onPause();
         Log.e("e_mail","onResume");
         checkEmail();
+//        LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
+
         if (snackbar != null)
             snackbar.dismiss();
 
@@ -263,7 +332,16 @@ public class SplashActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         Log.e("e_mail","onResume");
+        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+                new IntentFilter(Config.REGISTRATION_COMPLETE));
 
+        // register new push message receiver
+        // by doing this, the activity will be notified each time a new message arrives
+        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+                new IntentFilter(Config.PUSH_NOTIFICATION));
+
+        // clear the notification area when the app is opened
+        NotificationUtils.clearNotifications(getApplicationContext());
      /*   IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
         intentFilter.addAction(Constants.BROADCAST);
@@ -422,4 +500,8 @@ public class SplashActivity extends AppCompatActivity {
             }
         }
     }
+
+
+
+
 }

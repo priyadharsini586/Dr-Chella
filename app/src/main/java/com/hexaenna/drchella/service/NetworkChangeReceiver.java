@@ -1,4 +1,4 @@
-package com.hexaenna.drchella.utils;
+package com.hexaenna.drchella.service;
 
 /**
  * Created by admin on 10/14/2017.
@@ -12,6 +12,8 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
+
+import com.hexaenna.drchella.utils.Constants;
 
 public class NetworkChangeReceiver extends BroadcastReceiver {
 

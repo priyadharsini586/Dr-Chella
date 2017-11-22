@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "603705008717",
+    "firebase_url": "https://dr-chella.firebaseio.com",
+    "project_id": "dr-chella",
+    "storage_bucket": "dr-chella.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:603705008717:android:efb4dfca3d62fae4",
+        "android_client_info": {
+          "package_name": "com.hexaenna.drchella"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "603705008717-74pgh7qbd2gadfnp4nn70jnld8om4k7j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hexaenna.drchella",
+            "certificate_hash": "f82bf517c9a3121b5816cd06b32971f682d86356"
+          }
+        },
+        {
+          "client_id": "603705008717-9fgo41aee2pibu0e1ve17lu7m2h0sisq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBFTNGs1Psx0exftXW5l5YYyZAQe22SsBQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "603705008717-9fgo41aee2pibu0e1ve17lu7m2h0sisq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
