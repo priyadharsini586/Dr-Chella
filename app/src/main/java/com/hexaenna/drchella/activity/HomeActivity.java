@@ -1,5 +1,6 @@
 package com.hexaenna.drchella.activity;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -14,6 +15,7 @@ import android.provider.MediaStore;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -35,6 +37,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidadvance.topsnackbar.TSnackbar;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.hexaenna.drchella.Db.DatabaseHandler;
 import com.hexaenna.drchella.Model.RegisterRequestAndResponse;
 import com.hexaenna.drchella.Model.TimeAndDateResponse;
@@ -48,8 +51,12 @@ import com.hexaenna.drchella.fragment.DrTalksActivity;
 import com.hexaenna.drchella.fragment.HomeFragment;
 import com.hexaenna.drchella.fragment.MoreFragment;
 import com.hexaenna.drchella.fragment.ProfileFragment;
+import com.hexaenna.drchella.utils.Config;
 import com.hexaenna.drchella.utils.Constants;
 import com.hexaenna.drchella.service.NetworkChangeReceiver;
+import com.hexaenna.drchella.utils.LoadImageTask;
+import com.hexaenna.drchella.utils.NotificationUtils;
+import com.hexaenna.drchella.utils.UtilsClass;
 import com.soundcloud.android.crop.Crop;
 
 
@@ -58,18 +65,21 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.hexaenna.drchella.utils.UtilsClass.setBadgeCount;
 
-public class HomeActivity extends AppCompatActivity  {
+public class HomeActivity extends AppCompatActivity   {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -99,6 +109,10 @@ public class HomeActivity extends AppCompatActivity  {
     ImageView imgNext;
     Animation animSlide;
     TimeAndDateResponse dateResponse = new TimeAndDateResponse();
+     BroadcastReceiver mRegistrationBroadcastReceiver;
+    String count = "0";
+    int imgCount = 0;
+    Menu menuNotification;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -168,10 +182,14 @@ public class HomeActivity extends AppCompatActivity  {
             }
         });
 
-       DatabaseHandler databaseHandler = new DatabaseHandler(getApplicationContext());
-       String[] userDetails =  databaseHandler.getUserName("0");
+
+        DatabaseHandler databaseHandler = new DatabaseHandler(getApplicationContext());
+        String[] userDetails =  databaseHandler.getUserName("0");
         txtMobileNumber.setText(userDetails[1]);
         txtName.setText(userDetails[0]);
+        UtilsClass utilsClass = new UtilsClass();
+        Bitmap bitmap = utilsClass.StringToBitMap(userDetails[2]);
+        ic_profile.setImageBitmap(bitmap);
 
         progress_app = (ProgressBar) findViewById(R.id.progress_app);
         progress_app.setVisibility(View.GONE);
@@ -187,6 +205,35 @@ public class HomeActivity extends AppCompatActivity  {
 // Start the animation like this
         animSlide.setRepeatCount(Animation.INFINITE);
         imgNext.startAnimation(animSlide);
+        mRegistrationBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+
+                // checking for type intent filter
+                if (intent.getAction().equals(Config.REGISTRATION_COMPLETE)) {
+                    // gcm successfully registered
+                    // now subscribe to `global` topic to receive app wide notifications
+                    FirebaseMessaging.getInstance().subscribeToTopic(Config.TOPIC_GLOBAL);
+
+
+
+                } else if (intent.getAction().equals(Config.PUSH_NOTIFICATION)) {
+                    // new push notification is received
+                    Log.e("notification count", String.valueOf(imgCount));
+                    String message = intent.getStringExtra("message");
+                    imgCount = imgCount + 1;
+                    Log.e("notification aftercount", String.valueOf(imgCount));
+                    count = String.valueOf(imgCount);
+                    MenuItem itemCart = menuNotification.findItem(R.id.action_cart);
+                    LayerDrawable icon = (LayerDrawable) itemCart.getIcon();
+                    setBadgeCount(context, icon, count);
+                    Toast.makeText(getApplicationContext(), "Push notification: " + message, Toast.LENGTH_LONG).show();
+
+
+                }
+            }
+        };
+
     }
 
 
@@ -224,14 +271,29 @@ public class HomeActivity extends AppCompatActivity  {
     public boolean onCreateOptionsMenu(Menu menu) {
 
         getMenuInflater().inflate(R.menu.menu_home, menu);
+        menuNotification = menu;
         MenuItem itemCart = menu.findItem(R.id.action_cart);
         LayerDrawable icon = (LayerDrawable) itemCart.getIcon();
-        setBadgeCount(this, icon, "9");
+        setBadgeCount(this, icon, count);
 
         return true;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_cart:
+                MenuItem itemCart = menuNotification.findItem(R.id.action_cart);
+                LayerDrawable icon = (LayerDrawable) itemCart.getIcon();
+                count = "0";
+                imgCount = Integer.parseInt(count);
+                setBadgeCount(this, icon, count);
+                return true;
 
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent result) {
@@ -372,9 +434,24 @@ public class HomeActivity extends AppCompatActivity  {
                 if (snackbar != null) {
                     snackbar.dismiss();
                 }
-                registerDetails();
+
             }
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+                new IntentFilter(Config.REGISTRATION_COMPLETE));
+
+        // register new push message receiver
+        // by doing this, the activity will be notified each time a new message arrives
+        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+                new IntentFilter(Config.PUSH_NOTIFICATION));
+
+        // clear the notification area when the app is opened
+        NotificationUtils.clearNotifications(getApplicationContext());
     }
 
     @Override
@@ -393,67 +470,8 @@ public class HomeActivity extends AppCompatActivity  {
     }
 
 
-    private void registerDetails() {
 
-        progress_app.setVisibility(View.VISIBLE);
-        if (isConnection.equals(Constants.NETWORK_CONNECTED)) {
-            apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
-            JSONObject jsonObject = new JSONObject();
-            Calendar cal = Calendar.getInstance();
-            final DateFormat[] dateForRequest = {new SimpleDateFormat("dd.MM.yyyy")};
-            String formattedDate = dateForRequest[0].format(cal.getTime());
-            try {
-                UserRegisterDetails userRegisterDetails = UserRegisterDetails.getInstance();
-                jsonObject.put("email",userRegisterDetails.getE_mail());
-                jsonObject.put("cur_date",formattedDate);
 
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
 
-            Call<TimeAndDateResponse> call = apiInterface.recent_appintment(jsonObject);
-            call.enqueue(new Callback<TimeAndDateResponse>() {
-                @Override
-                public void onResponse(Call<TimeAndDateResponse> call, Response<TimeAndDateResponse> response) {
-                    if (response.isSuccessful()) {
-                        TimeAndDateResponse timeAndDateResponse = response.body();
-                        if (timeAndDateResponse.getStatus_code() != null) {
-                            if (timeAndDateResponse.getStatus_code().equals(Constants.status_code1)) {
-                                if (timeAndDateResponse.getPhoto() != null) {
-                                    dateResponse.setPhoto(timeAndDateResponse.getPhoto());
-                                    Bitmap bitmap = StringToBitMap(timeAndDateResponse.getPhoto());
-                                    ic_profile.setImageBitmap(bitmap);
-                                }
-                            }
-                            }
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<TimeAndDateResponse> call, Throwable t) {
-
-                }
-            });
-
-        }else
-        {
-            snackbar = TSnackbar
-                    .make(main_content, "No Internet Connection !", TSnackbar.LENGTH_INDEFINITE)
-                    .setAction("Retry", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Log.d("Action Button", "onClick triggered");
-
-                        }
-                    });
-            snackbar.setActionTextColor(Color.parseColor("#4ecc00"));
-            snackbarView = snackbar.getView();
-            snackbarView.setBackgroundColor(Color.parseColor("#E43F3F"));
-            TextView textView = (TextView) snackbarView.findViewById(com.androidadvance.topsnackbar.R.id.snackbar_text);
-            textView.setTextColor(Color.YELLOW);
-            textView.setTypeface(null, Typeface.BOLD);
-            snackbar.show();
-        }
-    }
 }

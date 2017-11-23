@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
@@ -37,6 +38,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.hexaenna.drchella.Db.DatabaseHandler;
 import com.hexaenna.drchella.Model.BookingDetails;
 import com.hexaenna.drchella.Model.RegisterRequestAndResponse;
+import com.hexaenna.drchella.Model.TimeAndDateResponse;
 import com.hexaenna.drchella.Model.UserRegisterDetails;
 import com.hexaenna.drchella.R;
 import com.hexaenna.drchella.api.ApiClient;
@@ -44,7 +46,9 @@ import com.hexaenna.drchella.api.ApiInterface;
 import com.hexaenna.drchella.utils.Config;
 import com.hexaenna.drchella.utils.Constants;
 import com.hexaenna.drchella.service.NetworkChangeReceiver;
+import com.hexaenna.drchella.utils.LoadImageTask;
 import com.hexaenna.drchella.utils.NotificationUtils;
+import com.hexaenna.drchella.utils.UtilsClass;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -56,7 +60,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class SplashActivity extends AppCompatActivity {
+public class SplashActivity extends AppCompatActivity implements  LoadImageTask.Listener {
 
     LinearLayout ldtSplash;
     private Animation animBounce;
@@ -76,10 +80,11 @@ public class SplashActivity extends AppCompatActivity {
     private static final String TAG = SplashActivity.class.getSimpleName();
     private BroadcastReceiver mRegistrationBroadcastReceiver;
     private TextView txtRegId, txtMessage;
+    DatabaseHandler databaseHandler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        final DatabaseHandler databaseHandler = new DatabaseHandler(getApplicationContext());
+       databaseHandler = new DatabaseHandler(getApplicationContext());
 
         if (!databaseHandler.checkForTables()) {
             networkChangeReceiver = new NetworkChangeReceiver() {
@@ -109,9 +114,9 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.splash_activity);
 
         ldtSplash = (LinearLayout) findViewById(R.id.ldtSplash);
-
+        UserRegisterDetails userRegisterDetails = UserRegisterDetails.getInstance();
+        userRegisterDetails.setE_mail(getE_mail());
         rldMainLayout = (RelativeLayout) findViewById(R.id.rldMainLayout);
-
         animBounce = AnimationUtils.loadAnimation(this, R.anim.splash_bounce);
         animBounce.setAnimationListener(new Animation.AnimationListener() {
             @Override
@@ -122,7 +127,8 @@ public class SplashActivity extends AppCompatActivity {
             public void onAnimationEnd(Animation animation) {
 
                 if (!databaseHandler.checkForTables()) {
-                    checkEmail();
+//                    checkEmail();
+
                 }else
                 {
                     UserRegisterDetails userRegisterDetails = UserRegisterDetails.getInstance();
@@ -178,29 +184,34 @@ public class SplashActivity extends AppCompatActivity {
         }
 
         mRegistrationBroadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
+                @Override
+                public void onReceive(Context context, Intent intent) {
 
-                // checking for type intent filter
-                if (intent.getAction().equals(Config.REGISTRATION_COMPLETE)) {
-                    // gcm successfully registered
-                    // now subscribe to `global` topic to receive app wide notifications
-                    FirebaseMessaging.getInstance().subscribeToTopic(Config.TOPIC_GLOBAL);
+                    // checking for type intent filter
+                    if (intent.getAction().equals(Config.REGISTRATION_COMPLETE)) {
+                        // gcm successfully registered
+                        // now subscribe to `global` topic to receive app wide notifications
+                        FirebaseMessaging.getInstance().subscribeToTopic(Config.TOPIC_GLOBAL);
 
-                    displayFirebaseRegId();
+                        displayFirebaseRegId();
 
-                } else if (intent.getAction().equals(Config.PUSH_NOTIFICATION)) {
-                    // new push notification is received
+                    } else if (intent.getAction().equals(Config.PUSH_NOTIFICATION)) {
+                        // new push notification is received
 
-                    String message = intent.getStringExtra("message");
+                        String message = intent.getStringExtra("message");
 
-                    Toast.makeText(getApplicationContext(), "Push notification: " + message, Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Push notification: " + message, Toast.LENGTH_LONG).show();
 
 
+                    }
                 }
-            }
         };
         displayFirebaseRegId();
+
+
+
+
+
     }
 
     // and displays on the screen
@@ -248,9 +259,9 @@ public class SplashActivity extends AppCompatActivity {
                         }
                     }
                 } else {
-                    getE_mail();
+                   /* getE_mail();
                     ldtSplash.startAnimation(animBounce);
-                    checkEmail();
+                    checkEmail();*/
                 }
                 break;
         }
@@ -317,8 +328,7 @@ public class SplashActivity extends AppCompatActivity {
     public void onPause() {
         super.onPause();
         Log.e("e_mail","onResume");
-        checkEmail();
-//        LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
+        //        LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
 
         if (snackbar != null)
             snackbar.dismiss();
@@ -332,6 +342,10 @@ public class SplashActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         Log.e("e_mail","onResume");
+        if (alreadySend.equals("")) {
+            ldtSplash.startAnimation(animBounce);
+            checkEmail();
+        }
         LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
                 new IntentFilter(Config.REGISTRATION_COMPLETE));
 
@@ -375,7 +389,7 @@ public class SplashActivity extends AppCompatActivity {
                             @Override
                             public void onClick(View v) {
                                 Log.d("Action Button", "onClick triggered");
-                                checkEmail();
+
 
                             }
                         });
@@ -392,9 +406,10 @@ public class SplashActivity extends AppCompatActivity {
                 if (snackbar != null) {
                     snackbar.dismiss();
 
-                    if (getE_mail() != null)
-                        checkEmail();
-
+                }
+                if (alreadySend.equals(""))
+                {
+                    checkEmail();
                 }
             }
         }
@@ -405,7 +420,8 @@ public class SplashActivity extends AppCompatActivity {
             if (isConnection != null) {
                 if (isConnection.equals(Constants.NETWORK_CONNECTED)) {
                     final String e_mail = getE_mail();
-                    alreadySend = "send";
+                    registerDetails();
+
 //            Log.e("djjkdfdhd",e_mail);
                     apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
@@ -426,14 +442,13 @@ public class SplashActivity extends AppCompatActivity {
                                 if (login.getStatus_code() != null) {
 
                                     Log.e("output from splash", login.getStatus_message());
-                                    UserRegisterDetails userRegisterDetails = UserRegisterDetails.getInstance();
-                                    userRegisterDetails.setE_mail(getE_mail());
+                                    alreadySend = "send";
                                     if (login.getStatus_code().equals(Constants.status_code0)) {
 
                                         new Handler().postDelayed(new Runnable() {
                                             @Override
                                             public void run() {
-                                                Intent mainIntent = new Intent(SplashActivity.this, HomeActivity.class);
+                                                Intent mainIntent = new Intent(SplashActivity.this, RegistrationActivity.class);
                                                 Bundle bundle = new Bundle();
                                                 bundle.putString("email", e_mail);
                                                 mainIntent.putExtras(bundle);
@@ -485,7 +500,6 @@ public class SplashActivity extends AppCompatActivity {
                                 @Override
                                 public void onClick(View v) {
                                     Log.e("Action Button", "onClick triggered");
-                                    checkEmail();
                                 }
                             });
                     snackbar.setActionTextColor(Color.parseColor("#4ecc00"));
@@ -503,5 +517,63 @@ public class SplashActivity extends AppCompatActivity {
 
 
 
+    private void registerDetails() {
 
+        if (isConnection.equals(Constants.NETWORK_CONNECTED)) {
+            apiInterface = ApiClient.getClient().create(ApiInterface.class);
+
+            JSONObject jsonObject = new JSONObject();
+
+            try {
+                UserRegisterDetails userRegisterDetails = UserRegisterDetails.getInstance();
+                jsonObject.put("user_email",getE_mail());
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            Call<TimeAndDateResponse> call = apiInterface.getProfilePic(jsonObject);
+            call.enqueue(new Callback<TimeAndDateResponse>() {
+                @Override
+                public void onResponse(Call<TimeAndDateResponse> call, Response<TimeAndDateResponse> response) {
+                    if (response.isSuccessful()) {
+                        TimeAndDateResponse timeAndDateResponse = response.body();
+                        if (timeAndDateResponse.getStatus_code() != null) {
+                            if (timeAndDateResponse.getStatus_code().equals(Constants.status_code1)) {
+                                if (timeAndDateResponse.getProfile_pic() != null) {
+                                    TimeAndDateResponse dateResponse = new TimeAndDateResponse();
+                                    dateResponse.setPhoto(timeAndDateResponse.getProfile_pic());
+
+                                    databaseHandler.addUser(timeAndDateResponse.getName(),timeAndDateResponse.getMobile(),"0","");
+                                    new LoadImageTask(SplashActivity.this).execute(timeAndDateResponse.getProfile_pic());
+                                }
+                            }
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<TimeAndDateResponse> call, Throwable t) {
+
+                }
+            });
+
+        }
+
+    }
+
+
+
+    @Override
+    public void onImageLoaded(Bitmap bitmap) {
+
+        UtilsClass utilsClass  = new UtilsClass();
+        String strBitmap = utilsClass.BitMapToString(bitmap);
+        databaseHandler.updateProfilePic("0",strBitmap);
+    }
+
+    @Override
+    public void onError() {
+        Toast.makeText(this, "Error Loading Image !", Toast.LENGTH_SHORT).show();
+    }
 }

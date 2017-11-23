@@ -36,6 +36,7 @@ import org.json.JSONObject;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -62,6 +63,7 @@ public class HomeFragment extends Fragment {
     Button btnView;
     ImageView imgScedule;
     ProgressBar progressHome;
+    String sendUrl = "b";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -73,10 +75,9 @@ public class HomeFragment extends Fragment {
             public void onReceive(Context context, Intent intent) {
                 super.onReceive(context, intent);
 
-
                 Bundle b = intent.getExtras();
                 isConnection = b.getString(Constants.MESSAGE);
-                Log.e("newmesage", "" + isConnection);
+                Log.e("  from home", "" + isConnection);
                 getNetworkState();
 
             }
@@ -129,87 +130,87 @@ public class HomeFragment extends Fragment {
 
         progressHome.setVisibility(View.VISIBLE);
         if (isConnection.equals(Constants.NETWORK_CONNECTED)) {
-            apiInterface = ApiClient.getClient().create(ApiInterface.class);
+            if (sendUrl.equals("b")) {
+                apiInterface = ApiClient.getClient().create(ApiInterface.class);
+                sendUrl = "send";
+                JSONObject jsonObject = new JSONObject();
 
-            JSONObject jsonObject = new JSONObject();
-            Calendar cal = Calendar.getInstance();
+                try {
+                    UserRegisterDetails userRegisterDetails = UserRegisterDetails.getInstance();
+                    jsonObject.put("user_email", userRegisterDetails.getE_mail());
 
-            try {
-                UserRegisterDetails userRegisterDetails = UserRegisterDetails.getInstance();
-                jsonObject.put("user_email",userRegisterDetails.getE_mail());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+                Call<TimeAndDateResponse> call = apiInterface.recent_appintment(jsonObject);
+                call.enqueue(new Callback<TimeAndDateResponse>() {
+                    @Override
+                    public void onResponse(Call<TimeAndDateResponse> call, Response<TimeAndDateResponse> response) {
+                        if (response.isSuccessful()) {
+                            Log.e("successfull", String.valueOf(response.body()));
+                            TimeAndDateResponse timeAndDateResponse = response.body();
+                            ldtNoAppoint.setVisibility(View.GONE);
+                            ldtAppointment.setVisibility(View.GONE);
+                            progressHome.setVisibility(View.GONE);
 
-            Call<TimeAndDateResponse> call = apiInterface.recent_appintment(jsonObject);
-            call.enqueue(new Callback<TimeAndDateResponse>() {
-                @Override
-                public void onResponse(Call<TimeAndDateResponse> call, Response<TimeAndDateResponse> response) {
-                    if (response.isSuccessful()) {
-                        Log.e("successfull","success");
-                        TimeAndDateResponse timeAndDateResponse = response.body();
-                        ldtNoAppoint.setVisibility(View.GONE);
-                        ldtAppointment.setVisibility(View.GONE);
-                        progressHome.setVisibility(View.GONE);
+                            if (timeAndDateResponse.getStatus_code() != null) {
+                                if (timeAndDateResponse.getStatus_code().equals(Constants.status_code1)) {
+                                    ldtAppointment.setVisibility(View.VISIBLE);
+                                    List<TimeAndDateResponse.appoinments> appointmentLit = new ArrayList<TimeAndDateResponse.appoinments>(timeAndDateResponse.getAppoinments());
+                                    appointmentLit = timeAndDateResponse.getAppoinments();
+                                    ldtAddAppointment.removeAllViews();
+                                    if (appointmentLit.size() != 0) {
+                                        for (int i = 0; i < appointmentLit.size(); i++) {
+                                            TimeAndDateResponse.appoinments appoinments = appointmentLit.get(i);
+                                            Log.e("appointment", appoinments.getDate());
+                                            LayoutInflater layoutInflater =
+                                                    (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                                            View addView = layoutInflater.inflate(R.layout.add_appointment_layout, null);
+                                            txtTime = (TextView) addView.findViewById(R.id.txtTime);
+                                            txtRemaingDays = (TextView) addView.findViewById(R.id.txtRemaingDays);
+                                            txtName = (TextView) addView.findViewById(R.id.txtName);
+                                            if (appoinments.getDate() != null) {
+                                                try {
+                                                    DateFormat dateForRequest = new SimpleDateFormat("dd.MM.yyyy");
+                                                    String requestdate = appoinments.getDate().trim();
+                                                    Date newDate = dateForRequest.parse(requestdate);
+                                                    dateForRequest = new SimpleDateFormat("dd MMM yyyy");
+                                                    String date = dateForRequest.format(newDate);
+                                                    txtTime.setText(date + " at " + appoinments.getTime());
 
-                        if (timeAndDateResponse.getStatus_code() != null) {
-                            if (timeAndDateResponse.getStatus_code().equals(Constants.status_code1)) {
-                                ldtAppointment.setVisibility(View.VISIBLE);
-                                List<TimeAndDateResponse.appoinments> appointmentLit = timeAndDateResponse.getAppoinments();
-                                if (appointmentLit.size() != 0)
-                                {
-                                    for (int i=0 ; i < appointmentLit.size() ; i ++)
-                                    {
-                                        TimeAndDateResponse.appoinments  appoinments = appointmentLit.get(i);
-                                        Log.e("appointment",appoinments.getDate());
-                                        LayoutInflater layoutInflater =
-                                                (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                                        View addView = layoutInflater.inflate(R.layout.add_appointment_layout, null);
-                                        txtTime = (TextView) addView.findViewById(R.id.txtTime);
-                                        txtRemaingDays = (TextView) addView.findViewById(R.id.txtRemaingDays);
-                                        txtName = (TextView) addView.findViewById(R.id.txtName);
-                                        if (appoinments.getDate() != null) {
-                                        try {
-                                            DateFormat dateForRequest = new SimpleDateFormat("dd.MM.yyyy");
-                                            String requestdate = appoinments.getDate().trim();
-                                            Date newDate = dateForRequest.parse(requestdate);
-                                            dateForRequest = new SimpleDateFormat("dd MMM yyyy");
-                                            String date = dateForRequest.format(newDate);
-                                            txtTime.setText(date + " at " + appoinments .getTime());
+                                                    Calendar calCurr = Calendar.getInstance();
+                                                    Calendar day = Calendar.getInstance();
+                                                    day.setTime(new SimpleDateFormat("dd.MM.yyyy").parse(appoinments.getDate()));
+                                                    SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+                                                    String formattedDate = df.format(day.getTime());
+                                                    String formattedDate1 = df.format(calCurr.getTime());
+                                                    if (day.after(calCurr)) {
+                                                        Log.e("date", "Days Left: " + (day.get(Calendar.DAY_OF_MONTH) - (calCurr.get(Calendar.DAY_OF_MONTH))));
+                                                        txtRemaingDays.setText(day.get(Calendar.DAY_OF_MONTH) - (calCurr.get(Calendar.DAY_OF_MONTH)) + " " + getActivity().getResources().getString(R.string.remaining));
 
-                                            Calendar calCurr = Calendar.getInstance();
-                                            Calendar day = Calendar.getInstance();
-                                            day.setTime(new SimpleDateFormat("dd.MM.yyyy").parse(appoinments.getDate()));
-                                            SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
-                                            String formattedDate = df.format(day.getTime());
-                                            String formattedDate1 = df.format(calCurr.getTime());
-                                            if (day.after(calCurr)) {
-                                                Log.e("date", "Days Left: " + (day.get(Calendar.DAY_OF_MONTH) - (calCurr.get(Calendar.DAY_OF_MONTH))));
-                                                txtRemaingDays.setText(day.get(Calendar.DAY_OF_MONTH) - (calCurr.get(Calendar.DAY_OF_MONTH)) + " " + getActivity().getResources().getString(R.string.remaining));
+                                                    } else if (formattedDate.equals(formattedDate1)) {
+                                                        txtRemaingDays.setText("You Have an Appointment with doctor Today.");
+                                                    }
 
-                                            } else if (formattedDate.equals(formattedDate1)) {
-                                                txtRemaingDays.setText("You Have an Appointment with doctor Today.");
+
+                                                    Log.e("date", "Days Left: " + formattedDate);
+                                                    Log.e("date", "Days Left: " + formattedDate1);
+
+                                                    AppointmentDetails appointmentDetails = AppointmentDetails.getInstance();
+                                                    appointmentDetails.setCity(appoinments.getCity_id());
+                                                    appointmentDetails.setDate(appoinments.getDate());
+                                                    appointmentDetails.setTime(appoinments.getTime());
+
+                                                    getAddress(appoinments.getCity_id());
+
+                                                } catch (ParseException e) {
+                                                    e.printStackTrace();
+                                                }
                                             }
-
-
-                                            Log.e("date", "Days Left: " + formattedDate);
-                                            Log.e("date", "Days Left: " + formattedDate1);
-
-                                            AppointmentDetails appointmentDetails = AppointmentDetails.getInstance();
-                                            appointmentDetails.setCity(appoinments.getCity_id());
-                                            appointmentDetails.setDate(appoinments.getDate());
-                                            appointmentDetails.setTime(appoinments.getTime());
-
-                                            getAddress(appoinments.getCity_id());
-
-                                        } catch (ParseException e) {
-                                            e.printStackTrace();
+                                            ldtAddAppointment.addView(addView);
                                         }
                                     }
-                                        ldtAddAppointment.addView(addView);
-                                    }
-                                }
                                /* if (timeAndDateResponse.getDate() != null) {
                                     try {
                                         Date newDate = dateForRequest[0].parse(timeAndDateResponse.getDate());
@@ -247,20 +248,19 @@ public class HomeFragment extends Fragment {
                                     }
                                 }*/
 
-                            }else if (timeAndDateResponse.getStatus_code().equals(Constants.status_code0))
-                            {
-                                ldtNoAppoint.setVisibility(View.VISIBLE);
+                                } else if (timeAndDateResponse.getStatus_code().equals(Constants.status_code0)) {
+                                    ldtNoAppoint.setVisibility(View.VISIBLE);
+                                }
                             }
                         }
                     }
-                }
 
-                @Override
-                public void onFailure(Call<TimeAndDateResponse> call, Throwable t) {
-
-                }
-            });
-
+                    @Override
+                    public void onFailure(Call<TimeAndDateResponse> call, Throwable t) {
+                        Log.e("failure", String.valueOf(t));
+                    }
+                });
+            }
         }else
         {
             snackbar = TSnackbar
@@ -339,6 +339,7 @@ public class HomeFragment extends Fragment {
                     snackbar.dismiss();
 
                 }
+
                 registerDetails();
             }
         }

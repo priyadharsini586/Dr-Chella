@@ -285,7 +285,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                                 userRegisterDetails.setOtp(login.getVerify_code());
                                 userRegisterDetails.setE_mail(edtE_mail.getText().toString());
                                 DatabaseHandler databaseHandler = new DatabaseHandler(getApplicationContext());
-                                databaseHandler.addUser(edtName.getText().toString(),edtMbl.getText().toString(),"0");
+                                databaseHandler.addUser(edtName.getText().toString(),edtMbl.getText().toString(),"0","");
                                 startActivity(intent);
                                 RegistrationActivity.this.finish();
                             }else

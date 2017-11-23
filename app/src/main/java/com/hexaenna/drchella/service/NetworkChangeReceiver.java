@@ -39,7 +39,7 @@ public class NetworkChangeReceiver extends BroadcastReceiver {
                 Toast.makeText(context, "Please Check your Network connection", Toast.LENGTH_SHORT).show();
             }
 
-            Bundle extras = intent.getExtras();
+
             Intent i = new Intent(Constants.BROADCAST);
             // Data you need to pass to activity
             i.putExtra(Constants.MESSAGE, networkConnection);

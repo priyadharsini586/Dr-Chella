@@ -33,6 +33,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String USER_NAME = "user_name";
     private static final String USER_MBL = "mbl_number";
     private static final String USER_ID = "user_id";
+    private static final String USER_PROFILE_PIC= "profile_pic";
 
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -47,6 +48,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         String CREATE_USER_TABLE = "CREATE TABLE " + TABLE_USER_DETAILS + "("
                 + USER_ID + " TEXT ,"
                 + USER_NAME + " TEXT ,"
+                + USER_PROFILE_PIC + " TEXT ,"
                 + USER_MBL + " TEXT " + ")";
         db.execSQL(CREATE_CONTACTS_TABLE);
         db.execSQL(CREATE_USER_TABLE);
@@ -79,13 +81,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close(); // Closing database connection
     }
 
-    public void addUser(String userNmae,String mbl,String id) {
+    public void addUser(String userNmae,String mbl,String id,String profile_pic) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(USER_NAME, userNmae);
         values.put(USER_ID,id);
         values.put(USER_MBL,mbl);
+        values.put(USER_PROFILE_PIC,profile_pic);
 
         // Inserting Row
         db.insert(TABLE_USER_DETAILS, null, values);
@@ -112,13 +115,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(TABLE_USER_DETAILS, new String[] { USER_NAME,
-                        USER_MBL }, USER_ID + "=?",
+                        USER_MBL,USER_PROFILE_PIC}, USER_ID + "=?",
                 new String[] { String.valueOf(id) }, null, null, null, null);
         if (cursor != null)
             cursor.moveToFirst();
 
 
-        String[] userDetails = {cursor.getString(0),cursor.getString(1)};
+        String[] userDetails = {cursor.getString(0),cursor.getString(1),cursor.getString(2)};
 
         // return contact
         return userDetails;
@@ -151,15 +154,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }*/
 
     // Updating single contact
-    public int updateContact(String id,String language) {
+    public int updateProfilePic(String id,String pic) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(KEY_ID, id);
-        values.put(KEY_LANGUAGE, language);
+        values.put(USER_ID, id);
+        values.put(USER_PROFILE_PIC, pic);
 
         // updating row
-        return db.update(TABLE_LANGUAGE, values, KEY_ID + " = ?",
+        return db.update(TABLE_USER_DETAILS, values, USER_ID + " = ?",
                 new String[] { String.valueOf(id) });
     }
 

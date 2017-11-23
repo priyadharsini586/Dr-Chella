@@ -12,8 +12,8 @@ import java.util.List;
  */
 
 public class TimeAndDateResponse {
-   private   String status_code,status_message,success,app_sno = null,city_id,date,time,uniqid,photo;
-    public List<appoinments> appoinments;
+   private   String status_code,status_message,success,app_sno = null,city_id,date,time,uniqid,photo,profile_pic,mobile,name;
+    public List<appoinments> appoinments = new ArrayList<>();
     @SerializedName("Blocked_Array")
     @Expose
    private ArrayList<String> Blocked_Array = null ;
@@ -115,6 +115,30 @@ public class TimeAndDateResponse {
 
     public void setAppoinments(List<appoinments> appoinments) {
         this.appoinments = appoinments;
+    }
+
+    public String getProfile_pic() {
+        return profile_pic;
+    }
+
+    public void setProfile_pic(String profile_pic) {
+        this.profile_pic = profile_pic;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public class appoinments
