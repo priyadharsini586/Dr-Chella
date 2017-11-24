@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Typeface;
 import android.graphics.drawable.LayerDrawable;
 import android.net.ConnectivityManager;
@@ -79,7 +80,7 @@ import retrofit2.Response;
 
 import static com.hexaenna.drchella.utils.UtilsClass.setBadgeCount;
 
-public class HomeActivity extends AppCompatActivity   {
+public class HomeActivity extends AppCompatActivity implements  LoadImageTask.Listener  {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -113,6 +114,8 @@ public class HomeActivity extends AppCompatActivity   {
     String count = "0";
     int imgCount = 0;
     Menu menuNotification;
+    DatabaseHandler databaseHandler;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -123,11 +126,12 @@ public class HomeActivity extends AppCompatActivity   {
             public void onReceive(Context context, Intent intent) {
                 super.onReceive(context, intent);
 
-
-                Bundle b = intent.getExtras();
-                isConnection = b.getString(Constants.MESSAGE);
-                Log.e("newmesage", "" + isConnection);
-                getNetworkState();
+                if (isConnection == null) {
+                    Bundle b = intent.getExtras();
+                    isConnection = b.getString(Constants.MESSAGE);
+                    Log.e("newmesage from activiyt", "" + isConnection);
+                    getNetworkState();
+                }
             }
         };
         IntentFilter intentFilter = new IntentFilter();
@@ -139,6 +143,7 @@ public class HomeActivity extends AppCompatActivity   {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+        databaseHandler = new DatabaseHandler(getApplicationContext());
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(),HomeActivity.this);
@@ -177,8 +182,14 @@ public class HomeActivity extends AppCompatActivity   {
         ldtCircle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ic_profile.setImageDrawable(null);
-                Crop.pickImage(HomeActivity.this);
+                if (isConnection != null) {
+                    ic_profile.setImageDrawable(null);
+                    Crop.pickImage(HomeActivity.this);
+                    Log.e("connection",isConnection);
+                }else
+                {
+                    Log.e("connection","" + isConnection);
+                }
             }
         });
 
@@ -323,69 +334,85 @@ public class HomeActivity extends AppCompatActivity   {
     }
 
     public void setProfile(final Uri uri) {
-
-       Bitmap bitmap = null;
-        progress_app.setVisibility(View.VISIBLE);
-        try {
-            bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(),uri);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        if (isConnection.equals(Constants.NETWORK_CONNECTED)) {
-            apiInterface = ApiClient.getClient().create(ApiInterface.class);
-
-            JSONObject jsonObject = new JSONObject();
-            Calendar cal = Calendar.getInstance();
-            final DateFormat[] dateForRequest = {new SimpleDateFormat("dd.MM.yyyy")};
-            String formattedDate = dateForRequest[0].format(cal.getTime());
+        ic_profile.setImageResource(R.mipmap.ic_profile);
+        if (isConnection != null) {
+            Bitmap bitmap = null;
+            progress_app.setVisibility(View.VISIBLE);
             try {
-                UserRegisterDetails userRegisterDetails = UserRegisterDetails.getInstance();
-                jsonObject.put("email", userRegisterDetails.getE_mail());
-                jsonObject.put("photo", BitMapToString(bitmap));
-                jsonObject.put("act", "update");
+                bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
 
-            } catch (JSONException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
+            bitmap = getResizedBitmap(bitmap,100,100);
+            if (isConnection.equals(Constants.NETWORK_CONNECTED)) {
+                apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
-            Call<RegisterRequestAndResponse> call = apiInterface.registerDetails(jsonObject);
-            call.enqueue(new Callback<RegisterRequestAndResponse>() {
-                @Override
-                public void onResponse(Call<RegisterRequestAndResponse> call, Response<RegisterRequestAndResponse> response) {
-                    if (response.isSuccessful()) {
-                        Log.e("success", "success");
-                        Toast.makeText(getApplicationContext(), "sucess upload", Toast.LENGTH_LONG).show();
-                        ic_profile.setImageURI(uri);
-                        progress_app.setVisibility(View.GONE);
-                    }
+                JSONObject jsonObject = new JSONObject();
+                Calendar cal = Calendar.getInstance();
+                final DateFormat[] dateForRequest = {new SimpleDateFormat("dd.MM.yyyy")};
+                String formattedDate = dateForRequest[0].format(cal.getTime());
+                try {
+                    UserRegisterDetails userRegisterDetails = UserRegisterDetails.getInstance();
+                    jsonObject.put("email", userRegisterDetails.getE_mail());
+                    jsonObject.put("photo", BitMapToString(bitmap));
+                    jsonObject.put("act", "update");
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
 
+                Call<RegisterRequestAndResponse> call = apiInterface.registerDetails(jsonObject);
+                call.enqueue(new Callback<RegisterRequestAndResponse>() {
+                    @Override
+                    public void onResponse(Call<RegisterRequestAndResponse> call, Response<RegisterRequestAndResponse> response) {
+                        if (response.isSuccessful()) {
 
-                @Override
-                public void onFailure(Call<RegisterRequestAndResponse> call, Throwable t) {
-                    Log.e("output", t.getMessage());
-                }
-            });
-        } else {
-            snackbar = TSnackbar
-                    .make(main_content, "No Internet Connection !", TSnackbar.LENGTH_INDEFINITE)
-                    .setAction("Retry", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Log.d("Action Button", "onClick triggered");
+                            RegisterRequestAndResponse registerRequestAndResponse = response.body();
+                            if (registerRequestAndResponse.getStatus_code() != null) {
 
+                                if (registerRequestAndResponse.getStatus_code().equals(Constants.status_code1)) {
+
+                                    if (registerRequestAndResponse.getProfile_pic() != null) {
+                                        ic_profile.setImageURI(uri);
+                                        progress_app.setVisibility(View.GONE);
+
+                                        new LoadImageTask(HomeActivity.this).execute(registerRequestAndResponse.getProfile_pic());
+                                    }else
+                                    {
+                                        Log.e("url empty","empty");
+                                    }
+                                }
+                            }
                         }
-                    });
-            snackbar.setActionTextColor(Color.parseColor("#4ecc00"));
-            snackbarView = snackbar.getView();
-            snackbarView.setBackgroundColor(Color.parseColor("#E43F3F"));
-            TextView textView = (TextView) snackbarView.findViewById(com.androidadvance.topsnackbar.R.id.snackbar_text);
-            textView.setTextColor(Color.YELLOW);
-            textView.setTypeface(null, Typeface.BOLD);
-            snackbar.show();
-        }
+                    }
 
+
+                    @Override
+                    public void onFailure(Call<RegisterRequestAndResponse> call, Throwable t) {
+                        Log.e("output", t.getMessage());
+                    }
+                });
+            } else {
+                snackbar = TSnackbar
+                        .make(main_content, "No Internet Connection !", TSnackbar.LENGTH_INDEFINITE)
+                        .setAction("Retry", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Log.d("Action Button", "onClick triggered");
+
+                            }
+                        });
+                snackbar.setActionTextColor(Color.parseColor("#4ecc00"));
+                snackbarView = snackbar.getView();
+                snackbarView.setBackgroundColor(Color.parseColor("#E43F3F"));
+                TextView textView = (TextView) snackbarView.findViewById(com.androidadvance.topsnackbar.R.id.snackbar_text);
+                textView.setTextColor(Color.YELLOW);
+                textView.setTypeface(null, Typeface.BOLD);
+                snackbar.show();
+            }
+        }
 
     }
 
@@ -471,7 +498,30 @@ public class HomeActivity extends AppCompatActivity   {
 
 
 
+    @Override
+    public void onImageLoaded(Bitmap bitmap) {
 
+        UtilsClass utilsClass  = new UtilsClass();
+        String strBitmap = utilsClass.BitMapToString(bitmap);
+        databaseHandler.updateProfilePic("0",strBitmap);
+        Log.e("image loading","image load");
+    }
 
+    @Override
+    public void onError() {
+        Toast.makeText(this, "Error Loading Image !", Toast.LENGTH_SHORT).show();
+    }
 
+    public Bitmap getResizedBitmap(Bitmap bm, int newHeight, int newWidth) {
+        int width = bm.getWidth();
+        int height = bm.getHeight();
+        float scaleWidth = ((float) newWidth) / width;
+        float scaleHeight = ((float) newHeight) / height;
+        Matrix matrix = new Matrix();
+        matrix.postScale(scaleWidth, scaleHeight);
+        Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width, height,
+                matrix, false);
+
+        return resizedBitmap;
+    }
 }

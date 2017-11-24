@@ -1,5 +1,6 @@
 package com.hexaenna.drchella.api;
 
+import com.hexaenna.drchella.Model.AllAppointmentDetails;
 import com.hexaenna.drchella.Model.AppointmentDetails;
 import com.hexaenna.drchella.Model.MessageRequestAndResponse;
 import com.hexaenna.drchella.Model.RegisterRequestAndResponse;
@@ -72,5 +73,10 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("profile_pic.php")
     Call<TimeAndDateResponse> getProfilePic(@Field("x") JSONObject bookObject);
+
+    @FormUrlEncoded
+    @POST("yours_appntmnts.php")
+    Call<AllAppointmentDetails> allAppointment(@Field("x") JSONObject bookObject);
+
 }
 

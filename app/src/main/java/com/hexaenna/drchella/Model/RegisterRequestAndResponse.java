@@ -6,7 +6,7 @@ package com.hexaenna.drchella.Model;
 
 public class RegisterRequestAndResponse {
 
-    public String status_code,status_message,success,verify_code,unique_code;
+    public String status_code,status_message,success,verify_code,unique_code,profile_pic;
 
     public String getStatus_code() {
         return status_code;
@@ -46,5 +46,13 @@ public class RegisterRequestAndResponse {
 
     public void setUnique_code(String unique_code) {
         this.unique_code = unique_code;
+    }
+
+    public String getProfile_pic() {
+        return profile_pic;
+    }
+
+    public void setProfile_pic(String profile_pic) {
+        this.profile_pic = profile_pic;
     }
 }

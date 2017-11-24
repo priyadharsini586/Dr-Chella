@@ -15,4 +15,6 @@ public class Constants {
     public static String status_code0 = "0";
     public static String status_code1 = "1";
     public static String status_code_1 = "-1";
+
+    private static boolean firstConnect =false;
 }

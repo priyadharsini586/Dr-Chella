@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.hexaenna.drchella.R;
+import com.hexaenna.drchella.activity.MoreItemsActivity;
 import com.hexaenna.drchella.adapter.MoreAdapter;
 
 import java.util.ArrayList;
@@ -40,7 +41,8 @@ public class MoreFragment extends Fragment {
                 Log.e("position", String.valueOf(position));
                 if (position == 0)
                 {
-                    
+                    Intent intent = new Intent(getActivity(), MoreItemsActivity.class);
+                    startActivity(intent);
                 }else if (position == 6)
                 {
                     shareData();

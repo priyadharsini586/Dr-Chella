@@ -64,6 +64,8 @@ public class HomeFragment extends Fragment {
     ImageView imgScedule;
     ProgressBar progressHome;
     String sendUrl = "b";
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -74,11 +76,12 @@ public class HomeFragment extends Fragment {
             @Override
             public void onReceive(Context context, Intent intent) {
                 super.onReceive(context, intent);
-
-                Bundle b = intent.getExtras();
-                isConnection = b.getString(Constants.MESSAGE);
-                Log.e("  from home", "" + isConnection);
-                getNetworkState();
+//                if (isConnection == null) {
+                    Bundle b = intent.getExtras();
+                    isConnection = b.getString(Constants.MESSAGE);
+                    getNetworkState();
+                    Log.e("  from home", "" + isConnection);
+//                }
 
             }
         };
@@ -170,6 +173,7 @@ public class HomeFragment extends Fragment {
                                             txtTime = (TextView) addView.findViewById(R.id.txtTime);
                                             txtRemaingDays = (TextView) addView.findViewById(R.id.txtRemaingDays);
                                             txtName = (TextView) addView.findViewById(R.id.txtName);
+                                            txtName.setText(appoinments.getPtnt_name());
                                             if (appoinments.getDate() != null) {
                                                 try {
                                                     DateFormat dateForRequest = new SimpleDateFormat("dd.MM.yyyy");
@@ -345,6 +349,11 @@ public class HomeFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        sendUrl = "b";
+    }
 
     @Override
     public void onStop() {
@@ -364,6 +373,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+
 
     }
 }

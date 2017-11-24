@@ -92,15 +92,16 @@ public class SplashActivity extends AppCompatActivity implements  LoadImageTask.
                 public void onReceive(Context context, Intent intent) {
                     super.onReceive(context, intent);
 
-
-                    if (isConnection == null) {
-                        Bundle b = intent.getExtras();
-                        isConnection = b.getString(Constants.MESSAGE);
-                        getNetworkState();
-                    } else {
-                        Bundle b = intent.getExtras();
-                        isConnection = b.getString(Constants.MESSAGE);
-                        getNetworkState();
+                    if (intent.getAction().equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
+                        if (isConnection == null) {
+                            Bundle b = intent.getExtras();
+                            isConnection = b.getString(Constants.MESSAGE);
+                            getNetworkState();
+                        } else {
+                            Bundle b = intent.getExtras();
+                            isConnection = b.getString(Constants.MESSAGE);
+                            getNetworkState();
+                        }
                     }
 
                 }
@@ -427,7 +428,7 @@ public class SplashActivity extends AppCompatActivity implements  LoadImageTask.
 
                     JSONObject jsonObject = new JSONObject();
                     try {
-                        jsonObject.put("email", e_mail);
+                        jsonObject.put("email", getE_mail());
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -543,8 +544,15 @@ public class SplashActivity extends AppCompatActivity implements  LoadImageTask.
                                 if (timeAndDateResponse.getProfile_pic() != null) {
                                     TimeAndDateResponse dateResponse = new TimeAndDateResponse();
                                     dateResponse.setPhoto(timeAndDateResponse.getProfile_pic());
-
                                     databaseHandler.addUser(timeAndDateResponse.getName(),timeAndDateResponse.getMobile(),"0","");
+                                    if (timeAndDateResponse.equals("2"))
+                                    {
+                                        databaseHandler.addLanguage("0","English");
+                                    }else if (timeAndDateResponse.equals("1"))
+                                    {
+                                        databaseHandler.addLanguage("0","Tamil");
+                                    }
+
                                     new LoadImageTask(SplashActivity.this).execute(timeAndDateResponse.getProfile_pic());
                                 }
                             }

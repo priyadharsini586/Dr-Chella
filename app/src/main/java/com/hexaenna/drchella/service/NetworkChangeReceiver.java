@@ -16,34 +16,33 @@ import android.widget.Toast;
 import com.hexaenna.drchella.utils.Constants;
 
 public class NetworkChangeReceiver extends BroadcastReceiver {
+    public static boolean firstConnect ;
 
     @Override
     public void onReceive(Context context, Intent intent) {
 
         String action = intent.getAction();
         String networkConnection = null;
-        Log.e("action",action);
+        Log.e("action", action);
         if (action.equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
-            boolean noConnectivity = intent.getBooleanExtra(ConnectivityManager.EXTRA_NO_CONNECTIVITY, false);
-            String reason = intent.getStringExtra(ConnectivityManager.EXTRA_REASON);
-            boolean isFailover = intent.getBooleanExtra(ConnectivityManager.EXTRA_IS_FAILOVER, false);
-
             NetworkInfo currentNetworkInfo = (NetworkInfo) intent.getParcelableExtra(ConnectivityManager.EXTRA_NETWORK_INFO);
-            NetworkInfo otherNetworkInfo = (NetworkInfo) intent.getParcelableExtra(ConnectivityManager.EXTRA_OTHER_NETWORK_INFO);
 
-            if (currentNetworkInfo.isConnected()) {
-                networkConnection = Constants.NETWORK_CONNECTED;
-                Toast.makeText(context, "Connected", Toast.LENGTH_SHORT).show();
-            } else {
-                networkConnection = Constants.NETWORK_NOT_CONNECTED;
-                Toast.makeText(context, "Please Check your Network connection", Toast.LENGTH_SHORT).show();
-            }
+                // do subroutines here
+
+                if (currentNetworkInfo.isConnected()) {
+                    networkConnection = Constants.NETWORK_CONNECTED;
+                    Toast.makeText(context, "Connected", Toast.LENGTH_SHORT).show();
+
+                } else {
+                    networkConnection = Constants.NETWORK_NOT_CONNECTED;
+                    Toast.makeText(context, "Please Check your Network connection", Toast.LENGTH_SHORT).show();
+
+                }
 
 
             Intent i = new Intent(Constants.BROADCAST);
             // Data you need to pass to activity
             i.putExtra(Constants.MESSAGE, networkConnection);
-
             context.sendBroadcast(i);
         }
 
