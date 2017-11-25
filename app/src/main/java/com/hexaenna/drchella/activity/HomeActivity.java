@@ -146,7 +146,7 @@ public class HomeActivity extends AppCompatActivity implements  LoadImageTask.Li
         databaseHandler = new DatabaseHandler(getApplicationContext());
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(),HomeActivity.this);
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(),HomeActivity.this,"home");
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);

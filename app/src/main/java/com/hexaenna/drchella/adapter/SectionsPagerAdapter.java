@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hexaenna.drchella.R;
+import com.hexaenna.drchella.activity.MoreItemsActivity;
 import com.hexaenna.drchella.fragment.HomeFragment;
 import com.hexaenna.drchella.fragment.ProfileFragment;
 
@@ -27,9 +28,11 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     private final List<Fragment> mFragmentList = new ArrayList<>();
     private final List<String> mFragmentTitleList = new ArrayList<>();
     Context context;
-    public SectionsPagerAdapter(FragmentManager fm, Context context) {
+    String from;
+    public SectionsPagerAdapter(FragmentManager fm, Context context,String from) {
         super(fm);
         this.context = context;
+        this.from = from;
     }
     @Override
     public Fragment getItem(int position) {
@@ -58,6 +61,13 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
         View v = LayoutInflater.from(context).inflate(R.layout.custom_tab, null);
         TextView tv = (TextView) v.findViewById(R.id.tabTitle);
         ImageView img = (ImageView) v.findViewById(R.id.tabImage);
+        if (from.equals("more"))
+        {
+            img.setVisibility(View.GONE);
+        }else
+        {
+            img.setVisibility(View.VISIBLE);
+        }
 
         if (position == 0)
         {
