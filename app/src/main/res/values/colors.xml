@@ -10,4 +10,6 @@
     <color name="book_title_orange">#F28F20</color>
     <color name="black">#000000</color>
     <color name="unselected_tab">#696969</color>
+    <color name="view_color">#d7d7d7</color>
+    <color name="time_show_color">#dbdbdb</color>
 </resources>

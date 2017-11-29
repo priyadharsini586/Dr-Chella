@@ -200,7 +200,8 @@ public class HomeActivity extends AppCompatActivity implements  LoadImageTask.Li
         txtName.setText(userDetails[0]);
         UtilsClass utilsClass = new UtilsClass();
         Bitmap bitmap = utilsClass.StringToBitMap(userDetails[2]);
-        ic_profile.setImageBitmap(bitmap);
+        if (bitmap != null)
+            ic_profile.setImageBitmap(bitmap);
 
         progress_app = (ProgressBar) findViewById(R.id.progress_app);
         progress_app.setVisibility(View.GONE);

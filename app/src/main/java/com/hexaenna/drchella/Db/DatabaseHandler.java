@@ -166,6 +166,19 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 new String[] { String.valueOf(id) });
     }
 
+
+    public int updateLanguage(String id,String lan) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(KEY_ID, id);
+        values.put(KEY_LANGUAGE, lan);
+
+        // updating row
+        return db.update(TABLE_LANGUAGE, values, KEY_ID + " = ?",
+                new String[] { String.valueOf(id) });
+    }
+
     // Deleting single contact
     public boolean checkForTables(){
 

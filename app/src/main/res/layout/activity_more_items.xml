@@ -29,9 +29,10 @@
               android:layout_height="wrap_content"
               android:text="Your Appointment"
               android:textColor="@android:color/white"
-              android:textSize="@dimen/label_text_size"
+              android:textSize="@dimen/tool_bar_size"
               android:textStyle="bold"
-              android:gravity="center"/>
+              android:gravity="center"
+              android:id="@+id/txtTitle"/>
 
         </android.support.v7.widget.Toolbar>
 
@@ -47,7 +48,7 @@
             app:tabIndicatorHeight="0dp"
             app:tabMode="fixed"
             app:tabTextColor="@color/white"
-           />
+           android:visibility="gone"/>
 
     </android.support.design.widget.AppBarLayout>
    <!-- <ProgressBar
@@ -59,8 +60,13 @@
         android:id="@+id/appoint_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:visibility="gone"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 
-
+<FrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/fragment_container"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 </android.support.design.widget.CoordinatorLayout>

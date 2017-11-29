@@ -17,4 +17,10 @@ public class Constants {
     public static String status_code_1 = "-1";
 
     private static boolean firstConnect =false;
+
+    public static String fromMore = "fromMore";
+    public static String your_appointment = "YourAppointment";
+    public static String testimony = "Testimony";
+    public static String daily_health_tips = "DailyHealthTipsFragment";
+
 }

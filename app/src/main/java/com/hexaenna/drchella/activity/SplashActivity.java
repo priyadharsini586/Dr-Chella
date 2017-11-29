@@ -92,7 +92,9 @@ public class SplashActivity extends AppCompatActivity implements  LoadImageTask.
                 public void onReceive(Context context, Intent intent) {
                     super.onReceive(context, intent);
 
-                    if (intent.getAction().equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
+//                    if (intent.getAction().equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
+
+
                         if (isConnection == null) {
                             Bundle b = intent.getExtras();
                             isConnection = b.getString(Constants.MESSAGE);
@@ -102,7 +104,7 @@ public class SplashActivity extends AppCompatActivity implements  LoadImageTask.
                             isConnection = b.getString(Constants.MESSAGE);
                             getNetworkState();
                         }
-                    }
+//                    }
 
                 }
             };

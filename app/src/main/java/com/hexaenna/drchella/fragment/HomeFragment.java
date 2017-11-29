@@ -189,9 +189,17 @@ public class HomeFragment extends Fragment {
                                                     SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
                                                     String formattedDate = df.format(day.getTime());
                                                     String formattedDate1 = df.format(calCurr.getTime());
+
+
+                                                    Date dateBefore = df.parse(formattedDate1);
+                                                    Date dateAfter = df.parse(formattedDate);
+                                                    long difference = dateAfter.getTime() - dateBefore.getTime();
+                                                    int daysBetween = (int) (difference / (1000*60*60*24));
+
+                                                    Log.e("date", "Days Left: " + daysBetween);
+
                                                     if (day.after(calCurr)) {
-                                                        Log.e("date", "Days Left: " + (day.get(Calendar.DAY_OF_MONTH) - (calCurr.get(Calendar.DAY_OF_MONTH))));
-                                                        txtRemaingDays.setText(day.get(Calendar.DAY_OF_MONTH) - (calCurr.get(Calendar.DAY_OF_MONTH)) + " " + getActivity().getResources().getString(R.string.remaining));
+                                                        txtRemaingDays.setText(daysBetween + " " + getActivity().getResources().getString(R.string.remaining));
 
                                                     } else if (formattedDate.equals(formattedDate1)) {
                                                         txtRemaingDays.setText("You Have an Appointment with doctor Today.");

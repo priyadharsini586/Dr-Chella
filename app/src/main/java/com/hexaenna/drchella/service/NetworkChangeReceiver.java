@@ -23,7 +23,7 @@ public class NetworkChangeReceiver extends BroadcastReceiver {
 
         String action = intent.getAction();
         String networkConnection = null;
-        Log.e("action", action);
+
         if (action.equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
             NetworkInfo currentNetworkInfo = (NetworkInfo) intent.getParcelableExtra(ConnectivityManager.EXTRA_NETWORK_INFO);
 
@@ -43,6 +43,7 @@ public class NetworkChangeReceiver extends BroadcastReceiver {
             Intent i = new Intent(Constants.BROADCAST);
             // Data you need to pass to activity
             i.putExtra(Constants.MESSAGE, networkConnection);
+            Log.e("action", networkConnection);
             context.sendBroadcast(i);
         }
 

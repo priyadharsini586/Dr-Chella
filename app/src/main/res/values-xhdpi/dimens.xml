@@ -10,7 +10,11 @@
     <!--text size in sp-->
     <dimen name="splash_text">21sp</dimen>
     <dimen name="splast_text1">15sp</dimen>
+    <dimen name="tool_bar_size">15sp</dimen>
 
+    <dimen name="notifi_title">16sp</dimen>
+    <dimen name="notifi_time">12sp</dimen>
+    <dimen name="notifi_content">14sp</dimen>
     <!--Registration screen dimen-->
     <dimen name="edtt_text_padding">15dp</dimen>
     <dimen name="icon_padding">7dp</dimen>

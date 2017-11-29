@@ -2,6 +2,7 @@ package com.hexaenna.drchella.api;
 
 import com.hexaenna.drchella.Model.AllAppointmentDetails;
 import com.hexaenna.drchella.Model.AppointmentDetails;
+import com.hexaenna.drchella.Model.HealthTipsDetails;
 import com.hexaenna.drchella.Model.MessageRequestAndResponse;
 import com.hexaenna.drchella.Model.RegisterRequestAndResponse;
 import com.hexaenna.drchella.Model.TimeAndDateResponse;
@@ -78,5 +79,9 @@ public interface ApiInterface {
     @POST("yours_appntmnts.php")
     Call<AllAppointmentDetails> allAppointment(@Field("x") JSONObject bookObject);
 
+
+
+    @POST("health_tips.php")
+    Call<HealthTipsDetails> getHealthTips();
 }
 
