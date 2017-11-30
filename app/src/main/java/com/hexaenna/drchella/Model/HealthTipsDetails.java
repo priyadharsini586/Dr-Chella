@@ -42,8 +42,10 @@ public class HealthTipsDetails {
         this.tips = tips;
     }
 
+
+
     public class Tips {
-        String title,tips,dt_time,tips_pic;
+        String title,tips,dt_time,tips_pic,lang;
 
         public String getTitle() {
             return title;
@@ -75,6 +77,13 @@ public class HealthTipsDetails {
 
         public void setTips_pic(String tips_pic) {
             this.tips_pic = tips_pic;
+        }
+        public String getLang() {
+            return lang;
+        }
+
+        public void setLang(String lang) {
+            this.lang = lang;
         }
     }
 

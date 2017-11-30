@@ -84,10 +84,6 @@ public class BookAppointmentActivity extends AppCompatActivity {
 
 
     public interface OnBackPressedListener  {
-        /**
-         * Si vous retouné true le back press ne sera pas pris en compte, sinon l'activité agira naturellement
-         * @return true si votre traitement est prioritaire sinon false
-         */
         void onBackPressed();
     }
 

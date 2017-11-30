@@ -2,6 +2,7 @@ package com.hexaenna.drchella.adapter;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,5 +53,11 @@ public class CustomHealthViewPagerAdapter extends PagerAdapter {
         imageLoader.DisplayImage(tips.getTips_pic(),imgNoti);
         container.addView(view);
         return view;
+    }
+
+
+    @Override
+    public void destroyItem(ViewGroup container, int position, Object object) {
+        ((ViewPager) container).removeView((View) object);
     }
 }

@@ -79,9 +79,11 @@ public interface ApiInterface {
     @POST("yours_appntmnts.php")
     Call<AllAppointmentDetails> allAppointment(@Field("x") JSONObject bookObject);
 
-
-
     @POST("health_tips.php")
     Call<HealthTipsDetails> getHealthTips();
+
+    @FormUrlEncoded
+    @POST("change_language.php")
+    Call<HealthTipsDetails> changeLanguage(@Field("x") JSONObject bookObject);
 }
 

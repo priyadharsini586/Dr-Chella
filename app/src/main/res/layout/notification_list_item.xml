@@ -15,9 +15,10 @@
             android:orientation="vertical">
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="180dp"
             android:src="@mipmap/ic_default_health_tips"
-            android:id="@+id/imgShowImage"/>
+            android:id="@+id/imgShowImage"
+            android:scaleType="fitXY"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -33,7 +34,7 @@
             android:layout_height="wrap_content"
             android:text="@string/tamil_e_mail"
             android:textColor="@color/black"
-            android:padding="5dp"
+            android:padding="7dp"
             android:id="@+id/txtContentNotifi"/>
             </LinearLayout>
     </LinearLayout>

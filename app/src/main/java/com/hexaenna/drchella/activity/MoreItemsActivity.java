@@ -1,5 +1,6 @@
 package com.hexaenna.drchella.activity;
 
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -15,6 +16,7 @@ import com.hexaenna.drchella.adapter.SectionsPagerAdapter;
 import com.hexaenna.drchella.fragment.AllAppointmentFragment;
 import com.hexaenna.drchella.fragment.DailyHealthTipsFragment;
 import com.hexaenna.drchella.fragment.PastAppointmentFragment;
+import com.hexaenna.drchella.fragment.TestimonyFragment;
 import com.hexaenna.drchella.fragment.UpcomingAppointmentFragment;
 import com.hexaenna.drchella.utils.Constants;
 
@@ -26,7 +28,7 @@ public class MoreItemsActivity extends AppCompatActivity  {
     private SectionsPagerAdapter mSectionsPagerAdapter;
     String fromWhereView = null;
     TextView txtTitle;
-
+    protected  OnBackPressedListener onBackPressedListener ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,7 +65,6 @@ public class MoreItemsActivity extends AppCompatActivity  {
           tabLayout.setVisibility(View.VISIBLE);
           txtTitle.setText("Your Appointment");
       }else if (fromWhereView.equals(Constants.daily_health_tips))
-
       {
           mViewPager.setVisibility(View.GONE);
           tabLayout.setVisibility(View.GONE);
@@ -72,6 +73,16 @@ public class MoreItemsActivity extends AppCompatActivity  {
           FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
           fragmentTransaction.add(R.id.fragment_container, new DailyHealthTipsFragment(), "DAILY_HEALTH_TIPS_FRAGMENT");
           fragmentTransaction.addToBackStack("DAILY_HEALTH_TIPS_FRAGMENT");
+          fragmentTransaction.commit();
+      }else if (fromWhereView.equals(Constants.testimony))
+      {
+          mViewPager.setVisibility(View.GONE);
+          tabLayout.setVisibility(View.GONE);
+          txtTitle.setText("Testimony");
+          FragmentManager fragmentManager = getSupportFragmentManager();
+          FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+          fragmentTransaction.add(R.id.fragment_container, new TestimonyFragment(), "TESTIMONY_FRAGMENT");
+          fragmentTransaction.addToBackStack("TESTIMONY_FRAGMENT");
           fragmentTransaction.commit();
       }
 
@@ -104,4 +115,27 @@ public class MoreItemsActivity extends AppCompatActivity  {
 
         }
     };
+
+    @Override
+    public void onBackPressed() {
+        if (onBackPressedListener != null)
+            onBackPressedListener.onBackPressed();
+        else
+            super.onBackPressed();
+
+    }
+    public void setOnBackPressedListener(OnBackPressedListener onBackPressedListener) {
+        this.onBackPressedListener = onBackPressedListener;
+    }
+
+
+    public interface OnBackPressedListener  {
+        void onBackPressed();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+    }
 }

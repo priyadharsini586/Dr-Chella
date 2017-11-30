@@ -99,10 +99,6 @@ public class SplashActivity extends AppCompatActivity implements  LoadImageTask.
                             Bundle b = intent.getExtras();
                             isConnection = b.getString(Constants.MESSAGE);
                             getNetworkState();
-                        } else {
-                            Bundle b = intent.getExtras();
-                            isConnection = b.getString(Constants.MESSAGE);
-                            getNetworkState();
                         }
 //                    }
 
@@ -419,11 +415,11 @@ public class SplashActivity extends AppCompatActivity implements  LoadImageTask.
     }
     private void checkEmail() {
 
-        if (alreadySend.equals("")) {
+        if (alreadySend.equals("") && getE_mail() != null) {
             if (isConnection != null) {
                 if (isConnection.equals(Constants.NETWORK_CONNECTED)) {
                     final String e_mail = getE_mail();
-                    registerDetails();
+
 
 //            Log.e("djjkdfdhd",e_mail);
                     apiInterface = ApiClient.getClient().create(ApiInterface.class);
@@ -478,10 +474,8 @@ public class SplashActivity extends AppCompatActivity implements  LoadImageTask.
                                         new Handler().postDelayed(new Runnable() {
                                             @Override
                                             public void run() {
-                                                Intent mainIntent = new Intent(SplashActivity.this, HomeActivity.class);
-                                                SplashActivity.this.startActivity(mainIntent);
-                                                overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
-                                                SplashActivity.this.finish();
+                                                registerDetails();
+
                                             }
                                         }, 2000);
                                     }
@@ -522,7 +516,8 @@ public class SplashActivity extends AppCompatActivity implements  LoadImageTask.
 
     private void registerDetails() {
 
-        if (isConnection.equals(Constants.NETWORK_CONNECTED)) {
+        String mailId = getE_mail();
+        if (isConnection.equals(Constants.NETWORK_CONNECTED) && getE_mail() != null) {
             apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
             JSONObject jsonObject = new JSONObject();
@@ -547,15 +542,20 @@ public class SplashActivity extends AppCompatActivity implements  LoadImageTask.
                                     TimeAndDateResponse dateResponse = new TimeAndDateResponse();
                                     dateResponse.setPhoto(timeAndDateResponse.getProfile_pic());
                                     databaseHandler.addUser(timeAndDateResponse.getName(),timeAndDateResponse.getMobile(),"0","");
-                                    if (timeAndDateResponse.equals("2"))
+                                    if (timeAndDateResponse.getLang().equals("2"))
                                     {
-                                        databaseHandler.addLanguage("0","English");
-                                    }else if (timeAndDateResponse.equals("1"))
+                                        databaseHandler.addLanguage("English","0");
+                                    }else if (timeAndDateResponse.getLang().equals("1"))
                                     {
-                                        databaseHandler.addLanguage("0","Tamil");
+                                        databaseHandler.addLanguage("Tamil","0");
                                     }
 
                                     new LoadImageTask(SplashActivity.this).execute(timeAndDateResponse.getProfile_pic());
+
+                                    Intent mainIntent = new Intent(SplashActivity.this, HomeActivity.class);
+                                    SplashActivity.this.startActivity(mainIntent);
+                                    overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+                                    SplashActivity.this.finish();
                                 }
                             }
                         }

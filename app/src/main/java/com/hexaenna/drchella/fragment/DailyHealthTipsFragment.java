@@ -4,9 +4,13 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -18,11 +22,15 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.hexaenna.drchella.Db.DatabaseHandler;
 import com.hexaenna.drchella.Model.HealthTipsDetails;
 import com.hexaenna.drchella.R;
+import com.hexaenna.drchella.activity.MoreItemsActivity;
 import com.hexaenna.drchella.adapter.CustomHealthViewPagerAdapter;
 import com.hexaenna.drchella.adapter.HealthTipsAdapter;
 import com.hexaenna.drchella.api.ApiClient;
@@ -45,7 +53,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class DailyHealthTipsFragment extends Fragment {
+public class DailyHealthTipsFragment extends Fragment implements MoreItemsActivity.OnBackPressedListener {
 
 
   View view;
@@ -99,7 +107,7 @@ public class DailyHealthTipsFragment extends Fragment {
             @Override
             public void onClick(View view, int position) {
                 HealthTipsDetails.Tips tips = tipsArrayList.get(position);
-                openDialognotification();
+                openDialognotification(position);
             }
 
             @Override
@@ -107,7 +115,7 @@ public class DailyHealthTipsFragment extends Fragment {
 
             }
         }));
-
+        ((MoreItemsActivity) getActivity()).setOnBackPressedListener(this);
         return view;
     }
 
@@ -143,13 +151,26 @@ public class DailyHealthTipsFragment extends Fragment {
                                         } catch (ParseException e) {
                                             e.printStackTrace();
                                         }
+                                        String lang = tips.getLang();
+                                        String appLang = " ";
+                                        DatabaseHandler databaseHandler = new DatabaseHandler(getActivity());
+                                        if (databaseHandler.getContact("0").equals("English"))
+                                        {
 
+                                            appLang = "2";
+
+                                        }else if (databaseHandler.getContact("0").equals("Tamil"))
+                                        {
+                                            appLang = "1";
+                                        }
 
                                         tips.setDt_time(formattedDate);
                                         tips.setTitle(tips.getTitle());
                                         tips.setTips_pic(tips.getTips_pic());
 
-                                        tipsArrayList.add(tips);
+                                        if (appLang.equals(lang)) {
+                                            tipsArrayList.add(tips);
+                                        }
                                     }
                                 }
                                 Log.e("size",String.valueOf(tipsArrayList.size()));
@@ -171,7 +192,7 @@ public class DailyHealthTipsFragment extends Fragment {
     }
 
 
-    public void openDialognotification()
+    public void openDialognotification(int position)
     {
         final Dialog dialog = new Dialog(getActivity());
         dialog.setContentView(R.layout.show_notification_page);
@@ -179,7 +200,71 @@ public class DailyHealthTipsFragment extends Fragment {
         ViewPager  viewPager = (ViewPager)dialog.findViewById(R.id.notifi_viewpager);
         CustomHealthViewPagerAdapter mAdapter = new CustomHealthViewPagerAdapter(getActivity(), tipsArrayList);
         viewPager.setAdapter(mAdapter);
+       final int   dotsCount = mAdapter.getCount();
+       final View[]  dots = new View[dotsCount];
+        LinearLayout viewPagerCountDots = (LinearLayout) dialog.findViewById(R.id.viewPagerCountDots);
+        for (int i=0;i<dots.length;i++) {
+            dots[i] = new View(getActivity());
+
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                dots[i].setBackground(getActivity().getDrawable(R.drawable.default_dot));
+            }else
+            {
+                dots[i].setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.default_dot));
+            }
+            ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(new ViewGroup.LayoutParams(30, ViewGroup.LayoutParams.WRAP_CONTENT));
+            dots[i].setLayoutParams(lp);
+            viewPagerCountDots.addView(dots[i]);
+        }
+
+        viewPager.setCurrentItem(position);
+        dots[position].setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.selected_dot));
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                for (int i = 0; i < dots.length; i++){
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        dots[i].setBackground(getActivity().getDrawable(R.drawable.default_dot));
+                    }else
+                    {
+                        dots[i].setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.default_dot));
+                    }
+                }
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    dots[position].setBackground(getActivity().getDrawable(R.drawable.selected_dot));
+                }else
+                {
+                    dots[position].setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.selected_dot));
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().setLayout(700,ViewGroup.LayoutParams.WRAP_CONTENT);
+        ImageView imageClose = (ImageView) dialog.findViewById(R.id.imgClose);
+        imageClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+            }
+        });
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation_2;
         dialog.show();
     }
 
+    @Override
+    public void onBackPressed() {
+        getActivity().finish();
+    }
 }
