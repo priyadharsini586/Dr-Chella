@@ -136,6 +136,7 @@ public class MoreItemsActivity extends AppCompatActivity  {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
+        TestimonyFragment testimonyFragment = new TestimonyFragment();
+        testimonyFragment.onActivityResult(requestCode,resultCode,data);
     }
 }
