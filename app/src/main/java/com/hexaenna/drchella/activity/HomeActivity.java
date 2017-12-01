@@ -345,7 +345,8 @@ public class HomeActivity extends AppCompatActivity implements  LoadImageTask.Li
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            bitmap = getResizedBitmap(bitmap,100,100);
+            UtilsClass utilsClass = new UtilsClass();
+            bitmap = utilsClass.getResizedBitmap(bitmap,100,100);
             if (isConnection.equals(Constants.NETWORK_CONNECTED)) {
                 apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
@@ -513,16 +514,5 @@ public class HomeActivity extends AppCompatActivity implements  LoadImageTask.Li
         Toast.makeText(this, "Error Loading Image !", Toast.LENGTH_SHORT).show();
     }
 
-    public Bitmap getResizedBitmap(Bitmap bm, int newHeight, int newWidth) {
-        int width = bm.getWidth();
-        int height = bm.getHeight();
-        float scaleWidth = ((float) newWidth) / width;
-        float scaleHeight = ((float) newHeight) / height;
-        Matrix matrix = new Matrix();
-        matrix.postScale(scaleWidth, scaleHeight);
-        Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width, height,
-                matrix, false);
 
-        return resizedBitmap;
-    }
 }

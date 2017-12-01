@@ -96,4 +96,24 @@
     </LinearLayout>
 
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/ldtSendMenu"
+        android:padding="10dp"
+        android:id="@+id/rldSendImage">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/chella"
+            android:layout_margin="20dp"
+            android:id="@+id/imgSendImg"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_cancel_image"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:id="@+id/imgCloseImg"/>
+    </RelativeLayout>
 </RelativeLayout>
