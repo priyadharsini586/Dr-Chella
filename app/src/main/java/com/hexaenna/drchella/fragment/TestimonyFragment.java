@@ -14,14 +14,19 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.hexaenna.drchella.Model.TestimonyDetails;
 import com.hexaenna.drchella.R;
 import com.hexaenna.drchella.activity.MoreItemsActivity;
+import com.hexaenna.drchella.adapter.TestimonyContentAdapter;
 import com.hexaenna.drchella.animation_file.StaggeredAnimationGroup;
 import com.hexaenna.drchella.animation_file.Utils;
 import com.hexaenna.drchella.utils.UtilsClass;
@@ -31,6 +36,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class TestimonyFragment extends Fragment implements MoreItemsActivity.OnBackPressedListener, View.OnClickListener {
@@ -49,6 +56,12 @@ public class TestimonyFragment extends Fragment implements MoreItemsActivity.OnB
     int CAMERA_CODE =100;
     UtilsClass utilsClass;
     Uri  imageUri;
+    boolean myMessage = true;
+    private List<TestimonyDetails> ChatBubbles;
+    private ArrayAdapter<TestimonyDetails> adapter;
+    ListView list_msg;
+    Button sendTestimony;
+    EditText edtContent;
     public static Activity TestimonyFragment()
     {
         return context;
@@ -87,6 +100,32 @@ public class TestimonyFragment extends Fragment implements MoreItemsActivity.OnB
         imgCloseImg = (ImageView) view.findViewById(R.id.imgCloseImg);
         imgCloseImg.setOnClickListener(this);
         ((MoreItemsActivity) getActivity()).setOnBackPressedListener(this);
+
+        list_msg = (ListView) view.findViewById(R.id.list_msg);
+        ChatBubbles = new ArrayList<>();
+        adapter = new TestimonyContentAdapter(getActivity(), R.layout.left_bubble_chat, ChatBubbles);
+        list_msg.setAdapter(adapter);
+        sendTestimony = (Button) view.findViewById(R.id.sendTestimony);
+        edtContent = (EditText) view.findViewById(R.id.edtContent);
+        sendTestimony.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (edtContent.getText().toString().trim().equals("")) {
+                    Toast.makeText(getActivity(), "Please input some text...", Toast.LENGTH_SHORT).show();
+                } else {
+                    //add message to list
+                    TestimonyDetails ChatBubble = new TestimonyDetails(edtContent.getText().toString(), myMessage);
+                    ChatBubbles.add(ChatBubble);
+                    adapter.notifyDataSetChanged();
+                    edtContent.setText("");
+                    if (myMessage) {
+                        myMessage = false;
+                    } else {
+                        myMessage = true;
+                    }
+                }
+            }
+        });
         return view;
     }
 

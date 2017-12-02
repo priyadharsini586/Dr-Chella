@@ -9,9 +9,15 @@ import android.graphics.Bitmap;
 public class TestimonyDetails {
 
     Bitmap imageBitmap;
+    public String content;
+    public boolean myMessage;
     private static TestimonyDetails ourInstance = new TestimonyDetails();
-    private TestimonyDetails(){}
+    public TestimonyDetails(){}
 
+    public TestimonyDetails(String content, boolean myMessage) {
+        this.content = content;
+        this.myMessage = myMessage;
+    }
     public static TestimonyDetails getInstance() {
         return ourInstance;
     }
@@ -22,5 +28,21 @@ public class TestimonyDetails {
 
     public void setImageBitmap(Bitmap imageBitmap) {
         this.imageBitmap = imageBitmap;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public boolean isMyMessage() {
+        return myMessage;
+    }
+
+    public void setMyMessage(boolean myMessage) {
+        this.myMessage = myMessage;
     }
 }
