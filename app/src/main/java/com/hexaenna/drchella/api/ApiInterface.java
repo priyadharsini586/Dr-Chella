@@ -5,6 +5,7 @@ import com.hexaenna.drchella.Model.AppointmentDetails;
 import com.hexaenna.drchella.Model.HealthTipsDetails;
 import com.hexaenna.drchella.Model.MessageRequestAndResponse;
 import com.hexaenna.drchella.Model.RegisterRequestAndResponse;
+import com.hexaenna.drchella.Model.TestimonyDetails;
 import com.hexaenna.drchella.Model.TimeAndDateResponse;
 
 import org.json.JSONObject;
@@ -85,5 +86,14 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("change_language.php")
     Call<HealthTipsDetails> changeLanguage(@Field("x") JSONObject bookObject);
+
+
+    @FormUrlEncoded
+    @POST("testimony.php")
+    Call<TestimonyDetails> sendTestimony(@Field("x") JSONObject object);
+
+    @POST("display_testimony.php")
+    Call<TestimonyDetails> getTestimonyDetails();
+
 }
 

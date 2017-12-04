@@ -25,6 +25,7 @@ import com.hexaenna.drchella.Model.TimeAndDateResponse;
 import com.hexaenna.drchella.Model.UserRegisterDetails;
 import com.hexaenna.drchella.R;
 import com.hexaenna.drchella.activity.BookAppointmentActivity;
+import com.hexaenna.drchella.activity.ViewAppointmentActivity;
 import com.hexaenna.drchella.api.ApiClient;
 import com.hexaenna.drchella.api.ApiInterface;
 import com.hexaenna.drchella.utils.Constants;
@@ -220,6 +221,13 @@ public class HomeFragment extends Fragment {
                                                     e.printStackTrace();
                                                 }
                                             }
+                                            addView.setOnClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View v) {
+                                                    Intent intent = new Intent(getActivity(), ViewAppointmentActivity.class);
+                                                    startActivity(intent);
+                                                }
+                                            });
                                             ldtAddAppointment.addView(addView);
                                         }
                                     }
@@ -381,8 +389,11 @@ public class HomeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
-
+        Log.e("onResume","onResume recreated");
+        if (isConnection != null) {
+            sendUrl = "b";
+            registerDetails();
+        }
     }
 }
 

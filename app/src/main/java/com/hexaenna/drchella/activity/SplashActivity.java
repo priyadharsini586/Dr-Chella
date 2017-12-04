@@ -472,13 +472,10 @@ public class SplashActivity extends AppCompatActivity implements  LoadImageTask.
                                         }, 2000);
 
                                     } else if (login.getStatus_code().equals(Constants.status_code1)) {
-                                        new Handler().postDelayed(new Runnable() {
-                                            @Override
-                                            public void run() {
+
                                                 registerDetails();
 
-                                            }
-                                        }, 2000);
+
                                     }
                                 }
 
@@ -543,10 +540,10 @@ public class SplashActivity extends AppCompatActivity implements  LoadImageTask.
                                     TimeAndDateResponse dateResponse = new TimeAndDateResponse();
                                     dateResponse.setPhoto(timeAndDateResponse.getProfile_pic());
                                     databaseHandler.addUser(timeAndDateResponse.getName(),timeAndDateResponse.getMobile(),"0","");
-                                    if (timeAndDateResponse.getLang().equals("2"))
+                                    if (timeAndDateResponse.getLang().equals("English"))
                                     {
                                         databaseHandler.addLanguage("English","0");
-                                    }else if (timeAndDateResponse.getLang().equals("1"))
+                                    }else if (timeAndDateResponse.getLang().equals("Tamil"))
                                     {
                                         databaseHandler.addLanguage("Tamil","0");
                                     }

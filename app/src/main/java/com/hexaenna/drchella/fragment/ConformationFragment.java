@@ -386,7 +386,8 @@ public class ConformationFragment extends Fragment implements View.OnClickListen
                         if (timeAndDateResponse.getStatus_code() != null) {
                             if (timeAndDateResponse.getStatus_code().equals(Constants.status_code1)) {
                                 Toast.makeText(getActivity(), timeAndDateResponse.getStatus_message(), Toast.LENGTH_SHORT).show();
-                                sendSms(timeAndDateResponse.getUniqid());
+//                                sendSms(timeAndDateResponse.getUniqid());
+                                RegisterDetailsFragment.countDownTimer.cancel();
                                 getActivity().finish();
                             } else if (timeAndDateResponse.getStatus_code().equals(Constants.status_code_1)) {
                                 if (timeAndDateResponse.getStatus_message() != null)

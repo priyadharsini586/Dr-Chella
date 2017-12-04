@@ -1,25 +1,86 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    >
+    android:paddingTop="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/ldtCircle"
+            android:gravity="bottom"
+            android:paddingLeft="10dp"
+            android:paddingRight="5dp">
+            <de.hdodenhof.circleimageview.CircleImageView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@mipmap/ic_testimony_user_name"
+                app:civ_border_width="1dp"
+                app:civ_border_color="@color/colorPrimary"
+                android:id="@+id/ic_profile"
+                />
+        </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="20dp" >
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
         android:orientation="vertical"
         android:paddingBottom="10dp"
-        android:background="@drawable/bubble_right">
+        android:background="@drawable/bubble_right"
+        android:padding="10dp">
 
+        <TextView
+            android:id="@+id/testUserName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#f35119"
+            android:text="Priya"
+            android:textSize="@dimen/testimony_username"
+            />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            android:src="@mipmap/ic_launcher"
+            android:id="@+id/imgMsg"
+            />
         <TextView
             android:id="@+id/txt_msg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:textColor="@android:color/holo_red_dark"
+            android:padding="2dp"
+            android:textColor="@android:color/black"
+            android:text="hi"
+           android:gravity="center"
+           android:textSize="@dimen/testimony_content"
+            />
 
-            android:text="adsjkklfhkdsfhksdfhsdjkfhjkfhjk" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:paddingTop="5dp">
+            <TextView
+                android:id="@+id/txtTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#d3d3d3"
+                android:text="07.12 PM"
+                android:textSize="@dimen/testimony_time"/>
+        </LinearLayout>
+</LinearLayout>
+
 
     </LinearLayout>
 
+    </LinearLayout>
 </RelativeLayout>

@@ -4,8 +4,11 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -24,13 +27,22 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.hexaenna.drchella.Model.TestimonyDetails;
+import com.hexaenna.drchella.Model.UserRegisterDetails;
 import com.hexaenna.drchella.R;
 import com.hexaenna.drchella.activity.MoreItemsActivity;
 import com.hexaenna.drchella.adapter.TestimonyContentAdapter;
 import com.hexaenna.drchella.animation_file.StaggeredAnimationGroup;
 import com.hexaenna.drchella.animation_file.Utils;
+import com.hexaenna.drchella.api.ApiClient;
+import com.hexaenna.drchella.api.ApiInterface;
+import com.hexaenna.drchella.service.NetworkChangeReceiver;
+import com.hexaenna.drchella.utils.Constants;
+import com.hexaenna.drchella.utils.LoadImageTask;
 import com.hexaenna.drchella.utils.UtilsClass;
 import com.soundcloud.android.crop.Crop;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -38,6 +50,11 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class TestimonyFragment extends Fragment implements MoreItemsActivity.OnBackPressedListener, View.OnClickListener {
@@ -62,6 +79,10 @@ public class TestimonyFragment extends Fragment implements MoreItemsActivity.OnB
     ListView list_msg;
     Button sendTestimony;
     EditText edtContent;
+    NetworkChangeReceiver networkChangeReceiver;
+    ApiInterface apiInterface;
+    String isConnection = null,send = "";
+
     public static Activity TestimonyFragment()
     {
         return context;
@@ -88,6 +109,28 @@ public class TestimonyFragment extends Fragment implements MoreItemsActivity.OnB
                 }
             }
         });
+
+        networkChangeReceiver = new NetworkChangeReceiver()
+        {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                super.onReceive(context, intent);
+//                if (isConnection == null) {
+                if (isConnection == null) {
+                    Bundle b = intent.getExtras();
+                    isConnection = b.getString(Constants.MESSAGE);
+                    getNetworkState();
+                }
+
+//                }
+
+            }
+        };
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+        intentFilter.addAction(Constants.BROADCAST);
+        getActivity().registerReceiver(networkChangeReceiver,
+                intentFilter);
         utilsClass = new UtilsClass();
         lstGallery = (LinearLayout) view.findViewById(R.id.lstGallery);
         lstGallery.setOnClickListener(this);
@@ -113,16 +156,8 @@ public class TestimonyFragment extends Fragment implements MoreItemsActivity.OnB
                 if (edtContent.getText().toString().trim().equals("")) {
                     Toast.makeText(getActivity(), "Please input some text...", Toast.LENGTH_SHORT).show();
                 } else {
-                    //add message to list
-                    TestimonyDetails ChatBubble = new TestimonyDetails(edtContent.getText().toString(), myMessage);
-                    ChatBubbles.add(ChatBubble);
-                    adapter.notifyDataSetChanged();
-                    edtContent.setText("");
-                    if (myMessage) {
-                        myMessage = false;
-                    } else {
-                        myMessage = true;
-                    }
+                    sendTestimony();
+
                 }
             }
         });
@@ -256,6 +291,119 @@ public class TestimonyFragment extends Fragment implements MoreItemsActivity.OnB
         startActivityForResult(intent, CAMERA_CODE);*/
     }
 
+    private void displayTestimony()
+    {
+        if (isConnection != null) {
+            if (isConnection.equals(Constants.NETWORK_CONNECTED) && send.equals("")) {
 
+                apiInterface = ApiClient.getClient().create(ApiInterface.class);
+                Call<TestimonyDetails> call = apiInterface.getTestimonyDetails();
+                call.enqueue(new Callback<TestimonyDetails>() {
+                    @Override
+                    public void onResponse(Call<TestimonyDetails> call, Response<TestimonyDetails> response) {
+                        if (response.isSuccessful()) {
+                            TestimonyDetails testimonyDetails = response.body();
+                            Log.e("tst",""+testimonyDetails.getTips().size());
+
+
+                            for (int j= 0 ; j < testimonyDetails.getTips().size() ; j++) {
+                                TestimonyDetails.Tips tips = testimonyDetails.getTips().get(j);
+                                UserRegisterDetails userRegisterDetails = UserRegisterDetails.getInstance();
+                                int[] androidColors = getResources().getIntArray(R.array.androidcolors);
+                                int randomAndroidColor = androidColors[new Random().nextInt(androidColors.length)];
+                                if (tips.getEmail().equals(userRegisterDetails.getE_mail()))
+                                {
+                                    myMessage = false;
+                                }else
+                                {
+                                    myMessage = true;
+                                }
+                                TestimonyDetails details = new TestimonyDetails();
+                                details.setContent(tips.getContent());
+                                details.setMyMessage(myMessage);
+                                details.setTestimonyPic(tips.getTstmny_pic());
+                                details.setColorCode(randomAndroidColor);
+                                ChatBubbles.add(details);
+                            }
+                            send = "send";
+                            adapter.notifyDataSetChanged();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<TestimonyDetails> call, Throwable t) {
+
+                    }
+                });
+            }
+        }
+    }
+    private void sendTestimony()
+    {
+        if (isConnection != null) {
+            if (isConnection.equals(Constants.NETWORK_CONNECTED)) {
+
+                apiInterface = ApiClient.getClient().create(ApiInterface.class);
+                JSONObject jsonObject = new JSONObject();
+                UserRegisterDetails userRegisterDetails = UserRegisterDetails.getInstance();
+                UtilsClass utilsClass = new UtilsClass();
+                try {
+                    jsonObject.put("user_email",userRegisterDetails.getE_mail());
+                    if (testimonyDetails.getImageBitmap() != null) {
+                        jsonObject.put("image", utilsClass.BitMapToString(testimonyDetails.getImageBitmap()));
+                    }else
+                    {
+                        jsonObject.put("image", " ");
+                    }
+                    jsonObject.put("content",edtContent.getText().toString().trim());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                Call<TestimonyDetails> call = apiInterface.sendTestimony(jsonObject);
+                call.enqueue(new Callback<TestimonyDetails>() {
+                    @Override
+                    public void onResponse(Call<TestimonyDetails> call, Response<TestimonyDetails> response) {
+                        if (response.isSuccessful()) {
+
+                            TestimonyDetails testimonyDetail = response.body();
+                            if (testimonyDetail.getStatus_code().equals(Constants.status_code1))
+                            {
+                                int[] androidColors = getResources().getIntArray(R.array.androidcolors);
+                                int randomAndroidColor = androidColors[new Random().nextInt(androidColors.length)];
+                                myMessage = false;
+                                TestimonyDetails ChatBubble = new TestimonyDetails(edtContent.getText().toString(), myMessage,testimonyDetails.getImageBitmap(),randomAndroidColor);
+                                ChatBubbles.add(ChatBubble);
+                                adapter.notifyDataSetChanged();
+                                edtContent.setText("");
+                                imgCloseImg.performClick();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<TestimonyDetails> call, Throwable t) {
+
+                    }
+                });
+            }
+        }
+    }
+
+    private void getNetworkState() {
+
+        if (isConnection != null) {
+            if (isConnection.equals(Constants.NETWORK_NOT_CONNECTED)) {
+
+
+
+            } else if (isConnection.equals(Constants.NETWORK_CONNECTED)) {
+
+                if (send.equals(""))
+                {
+                    displayTestimony();
+                }
+            }
+        }
+    }
 
 }

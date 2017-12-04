@@ -15,6 +15,10 @@
     <dimen name="notifi_title">16sp</dimen>
     <dimen name="notifi_time">12sp</dimen>
     <dimen name="notifi_content">14sp</dimen>
+
+    <dimen name="testimony_username">13sp</dimen>
+    <dimen name="testimony_content">16sp</dimen>
+    <dimen name="testimony_time">10sp</dimen>
     <!--Registration screen dimen-->
     <dimen name="edtt_text_padding">15dp</dimen>
     <dimen name="icon_padding">7dp</dimen>

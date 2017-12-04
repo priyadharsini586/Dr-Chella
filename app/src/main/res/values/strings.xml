@@ -122,7 +122,7 @@
     <string name="tamil_time">நேரம்</string>
 
     <!--hospital-->
-    <string name="erode_hospital">URC Hospital</string>
+    <string name="erode_hospital">URC Hospital,Erode</string>
     <string name="coimbatore_hospital">Geneomm Hospital</string>
     <string name="namakkal_hospital">MM Hospital</string>
     <string name="mayiladu_hospital">SA Medical Centre</string>

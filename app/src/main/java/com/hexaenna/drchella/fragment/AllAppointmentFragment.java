@@ -87,7 +87,6 @@ public class AllAppointmentFragment extends Fragment {
 
         txtNodata = (LinearLayout) view.findViewById(R.id.txtNodata);
         txtNodata.setVisibility(View.GONE);
-
         return view;
     }
 
