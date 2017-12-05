@@ -2,17 +2,18 @@ package com.hexaenna.drchella.adapter;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.hexaenna.drchella.Db.DatabaseHandler;
 import com.hexaenna.drchella.Model.TestimonyDetails;
+import com.hexaenna.drchella.Model.UserRegisterDetails;
 import com.hexaenna.drchella.R;
 import com.hexaenna.drchella.image_cache.ImageLoader;
 import com.hexaenna.drchella.utils.UtilsClass;
@@ -21,46 +22,69 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Random;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
- * Created by admin on 12/2/2017.
+ * Created by Priya Mohan on 05-12-2017.
  */
 
-public class TestimonyContentAdapter extends ArrayAdapter<TestimonyDetails> {
+public class TestimonyAdapter extends BaseAdapter {
 
     private Activity activity;
     private List<TestimonyDetails> messages;
     ImageLoader imageLoader;
-    public TestimonyContentAdapter(Activity context, int resource, List<TestimonyDetails> objects) {
-        super(context, resource, objects);
+    public TestimonyAdapter(Activity context, int resource, List<TestimonyDetails> objects) {
         this.activity = context;
         this.messages = objects;
         imageLoader=new ImageLoader(context.getApplicationContext());
     }
+    @Override
+    public int getCount() {
+        return messages.size();
+    }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public Object getItem(int position) {
+        return messages.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return messages.hashCode();
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup viewGroup) {
         ViewHolder holder;
         LayoutInflater inflater = (LayoutInflater) activity.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
 
         int layoutResource = 0; // determined by view type
-        TestimonyDetails chatBubble = getItem(position);
+        TestimonyDetails chatBubble = messages.get(position);
         int viewType = getItemViewType(position);
-        Log.e("message position"," "+chatBubble.myMessage);
-        if (!chatBubble.myMessage) {
-            layoutResource = R.layout.left_bubble_chat;
-        } else {
+
+        UserRegisterDetails userRegisterDetails = UserRegisterDetails.getInstance();
+        if (chatBubble.getEmail().equals(userRegisterDetails.getE_mail())) {
             layoutResource = R.layout.right_chat_bubble;
+            Log.e("right","right");
+        } else {
+            layoutResource = R.layout.left_bubble_chat;
+            Log.e("left","left");
         }
+        convertView = null;
 
         if (convertView != null) {
             holder = (ViewHolder) convertView.getTag();
         } else {
-            convertView = inflater.inflate(layoutResource, parent, false);
-            holder = new ViewHolder(convertView);
+            convertView = inflater.inflate(layoutResource, viewGroup, false);
+            holder = new ViewHolder();
+            holder.msg = (TextView) convertView.findViewById(R.id.txt_msg);
+            holder.txtTime = (TextView) convertView.findViewById(R.id.txtTime);
+            holder.txtDate = (TextView) convertView.findViewById(R.id.txtDate);
+            holder.imgMsg = (ImageView) convertView.findViewById(R.id.imgMsg);
+            holder.testUserName = (TextView) convertView.findViewById(R.id.testUserName);
+            holder.ic_profile = (CircleImageView) convertView.findViewById(R.id.ic_profile);
+            holder.layBg = (LinearLayout) convertView.findViewById(R.id.layBg);
             convertView.setTag(holder);
         }
 
@@ -98,6 +122,13 @@ public class TestimonyContentAdapter extends ArrayAdapter<TestimonyDetails> {
             String[] userDetails =  databaseHandler.getUserName("0");
             UtilsClass utilsClass = new UtilsClass();
             Bitmap bitmap = utilsClass.StringToBitMap(userDetails[2]);
+            if (chatBubble.getTestimonyPic() != null)
+            {
+                holder.imgMsg.setImageBitmap(utilsClass.StringToBitMap(chatBubble.getTestimonyPic()));
+            }else
+            {
+                holder.imgMsg.setVisibility(View.GONE);
+            }
             if (bitmap != null) {
                 holder.ic_profile.setImageBitmap(bitmap);
             }
@@ -107,29 +138,15 @@ public class TestimonyContentAdapter extends ArrayAdapter<TestimonyDetails> {
     }
 
     @Override
-    public int getViewTypeCount() {
-        // return the total number of view types. this value should never change
-        // at runtime. Value 2 is returned because of left and right views.
-        return 1;
+    public CharSequence[] getAutofillOptions() {
+        return new CharSequence[0];
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        // return a value between 0 and (getViewTypeCount - 1)
-        return position % 2;
-    }
 
     private class ViewHolder {
-        private TextView msg,testUserName,txtDate,txtTime;
+        private TextView msg, testUserName, txtDate, txtTime;
         ImageView imgMsg;
         CircleImageView ic_profile;
-        public ViewHolder(View v) {
-            msg = (TextView) v.findViewById(R.id.txt_msg);
-            txtTime = (TextView) v.findViewById(R.id.txtTime);
-            txtDate = (TextView) v.findViewById(R.id.txtDate);
-            imgMsg = (ImageView) v.findViewById(R.id.imgMsg);
-            testUserName = (TextView) v.findViewById(R.id.testUserName);
-            ic_profile = (CircleImageView) v.findViewById(R.id.ic_profile);
-        }
+        LinearLayout layBg;
     }
 }

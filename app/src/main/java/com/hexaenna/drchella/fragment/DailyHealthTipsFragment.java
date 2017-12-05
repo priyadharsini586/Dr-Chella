@@ -263,6 +263,21 @@ public class DailyHealthTipsFragment extends Fragment implements MoreItemsActivi
         dialog.show();
     }
 
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (networkChangeReceiver == null)
+        {
+            Log.e("reg","Do not unregister receiver as it was never registered");
+        }
+        else
+        {
+            Log.e("reg","Unregister receiver");
+            getActivity().unregisterReceiver(networkChangeReceiver);
+            networkChangeReceiver = null;
+        }
+    }
     @Override
     public void onBackPressed() {
         getActivity().finish();

@@ -139,8 +139,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
        final RadioGroup radGroupLangu = (RadioGroup) alertDialog.findViewById(R.id.radGroupLangu);
         radGroupLangu.check(R.id.radEnglish);
         Button btnOk = (Button) alertDialog.findViewById(R.id.btnOk);
-
-
+        ProgressBar progressChangeLang = (ProgressBar) alertDialog.findViewById(R.id.progressChangeLang);
+        progressChangeLang.setVisibility(View.GONE);
         btnOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -5,9 +5,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,7 +15,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -31,14 +28,12 @@ import com.hexaenna.drchella.Model.TestimonyDetails;
 import com.hexaenna.drchella.Model.UserRegisterDetails;
 import com.hexaenna.drchella.R;
 import com.hexaenna.drchella.activity.MoreItemsActivity;
-import com.hexaenna.drchella.adapter.TestimonyContentAdapter;
+import com.hexaenna.drchella.adapter.TestimonyAdapter;
 import com.hexaenna.drchella.animation_file.StaggeredAnimationGroup;
-import com.hexaenna.drchella.animation_file.Utils;
 import com.hexaenna.drchella.api.ApiClient;
 import com.hexaenna.drchella.api.ApiInterface;
 import com.hexaenna.drchella.service.NetworkChangeReceiver;
 import com.hexaenna.drchella.utils.Constants;
-import com.hexaenna.drchella.utils.LoadImageTask;
 import com.hexaenna.drchella.utils.UtilsClass;
 import com.soundcloud.android.crop.Crop;
 
@@ -48,9 +43,7 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -78,7 +71,7 @@ public class TestimonyFragment extends Fragment implements MoreItemsActivity.OnB
     Uri  imageUri;
     boolean myMessage = true;
     private List<TestimonyDetails> ChatBubbles;
-    private ArrayAdapter<TestimonyDetails> adapter;
+    private TestimonyAdapter adapter;
     ListView list_msg;
     Button sendTestimony;
     EditText edtContent;
@@ -149,7 +142,7 @@ public class TestimonyFragment extends Fragment implements MoreItemsActivity.OnB
 
         list_msg = (ListView) view.findViewById(R.id.list_msg);
         ChatBubbles = new ArrayList<>();
-        adapter = new TestimonyContentAdapter(getActivity(), R.layout.left_bubble_chat, ChatBubbles);
+        adapter = new TestimonyAdapter(getActivity(), R.layout.left_bubble_chat, ChatBubbles);
         list_msg.setAdapter(adapter);
         sendTestimony = (Button) view.findViewById(R.id.sendTestimony);
         edtContent = (EditText) view.findViewById(R.id.edtContent);
@@ -279,6 +272,21 @@ public class TestimonyFragment extends Fragment implements MoreItemsActivity.OnB
 
 
     }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (networkChangeReceiver == null)
+        {
+            Log.e("reg","Do not unregister receiver as it was never registered");
+        }
+        else
+        {
+            Log.e("reg","Unregister receiver");
+            getActivity().unregisterReceiver(networkChangeReceiver);
+            networkChangeReceiver = null;
+        }
+    }
     private void cameraIntent()
     {
        ContentValues values = new ContentValues();
@@ -310,25 +318,22 @@ public class TestimonyFragment extends Fragment implements MoreItemsActivity.OnB
 
                                 for (int j = 0; j < testimonyDetails.getTips().size(); j++) {
                                     TestimonyDetails.Tips tips = testimonyDetails.getTips().get(j);
-                                    UserRegisterDetails userRegisterDetails = UserRegisterDetails.getInstance();
                                     int[] androidColors = getResources().getIntArray(R.array.androidcolors);
                                     int randomAndroidColor = androidColors[new Random().nextInt(androidColors.length)];
-                                    if (tips.getEmail().equals(userRegisterDetails.getE_mail())) {
-                                        myMessage = true;
-                                    } else {
-                                        myMessage = false;
-                                    }
+
                                     TestimonyDetails details = new TestimonyDetails();
                                     details.setContent(tips.getContent());
                                     details.setMyMessage(myMessage);
                                     details.setName(tips.getName());
                                     details.setDate(tips.getDt_time());
                                     details.setProfilePic(tips.getProfile_pic());
+                                    details.setEmail(tips.getEmail());
                                     details.setFrom("server");
                                     if (!tips.getTstmny_pic().equals(""))
                                         details.setTestimonyPic(tips.getTstmny_pic());
                                     details.setColorCode(randomAndroidColor);
-                                    ChatBubbles.add(details);
+                                    if (!tips.getContent().equals("") )
+                                        ChatBubbles.add(details);
 
                                 }
                                 send = "send";
@@ -388,6 +393,7 @@ public class TestimonyFragment extends Fragment implements MoreItemsActivity.OnB
                                 String[] userDetails =  databaseHandler.getUserName("0");
                                 details.setName(userDetails[0]);
                                 details.setDate(testimonyDetail.getDate());
+                                details.setEmail(userRegisterDetails.getE_mail());
                                 details.setProfilePic(userDetails[2]);
                                 if (testimonyDetails.getImageBitmap() != null)
                                     details.setTestimonyPic(utilsClass.BitMapToString(testimonyDetails.getImageBitmap()));

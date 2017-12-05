@@ -31,13 +31,14 @@
         android:paddingBottom="20dp" >
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingBottom="10dp"
         android:background="@drawable/bubble_right"
         android:padding="10dp"
-        android:minWidth="100dp">
+        android:minWidth="150dp"
+        android:id="@+id/layBg">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -68,11 +69,11 @@
             />
         <TextView
             android:id="@+id/txt_msg"
-            android:layout_width="250dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="5dp"
             android:textColor="@android:color/black"
-            android:text="hifdgdhgfhghgfjghjghjghjhjghj"
+            android:text="hifdg"
            android:textSize="@dimen/testimony_content"
             />
 

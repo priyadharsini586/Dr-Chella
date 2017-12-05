@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class TestimonyDetails {
 
     Bitmap imageBitmap;
-    public String content,status_code,status_message,success,testimonyPic,profilePic,name,from,date,time;
+    public String content,status_code,status_message,success,testimonyPic,profilePic,name,from,date,time,email;
     public boolean myMessage;
     private static TestimonyDetails ourInstance = new TestimonyDetails();
     int colorCode;
@@ -23,6 +23,14 @@ public class TestimonyDetails {
         this.myMessage = myMessage;
         this.imageBitmap = msgBitmap;
         this.colorCode = colorCode;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getFrom() {
