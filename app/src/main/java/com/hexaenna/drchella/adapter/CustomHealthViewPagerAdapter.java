@@ -50,7 +50,7 @@ public class CustomHealthViewPagerAdapter extends PagerAdapter {
 
         txtTitleNotifi.setText(tips.getTitle());
         txtContentNotifi.setText(tips.getTips());
-        imageLoader.DisplayImage(tips.getTips_pic(),imgNoti);
+        imageLoader.DisplayImage(tips.getTips_pic(),imgNoti,R.mipmap.ic_default_health_tips);
         container.addView(view);
         return view;
     }

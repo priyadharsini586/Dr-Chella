@@ -5,7 +5,7 @@ package com.hexaenna.drchella.Model;
  */
 
 public class UserRegisterDetails {
-    private String mobileNum,uniqueId,otp,e_mail;
+    private String mobileNum,uniqueId,otp,e_mail,userName;
     private static UserRegisterDetails ourInstance = new UserRegisterDetails();
     private UserRegisterDetails(){}
 
@@ -43,5 +43,13 @@ public class UserRegisterDetails {
 
     public void setE_mail(String e_mail) {
         this.e_mail = e_mail;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }

@@ -1,6 +1,7 @@
 package com.hexaenna.drchella.adapter;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,12 +11,19 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.hexaenna.drchella.Db.DatabaseHandler;
 import com.hexaenna.drchella.Model.TestimonyDetails;
 import com.hexaenna.drchella.R;
 import com.hexaenna.drchella.image_cache.ImageLoader;
+import com.hexaenna.drchella.utils.UtilsClass;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by admin on 12/2/2017.
@@ -56,17 +64,44 @@ public class TestimonyContentAdapter extends ArrayAdapter<TestimonyDetails> {
             convertView.setTag(holder);
         }
 
-
+        SimpleDateFormat geivenDateFormat = new SimpleDateFormat("dd.MM.yyyy hh:mm a");
+        String formattedDate= " ";
+        try {
+            Date date =geivenDateFormat.parse(chatBubble.getDate());
+            geivenDateFormat.applyPattern("dd MMM yy/hh:mm a");
+            formattedDate = geivenDateFormat.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        String[] date = formattedDate.split("/");
+        holder.txtDate.setText(date[0]);
+        holder.txtTime.setText(date[1]);
         //set message content
         holder.msg.setText(chatBubble.getContent());
         holder.testUserName.setTextColor(chatBubble.getColorCode());
-
-        if (chatBubble.getTestimonyPic() != null) {
+        holder.testUserName.setText(chatBubble.getName());
+        if (chatBubble.getFrom().equals("server")) {
+            if (chatBubble.getProfilePic() != null) {
+                imageLoader.DisplayImage(chatBubble.getProfilePic(), holder.ic_profile, R.mipmap.ic_testimony_user_name);
+            } else {
+                holder.ic_profile.setImageDrawable(activity.getResources().getDrawable(R.mipmap.ic_testimony_user_name));
+            }
+            if (chatBubble.getTestimonyPic() != null) {
 //            holder.imgMsg.setImageBitmap(chatBubble.getImageBitmap());
-            imageLoader.DisplayImage(chatBubble.getTestimonyPic(), holder.imgMsg);
+                holder.imgMsg.setVisibility(View.VISIBLE);
+                imageLoader.DisplayImage(chatBubble.getTestimonyPic(), holder.imgMsg, R.drawable.default_image_testimony);
+            } else
+                holder.imgMsg.setVisibility(View.GONE);
+        }else if (chatBubble.getFrom().equals("me"))
+        {
+            DatabaseHandler databaseHandler = new DatabaseHandler(activity);
+            String[] userDetails =  databaseHandler.getUserName("0");
+            UtilsClass utilsClass = new UtilsClass();
+            Bitmap bitmap = utilsClass.StringToBitMap(userDetails[2]);
+            if (bitmap != null) {
+                holder.ic_profile.setImageBitmap(bitmap);
+            }
         }
-        else
-            holder.imgMsg.setVisibility(View.GONE);
 
         return convertView;
     }
@@ -85,12 +120,16 @@ public class TestimonyContentAdapter extends ArrayAdapter<TestimonyDetails> {
     }
 
     private class ViewHolder {
-        private TextView msg,testUserName;
+        private TextView msg,testUserName,txtDate,txtTime;
         ImageView imgMsg;
+        CircleImageView ic_profile;
         public ViewHolder(View v) {
             msg = (TextView) v.findViewById(R.id.txt_msg);
+            txtTime = (TextView) v.findViewById(R.id.txtTime);
+            txtDate = (TextView) v.findViewById(R.id.txtDate);
             imgMsg = (ImageView) v.findViewById(R.id.imgMsg);
             testUserName = (TextView) v.findViewById(R.id.testUserName);
+            ic_profile = (CircleImageView) v.findViewById(R.id.ic_profile);
         }
     }
 }

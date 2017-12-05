@@ -39,17 +39,18 @@ public class ImageLoader {
         executorService=Executors.newFixedThreadPool(5);
     }
 
-    final int stub_id= R.mipmap.ic_default_health_tips;
-    public void DisplayImage(String url, ImageView imageView)
+    int stub_id= R.mipmap.ic_default_health_tips;
+    public void DisplayImage(String url, ImageView imageView,int default_image)
     {
         imageViews.put(imageView, url);
+        stub_id = default_image;
         Bitmap bitmap=memoryCache.get(url);
         if(bitmap!=null)
             imageView.setImageBitmap(bitmap);
         else
         {
             queuePhoto(url, imageView);
-            imageView.setImageResource(stub_id);
+            imageView.setImageResource(default_image);
         }
     }
 
@@ -99,7 +100,7 @@ public class ImageLoader {
             BitmapFactory.decodeStream(new FileInputStream(f),null,o);
 
             //Find the correct scale value. It should be the power of 2.
-            final int REQUIRED_SIZE=70;
+            final int REQUIRED_SIZE=250;
             int width_tmp=o.outWidth, height_tmp=o.outHeight;
             int scale=1;
             while(true){

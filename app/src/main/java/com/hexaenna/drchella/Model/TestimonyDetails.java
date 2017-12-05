@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class TestimonyDetails {
 
     Bitmap imageBitmap;
-    public String content,status_code,status_message,success,testimonyPic,profilePic;
+    public String content,status_code,status_message,success,testimonyPic,profilePic,name,from,date,time;
     public boolean myMessage;
     private static TestimonyDetails ourInstance = new TestimonyDetails();
     int colorCode;
@@ -23,6 +23,38 @@ public class TestimonyDetails {
         this.myMessage = myMessage;
         this.imageBitmap = msgBitmap;
         this.colorCode = colorCode;
+    }
+
+    public String getFrom() {
+        return from;
+    }
+
+    public void setFrom(String from) {
+        this.from = from;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getTestimonyPic() {
@@ -111,7 +143,15 @@ public class TestimonyDetails {
 
     public class Tips
     {
-        String email,content,dt_time,tstmny_pic,profile_pic;
+        String email,content,dt_time,tstmny_pic,profile_pic,name;
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
 
         public String getEmail() {
             return email;

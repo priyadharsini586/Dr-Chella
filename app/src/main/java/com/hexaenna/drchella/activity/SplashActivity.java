@@ -521,7 +521,7 @@ public class SplashActivity extends AppCompatActivity implements  LoadImageTask.
             JSONObject jsonObject = new JSONObject();
 
             try {
-                UserRegisterDetails userRegisterDetails = UserRegisterDetails.getInstance();
+
                 jsonObject.put("user_email",getE_mail());
 
             } catch (JSONException e) {

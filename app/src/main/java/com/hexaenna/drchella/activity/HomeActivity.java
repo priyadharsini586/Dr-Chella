@@ -196,6 +196,8 @@ public class HomeActivity extends AppCompatActivity implements  LoadImageTask.Li
 
         DatabaseHandler databaseHandler = new DatabaseHandler(getApplicationContext());
         String[] userDetails =  databaseHandler.getUserName("0");
+        UserRegisterDetails userRegisterDetails = UserRegisterDetails.getInstance();
+        userRegisterDetails.setUserName(userDetails[0]);
         txtMobileNumber.setText(userDetails[1]);
         txtName.setText(userDetails[0]);
         UtilsClass utilsClass = new UtilsClass();

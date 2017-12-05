@@ -26,6 +26,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.hexaenna.drchella.Db.DatabaseHandler;
 import com.hexaenna.drchella.Model.TestimonyDetails;
 import com.hexaenna.drchella.Model.UserRegisterDetails;
 import com.hexaenna.drchella.R;
@@ -49,6 +50,8 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -303,30 +306,35 @@ public class TestimonyFragment extends Fragment implements MoreItemsActivity.OnB
                     public void onResponse(Call<TestimonyDetails> call, Response<TestimonyDetails> response) {
                         if (response.isSuccessful()) {
                             TestimonyDetails testimonyDetails = response.body();
-                            Log.e("tst",""+testimonyDetails.getTips().size());
+                            if (testimonyDetails.getTips() != null) {
 
+                                for (int j = 0; j < testimonyDetails.getTips().size(); j++) {
+                                    TestimonyDetails.Tips tips = testimonyDetails.getTips().get(j);
+                                    UserRegisterDetails userRegisterDetails = UserRegisterDetails.getInstance();
+                                    int[] androidColors = getResources().getIntArray(R.array.androidcolors);
+                                    int randomAndroidColor = androidColors[new Random().nextInt(androidColors.length)];
+                                    if (tips.getEmail().equals(userRegisterDetails.getE_mail())) {
+                                        myMessage = true;
+                                    } else {
+                                        myMessage = false;
+                                    }
+                                    TestimonyDetails details = new TestimonyDetails();
+                                    details.setContent(tips.getContent());
+                                    details.setMyMessage(myMessage);
+                                    details.setName(tips.getName());
+                                    details.setDate(tips.getDt_time());
+                                    details.setProfilePic(tips.getProfile_pic());
+                                    details.setFrom("server");
+                                    if (!tips.getTstmny_pic().equals(""))
+                                        details.setTestimonyPic(tips.getTstmny_pic());
+                                    details.setColorCode(randomAndroidColor);
+                                    ChatBubbles.add(details);
 
-                            for (int j= 0 ; j < testimonyDetails.getTips().size() ; j++) {
-                                TestimonyDetails.Tips tips = testimonyDetails.getTips().get(j);
-                                UserRegisterDetails userRegisterDetails = UserRegisterDetails.getInstance();
-                                int[] androidColors = getResources().getIntArray(R.array.androidcolors);
-                                int randomAndroidColor = androidColors[new Random().nextInt(androidColors.length)];
-                                if (tips.getEmail().equals(userRegisterDetails.getE_mail()))
-                                {
-                                    myMessage = false;
-                                }else
-                                {
-                                    myMessage = true;
                                 }
-                                TestimonyDetails details = new TestimonyDetails();
-                                details.setContent(tips.getContent());
-                                details.setMyMessage(myMessage);
-                                details.setTestimonyPic(tips.getTstmny_pic());
-                                details.setColorCode(randomAndroidColor);
-                                ChatBubbles.add(details);
+                                send = "send";
+                                Collections.reverse(ChatBubbles);
+                                adapter.notifyDataSetChanged();
                             }
-                            send = "send";
-                            adapter.notifyDataSetChanged();
                         }
                     }
 
@@ -345,15 +353,12 @@ public class TestimonyFragment extends Fragment implements MoreItemsActivity.OnB
 
                 apiInterface = ApiClient.getClient().create(ApiInterface.class);
                 JSONObject jsonObject = new JSONObject();
-                UserRegisterDetails userRegisterDetails = UserRegisterDetails.getInstance();
-                UtilsClass utilsClass = new UtilsClass();
+                final UserRegisterDetails userRegisterDetails = UserRegisterDetails.getInstance();
+               final UtilsClass utilsClass = new UtilsClass();
                 try {
                     jsonObject.put("user_email",userRegisterDetails.getE_mail());
                     if (testimonyDetails.getImageBitmap() != null) {
                         jsonObject.put("image", utilsClass.BitMapToString(testimonyDetails.getImageBitmap()));
-                    }else
-                    {
-                        jsonObject.put("image", " ");
                     }
                     jsonObject.put("content",edtContent.getText().toString().trim());
                 } catch (JSONException e) {
@@ -370,9 +375,27 @@ public class TestimonyFragment extends Fragment implements MoreItemsActivity.OnB
                             {
                                 int[] androidColors = getResources().getIntArray(R.array.androidcolors);
                                 int randomAndroidColor = androidColors[new Random().nextInt(androidColors.length)];
+
+                                TestimonyDetails details = new TestimonyDetails();
+
+                                details.setContent(edtContent.getText().toString().trim());
+                                myMessage = true;
+                                details.setMyMessage(myMessage);
+                                details.setName(userRegisterDetails.getUserName());
+                                details.setFrom("me");
+
+                                DatabaseHandler databaseHandler = new DatabaseHandler(getActivity());
+                                String[] userDetails =  databaseHandler.getUserName("0");
+                                details.setName(userDetails[0]);
+                                details.setDate(testimonyDetail.getDate());
+                                details.setProfilePic(userDetails[2]);
+                                if (testimonyDetails.getImageBitmap() != null)
+                                    details.setTestimonyPic(utilsClass.BitMapToString(testimonyDetails.getImageBitmap()));
+                                details.setColorCode(randomAndroidColor);
+
+                                ChatBubbles.add(details);
+
                                 myMessage = false;
-                                TestimonyDetails ChatBubble = new TestimonyDetails(edtContent.getText().toString(), myMessage,testimonyDetails.getImageBitmap(),randomAndroidColor);
-                                ChatBubbles.add(ChatBubble);
                                 adapter.notifyDataSetChanged();
                                 edtContent.setText("");
                                 imgCloseImg.performClick();
