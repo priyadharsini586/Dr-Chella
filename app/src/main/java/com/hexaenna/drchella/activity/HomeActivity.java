@@ -253,7 +253,7 @@ public class HomeActivity extends AppCompatActivity implements  LoadImageTask.Li
 
     private void setupViewPager() {
         mSectionsPagerAdapter.addFrag(new HomeFragment(), "Home");
-        mSectionsPagerAdapter.addFrag(new ProfileFragment(), "Dr Profile");
+        mSectionsPagerAdapter.addFrag(ProfileFragment.newInstance("fromwhere",Constants.profile), "Dr Profile");
         mSectionsPagerAdapter.addFrag(new DrTalksActivity(), "Dr Talks");
         mSectionsPagerAdapter.addFrag(new AreaOfExpertiseFragment(), "Expert");
         mSectionsPagerAdapter.addFrag(new MoreFragment(), "More");

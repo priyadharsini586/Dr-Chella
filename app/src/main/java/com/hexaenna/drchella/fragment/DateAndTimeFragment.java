@@ -32,6 +32,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -203,22 +204,24 @@ public class DateAndTimeFragment extends Fragment implements View.OnClickListene
                         .commit();
 
             } else {
-                c = Calendar.getInstance();
-                cal = Calendar.getInstance(); //Get the Calendar instance
-                cal.add(Calendar.MONTH, 3);//Three months from now
+                java.util.Calendar c = java.util.Calendar.getInstance();
+                java.util.Calendar cal = java.util.Calendar.getInstance();
+               /* c = Calendar.getInstance();
+                cal = Calendar.getInstance();*/ //Get the Calendar instance
+                cal.add(java.util.Calendar.MONTH, 3);//Three months from now
                 cal.getTime();
 
-                int thisYear = c.get(Calendar.YEAR);
-                int thisMonth = c.get(Calendar.MONTH);
+                int thisYear = c.get(java.util.Calendar.YEAR);
+                int thisMonth = c.get(java.util.Calendar.MONTH);
 
-                currentDate = c.get(Calendar.DATE);
-                currentMonth = c.get(Calendar.MONTH);
+                currentDate = c.get(java.util.Calendar.DATE);
+                currentMonth = c.get(java.util.Calendar.MONTH);
 
-                int end_year = cal.get(Calendar.YEAR);
-                int end_month = cal.get(Calendar.MONTH);
+                int end_year = cal.get(java.util.Calendar.YEAR);
+                int end_month = cal.get(java.util.Calendar.MONTH);
 
-                endDate = cal.get(Calendar.DATE);
-                endMonth = cal.get(Calendar.MONTH);
+                endDate = cal.get(java.util.Calendar.DATE);
+                endMonth = cal.get(java.util.Calendar.MONTH);
 
 
                 calendarView.state().edit()
@@ -261,9 +264,9 @@ public class DateAndTimeFragment extends Fragment implements View.OnClickListene
 
                     }else
                     {
-                        Calendar cal = Calendar.getInstance();
+                        java.util.Calendar cal = java.util.Calendar.getInstance();
                         cal.setTime(date1);
-                        week = cal.get(Calendar.WEEK_OF_MONTH);
+                        week = cal.get(java.util.Calendar.WEEK_OF_MONTH);
                         Log.e("week date",String.valueOf(week));
                     }
                     selectDate = dateRequest;
@@ -748,6 +751,7 @@ public class DateAndTimeFragment extends Fragment implements View.OnClickListene
     public void showDailog(final Context context) {
 
         dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.city_items);
         TextView txtSelectLanguage = (TextView) dialog.findViewById(R.id.txtSelectLanguage);
         // Custom Android Allert Dialog Title
@@ -1427,9 +1431,9 @@ public class DateAndTimeFragment extends Fragment implements View.OnClickListene
 
             }else
             {
-                Calendar cal = Calendar.getInstance();
+                java.util.Calendar cal = java.util.Calendar.getInstance();
                 cal.setTime(date1);
-                week = cal.get(Calendar.WEEK_OF_MONTH);
+                week = cal.get(java.util.Calendar.WEEK_OF_MONTH);
                 Log.e("week date",String.valueOf(week));
             }
 

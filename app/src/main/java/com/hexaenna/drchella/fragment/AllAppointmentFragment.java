@@ -1,11 +1,16 @@
 package com.hexaenna.drchella.fragment;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
@@ -26,6 +31,7 @@ import com.hexaenna.drchella.R;
 import com.hexaenna.drchella.adapter.MyItemRecyclerViewAdapter;
 import com.hexaenna.drchella.api.ApiClient;
 import com.hexaenna.drchella.api.ApiInterface;
+import com.hexaenna.drchella.custom_view.RecyclerTouchListener;
 import com.hexaenna.drchella.service.NetworkChangeReceiver;
 import com.hexaenna.drchella.utils.Constants;
 
@@ -85,9 +91,59 @@ public class AllAppointmentFragment extends Fragment {
         getActivity().registerReceiver(networkChangeReceiver,
                 intentFilter);
 
+
+        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), recyclerView, new RecyclerTouchListener.ClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+
+
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+                Log.e("position",""+position);
+                deleteAppointment(position);
+            }
+        }));
         txtNodata = (LinearLayout) view.findViewById(R.id.txtNodata);
         txtNodata.setVisibility(View.GONE);
         return view;
+    }
+
+    private void deleteAppointment(final int position) {
+
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(),R.style.AppCompatAlertDialogStyle);
+        builder.setTitle("Cancel Appointment");
+        builder.setMessage(R.string.info_description);
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                MyItemRecyclerViewAdapter.ViewHolder viewHolder = (MyItemRecyclerViewAdapter.ViewHolder) recyclerView.findViewHolderForAdapterPosition(position);
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    viewHolder.ldtListItem.setBackgroundColor(getActivity().getResources().getColor(R.color.white));
+                }
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                MyItemRecyclerViewAdapter.ViewHolder viewHolder = (MyItemRecyclerViewAdapter.ViewHolder) recyclerView.findViewHolderForAdapterPosition(position);
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    viewHolder.ldtListItem.setBackgroundColor(getActivity().getResources().getColor(R.color.white));
+                }
+                dialog.cancel();
+            }
+        });
+        builder.setCancelable(false);
+        builder.show();
+
+        /*Dialog dialog = new Dialog(getActivity());
+        dialog.setContentView(R.layout.delete_appointment);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(getActivity().getResources().getColor(R.color.white)));
+        dialog.setCancelable(false);
+        dialog.show();*/
     }
 
     private void getAppointmentData() {

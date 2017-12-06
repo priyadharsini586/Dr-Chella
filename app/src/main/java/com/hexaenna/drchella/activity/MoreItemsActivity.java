@@ -14,8 +14,10 @@ import android.widget.TextView;
 import com.hexaenna.drchella.R;
 import com.hexaenna.drchella.adapter.SectionsPagerAdapter;
 import com.hexaenna.drchella.fragment.AllAppointmentFragment;
+import com.hexaenna.drchella.fragment.ConsultationLocationFragment;
 import com.hexaenna.drchella.fragment.DailyHealthTipsFragment;
 import com.hexaenna.drchella.fragment.PastAppointmentFragment;
+import com.hexaenna.drchella.fragment.ProfileFragment;
 import com.hexaenna.drchella.fragment.TestimonyFragment;
 import com.hexaenna.drchella.fragment.UpcomingAppointmentFragment;
 import com.hexaenna.drchella.utils.Constants;
@@ -84,6 +86,29 @@ public class MoreItemsActivity extends AppCompatActivity  {
           fragmentTransaction.add(R.id.fragment_container, new TestimonyFragment(), "TESTIMONY_FRAGMENT");
           fragmentTransaction.addToBackStack("TESTIMONY_FRAGMENT");
           fragmentTransaction.commit();
+      }else if (fromWhereView.equals(Constants.consulation_location))
+      {
+
+          mViewPager.setVisibility(View.GONE);
+          tabLayout.setVisibility(View.GONE);
+          txtTitle.setText("Consulation Location");
+          FragmentManager fragmentManager = getSupportFragmentManager();
+          FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+          fragmentTransaction.add(R.id.fragment_container, new ConsultationLocationFragment(), "CONSULATION_LOCATION_FRAGMENT");
+          fragmentTransaction.addToBackStack("CONSULATION_LOCATION_FRAGMENT");
+          fragmentTransaction.commit();
+      }else if (fromWhereView.equals(Constants.privacy_policy))
+      {
+
+          mViewPager.setVisibility(View.GONE);
+          tabLayout.setVisibility(View.GONE);
+          txtTitle.setText("Privacy Policy");
+          FragmentManager fragmentManager = getSupportFragmentManager();
+          FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+          fragmentTransaction.add(R.id.fragment_container,ProfileFragment.newInstance("from",Constants.privacy_policy), "PRIVACY_POLICY_FRAGMENT");
+          fragmentTransaction.addToBackStack("PRIVACY_POLICY_FRAGMENT");
+          fragmentTransaction.commit();
+
       }
 
 

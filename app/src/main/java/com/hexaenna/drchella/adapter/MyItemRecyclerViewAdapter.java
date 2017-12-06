@@ -1,10 +1,12 @@
 package com.hexaenna.drchella.adapter;
 
 import android.content.Context;
+import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.hexaenna.drchella.Model.AllAppointmentDetails;
@@ -58,7 +60,18 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
             }
         });
 
+        holder.mView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    holder.ldtListItem.setBackgroundColor(mcontext.getResources().getColor(R.color.view_color));
+                }
+                return false;
+            }
+        });
+
     }
+
 
     @Override
     public int getItemCount() {
@@ -71,6 +84,8 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
         public final TextView mContentView;
         public final TextView mCityView;
         public AllAppointmentDetails.Appoinmentslist mItem;
+        public LinearLayout ldtListItem;
+
 
         public ViewHolder(View view) {
             super(view);
@@ -78,7 +93,9 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
             mIdView = (TextView) view.findViewById(R.id.id);
             mCityView = (TextView) view.findViewById(R.id.city);
             mContentView = (TextView) view.findViewById(R.id.content);
+            ldtListItem = (LinearLayout) view.findViewById(R.id.ldtListItem);
         }
+
 
         @Override
         public String toString() {

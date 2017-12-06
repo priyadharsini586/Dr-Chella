@@ -106,6 +106,14 @@ public class MoreFragment extends Fragment {
                 {
                     intent.putExtra(Constants.fromMore,Constants.testimony);
                     startActivity(intent);
+                }else if (position == 4)
+                {
+                    intent.putExtra(Constants.fromMore,Constants.consulation_location);
+                    startActivity(intent);
+                }else if (position == 8)
+                {
+                    intent.putExtra(Constants.fromMore,Constants.privacy_policy);
+                    startActivity(intent);
                 }
             }
         });

@@ -22,5 +22,8 @@ public class Constants {
     public static String your_appointment = "YourAppointment";
     public static String testimony = "Testimony";
     public static String daily_health_tips = "DailyHealthTipsFragment";
+    public static String consulation_location = "consulation_location";
+    public static String privacy_policy = "privacy_policy";
 
+    public static String profile="Profile";
 }

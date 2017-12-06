@@ -4,7 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#f1f1f1">
     <android.support.v7.widget.RecyclerView
         android:id="@+id/list"
         android:name="com.hexaenna.drchella.fragment.YourAppointmentFragment"
@@ -15,7 +16,7 @@
         app:layoutManager="LinearLayoutManager"
         tools:context="com.hexaenna.drchella.fragment.AllAppointmentFragment"
         tools:listitem="@layout/fragment_item"
-       android:background="#f1f1f1"
+
         android:visibility="gone"/>
 
     <LinearLayout
