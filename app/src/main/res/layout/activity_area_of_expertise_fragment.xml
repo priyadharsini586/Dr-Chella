@@ -8,12 +8,11 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <TextView
+        <WebView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/comming_soon"
-            android:gravity="center_horizontal"
-            android:layout_centerInParent="true"
-            android:textColor="@color/black"/>
+            android:layout_height="match_parent"
+            android:id="@+id/webHome"
+            android:layout_below="@+id/view"
+            />
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

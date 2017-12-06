@@ -114,6 +114,10 @@ public class MoreFragment extends Fragment {
                 {
                     intent.putExtra(Constants.fromMore,Constants.privacy_policy);
                     startActivity(intent);
+                }else if (position == 7)
+                {
+                    intent.putExtra(Constants.fromMore,Constants.terms_and_condition);
+                    startActivity(intent);
                 }
             }
         });

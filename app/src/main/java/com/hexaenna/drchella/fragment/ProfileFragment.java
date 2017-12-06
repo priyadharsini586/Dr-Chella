@@ -12,10 +12,11 @@ import android.webkit.WebView;
 import android.widget.LinearLayout;
 
 import com.hexaenna.drchella.R;
+import com.hexaenna.drchella.activity.MoreItemsActivity;
 import com.hexaenna.drchella.utils.Constants;
 
 
-public class ProfileFragment extends Fragment {
+public class ProfileFragment extends Fragment implements MoreItemsActivity.OnBackPressedListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -67,7 +68,21 @@ public class ProfileFragment extends Fragment {
         {
             ldtMain.setVisibility(View.GONE);
             webHome.loadUrl("file:///android_asset/privacy_policy.html");
+            ((MoreItemsActivity) getActivity()).setOnBackPressedListener(this);
+        }else if (mParam2.equals(Constants.terms_and_condition))
+        {
+            ldtMain.setVisibility(View.GONE);
+            webHome.loadUrl("file:///android_asset/terms_conditions.html");
+            ((MoreItemsActivity) getActivity()).setOnBackPressedListener(this);
         }
+        /*else if (mParam2.equals(Constants.expertise))
+        {
+            ldtMain.setVisibility(View.GONE);
+            webHome.loadUrl("file:///android_asset/expertise.html");
+
+        }*/
+
+
         return view;
     }
 
@@ -76,6 +91,11 @@ public class ProfileFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        getActivity().finish();
     }
 }
 

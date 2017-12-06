@@ -109,6 +109,18 @@ public class MoreItemsActivity extends AppCompatActivity  {
           fragmentTransaction.addToBackStack("PRIVACY_POLICY_FRAGMENT");
           fragmentTransaction.commit();
 
+      }else if (fromWhereView.equals(Constants.terms_and_condition))
+      {
+
+          mViewPager.setVisibility(View.GONE);
+          tabLayout.setVisibility(View.GONE);
+          txtTitle.setText("Terms And Conditions");
+          FragmentManager fragmentManager = getSupportFragmentManager();
+          FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+          fragmentTransaction.add(R.id.fragment_container,ProfileFragment.newInstance("from",Constants.terms_and_condition), "PRIVACY_POLICY_FRAGMENT");
+          fragmentTransaction.addToBackStack("PRIVACY_POLICY_FRAGMENT");
+          fragmentTransaction.commit();
+
       }
 
 
