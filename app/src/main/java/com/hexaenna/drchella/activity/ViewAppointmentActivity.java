@@ -1,5 +1,6 @@
 package com.hexaenna.drchella.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -38,7 +39,7 @@ public class ViewAppointmentActivity extends AppCompatActivity {
     TextView txtName,txtDate,txtTime,txtHospital,txtHospitalName,txtConfirmationNumber,txtTransactionNumber,txtHospitalAddressName;
     ProgressBar proConfirm;
     ApiInterface apiInterface;
-    ImageView btnBack;
+    ImageView btnBack,maps;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +56,15 @@ public class ViewAppointmentActivity extends AppCompatActivity {
 
         proConfirm = (ProgressBar) findViewById(R.id.proConfirma);
         proConfirm.setVisibility(View.GONE);
+        maps = (ImageView) findViewById(R.id.maps);
+        maps.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(),MapsActivity.class);
+                startActivity(intent);
+            }
+        });
+
         btnBack = (ImageView) findViewById(R.id.btnBack);
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override

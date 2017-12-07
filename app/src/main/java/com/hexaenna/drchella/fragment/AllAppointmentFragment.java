@@ -28,6 +28,7 @@ import android.widget.Toast;
 import com.hexaenna.drchella.Model.AllAppointmentDetails;
 import com.hexaenna.drchella.Model.UserRegisterDetails;
 import com.hexaenna.drchella.R;
+import com.hexaenna.drchella.activity.ViewAppointmentActivity;
 import com.hexaenna.drchella.adapter.MyItemRecyclerViewAdapter;
 import com.hexaenna.drchella.api.ApiClient;
 import com.hexaenna.drchella.api.ApiInterface;
@@ -96,6 +97,8 @@ public class AllAppointmentFragment extends Fragment {
             @Override
             public void onClick(View view, int position) {
 
+                Intent intent = new Intent(getActivity(), ViewAppointmentActivity.class);
+                startActivity(intent);
 
             }
 

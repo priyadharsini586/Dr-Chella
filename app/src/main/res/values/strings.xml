@@ -173,5 +173,6 @@
     <string name="dr_chella3">Consultant PHYSIATRIST,</string>
     <string name="dr_chella4">(Physical Medicine  &amp; Rehabilitation Specialist)</string>
     <string name="dr_chella5">URC Hospitals, ERODE. </string>
+    <string name="title_activity_maps">Map</string>
 
 </resources>

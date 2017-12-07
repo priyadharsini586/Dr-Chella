@@ -150,8 +150,8 @@ public class DrTalksActivity extends Fragment implements YouTubePlayer.OnInitial
     @Override
     public void onPause() {
         super.onPause();
-
-        config.setMillSec(youTubeView.getCurrentTimeMillis());
+        if (youTubeView.isPlaying())
+            config.setMillSec(youTubeView.getCurrentTimeMillis());
         Log.e("pause", String.valueOf(youTubeView.getCurrentTimeMillis()));
     }
 }
