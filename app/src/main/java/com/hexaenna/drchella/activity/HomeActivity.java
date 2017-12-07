@@ -202,8 +202,10 @@ public class HomeActivity extends AppCompatActivity implements  LoadImageTask.Li
         txtName.setText(userDetails[0]);
         UtilsClass utilsClass = new UtilsClass();
         Bitmap bitmap = utilsClass.StringToBitMap(userDetails[2]);
-        if (bitmap != null)
+        if (bitmap != null) {
             ic_profile.setImageBitmap(bitmap);
+            dateResponse.setPhoto(userDetails[2]);
+        }
 
         progress_app = (ProgressBar) findViewById(R.id.progress_app);
         progress_app.setVisibility(View.GONE);
@@ -315,6 +317,10 @@ public class HomeActivity extends AppCompatActivity implements  LoadImageTask.Li
             beginCrop(result.getData());
         } else if (requestCode == Crop.REQUEST_CROP) {
             handleCrop(resultCode, result);
+        }else
+        {
+            if (dateResponse.getPhoto() != null)
+                ic_profile.setImageBitmap(StringToBitMap(dateResponse.getPhoto()));
         }
     }
 

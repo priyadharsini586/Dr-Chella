@@ -35,7 +35,7 @@ public class ConsultationLocationFragment extends Fragment implements MoreItemsA
         for (int i=0 ; i < getHospitalName().size() ;i++)
         {
             LinearLayout myLayout = (LinearLayout)mainView.findViewById(R.id.ldtLocationView);
-            View consulation = getLayoutInflater().inflate(R.layout.fragment_consultation_location, myLayout, false);
+            View consulation = getLayoutInflater(null).inflate(R.layout.fragment_consultation_location, myLayout, false);
             txtHospitalName = (TextView) consulation.findViewById(R.id.txtHospitalName);
             txtHospitalAddress = (TextView) consulation.findViewById(R.id.txtHospitalAddress);
             txtHospitalNum = (TextView) consulation.findViewById(R.id.txtHospitalNum);
