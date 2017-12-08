@@ -157,11 +157,11 @@
     <string name="coimbatore_hospital_address">No: #320, Selva Towers, Avinashi Road, Next to FUN MALL,Pellamedu, Coimbatore 641004.</string>
     <string name="coimbatore_hospital_Phone">Phone No :0422 25 75 666</string>
     <string name="namakkal_hospital_address">No: 6/288, Tiruchy Road, Namakkal - 637001</string>
-    <string name="namakkal_hospital_Phone">Phone No :+91 9786650575</string>
-    <string name="may_hospital_address">Dr. Kaviarasan Clinic, Opp. to GH, Mayiladuthurai, Nagai District</string>
+    <string name="namakkal_hospital_Phone">Phone No :+91 97866505 75</string>
+    <string name="may_hospital_address">Dr. Kaviarasan Clinic, Opp. to GH, Mayiladuthurai, Nagai Dt</string>
     <string name="may_hospital_Phone">Phone No :+91 7373146666</string>
-    <string name="kollidam_hospital_address">No: 6/288, Tiruchy Road, Namakkal - 637001</string>
-    <string name="kollidam_hospital_Phone">Phone No :+91 9786650575</string>
+    <string name="kollidam_hospital_address">3/126,Main Road,Opp. Police Station,Kollidam,Nagai Dt</string>
+    <string name="kollidam_hospital_Phone">Phone No :+91 9655929498</string>`
 
 
     <string name="no_appointment"> Would you like to have an Appointment ? </string>
@@ -175,4 +175,10 @@
     <string name="dr_chella5">URC Hospitals, ERODE. </string>
     <string name="title_activity_maps">Map</string>
 
+    <string name="map_chennai_address">26/1,United India Colony,Kodambakkam,Chennai,Tamil Nadu</string>
+    <string name="map_erode_address">U.R.C. Hospital,Surampattivalasu,Erode,Tamil Nadu</string>
+    <string name="map_coimbatore_address">Selva Towers,Next to Fun Mall,Avinashi Road,Peelamedu,Coimbatore</string>
+    <string name="map_namakkal_address">M.M. Hospital,Andavar Nagar,Namakkal,Tamil Nadu</string>
+    <string name="map_mayiladudurai_address">Dr. Kaviarasan Clinic,Opp.to GH,Mayiladuthurai,Nagai District</string>
+    <string name="map_kolidam_address">3/126,Main Road,Opp. Police Station,Kollidam,Nagai Dt</string>
 </resources>
