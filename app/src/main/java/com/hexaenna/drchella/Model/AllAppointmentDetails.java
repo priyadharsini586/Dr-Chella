@@ -9,8 +9,20 @@ import java.util.List;
 
 public class AllAppointmentDetails {
 
-    public String status_code,status_message,success;
+    public String status_code,status_message,success,s_no;
     public List<Appoinmentslist> appoinments = new ArrayList<>();
+    private static AllAppointmentDetails ourInstance = new AllAppointmentDetails();
+
+    public static AllAppointmentDetails getInstance() {
+        return ourInstance;
+    }
+    public String getS_no() {
+        return s_no;
+    }
+
+    public void setS_no(String s_no) {
+        this.s_no = s_no;
+    }
 
     public String getStatus_code() {
         return status_code;
@@ -46,7 +58,7 @@ public class AllAppointmentDetails {
 
     public class Appoinmentslist
     {
-        private String city_id,date,time,ptnt_name;
+        private String city_id,date,time,ptnt_name,sno;
 
         public String getCity_id() {
             return city_id;
@@ -78,6 +90,14 @@ public class AllAppointmentDetails {
 
         public void setPtnt_name(String ptnt_name) {
             this.ptnt_name = ptnt_name;
+        }
+
+        public String getSno() {
+            return sno;
+        }
+
+        public void setSno(String sno) {
+            this.sno = sno;
         }
     }
 }

@@ -10,6 +10,8 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -47,21 +49,60 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    String cityAddressCity,cityAddress,pinCity;
+    ProgressBar proMapView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+        Bundle bundle = getIntent().getExtras();
+        if (bundle.getString("fromCity") != null) {
+            cityAddressCity = bundle.getString("fromCity");
+            cityAddress();
+        }
+
+        proMapView = (ProgressBar) findViewById(R.id.proMapView);
+        proMapView.setVisibility(View.GONE);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
     }
 
+    public void cityAddress()
+    {
+        if (cityAddressCity.equals("1"))
+        {
+            cityAddress = getString(R.string.map_chennai_address);
+            pinCity = getString(R.string.chennai_hospital);
+        }else if (cityAddressCity.equals("2"))
+        {
+            cityAddress = getString(R.string.map_erode_address);
+            pinCity = getString(R.string.erode_hospital);
+        }else if (cityAddressCity.equals("3"))
+        {
+            cityAddress = getString(R.string.map_coimbatore_address);
+            pinCity = getString(R.string.coimbatore_hospital);
+        }else if (cityAddressCity.equals("4"))
+        {
+            cityAddress = getString(R.string.map_namakkal_address);
+            pinCity = getString(R.string.namakkal_hospital);
+        }else if (cityAddressCity.equals("5"))
+        {
+            cityAddress = getString(R.string.map_mayiladudurai_address);
+            pinCity = getString(R.string.mayiladu_hospital);
+        }else if (cityAddressCity.equals("6"))
+        {
+            cityAddress = getString(R.string.map_kolidam_address);
+            pinCity = getString(R.string.kollidam_hospital);
+        }
+    }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        build_retrofit_and_get_response(getString(R.string.coimbatore_hospital_address));
+        build_retrofit_and_get_response(cityAddress);
         // Add a marker in Sydney and move the camera
 
     }
@@ -72,7 +113,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         // Zoom in, animating the camera.
         mMap.animateCamera(CameraUpdateFactory.zoomIn());
         // Zoom out to zoom level 10, animating with a duration of 2 seconds.
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(20), 2000, null);
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(15), 1000, null);
 
 
     }
@@ -80,7 +121,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private void build_retrofit_and_get_response(String address) {
 
         String url = "http://maps.googleapis.com/";
-
+        proMapView.setVisibility(View.VISIBLE);
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(url)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -105,7 +146,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                             double lat = locationLat.getLat();
                             double lon = locationLat.getLng();
                             LatLng latLng = new LatLng(lat, lon);
-                            mMap.addMarker(new MarkerOptions().position(latLng).title("Marker in Sydney")).showInfoWindow();
+                            mMap.addMarker(new MarkerOptions().position(latLng).title(pinCity)).showInfoWindow();
                             mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
                             if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                                 // TODO: Consider calling
@@ -117,10 +158,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                                 // for ActivityCompat#requestPermissions for more details.
                                 return;
                             }
-                            mMap.setMyLocationEnabled(true);
-                            mMap.setBuildingsEnabled(true);
-                            mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+//                            mMap.setMyLocationEnabled(true);
+//                            mMap.setBuildingsEnabled(true);
+                            mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
                             moveToCurrentLocation(latLng);
+                            proMapView.setVisibility(View.GONE);
                         }
                   }
 

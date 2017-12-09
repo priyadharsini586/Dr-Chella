@@ -7,6 +7,7 @@ import com.hexaenna.drchella.Model.MessageRequestAndResponse;
 import com.hexaenna.drchella.Model.RegisterRequestAndResponse;
 import com.hexaenna.drchella.Model.TestimonyDetails;
 import com.hexaenna.drchella.Model.TimeAndDateResponse;
+import com.hexaenna.drchella.Model.VideoDetails;
 
 import org.json.JSONObject;
 
@@ -80,6 +81,10 @@ public interface ApiInterface {
     @POST("yours_appntmnts.php")
     Call<AllAppointmentDetails> allAppointment(@Field("x") JSONObject bookObject);
 
+    @FormUrlEncoded
+    @POST("delete_appointment.php")
+    Call<AllAppointmentDetails> deleteAppointment(@Field("x") JSONObject bookObject);
+
     @POST("health_tips.php")
     Call<HealthTipsDetails> getHealthTips();
 
@@ -95,5 +100,7 @@ public interface ApiInterface {
     @POST("display_testimony.php")
     Call<TestimonyDetails> getTestimonyDetails();
 
+    @POST("get_video.php")
+    Call<VideoDetails> getVideo();
 }
 

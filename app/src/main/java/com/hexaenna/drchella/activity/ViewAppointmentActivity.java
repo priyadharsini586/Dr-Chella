@@ -40,6 +40,7 @@ public class ViewAppointmentActivity extends AppCompatActivity {
     ProgressBar proConfirm;
     ApiInterface apiInterface;
     ImageView btnBack,maps;
+    String cityAddress;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +62,9 @@ public class ViewAppointmentActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(),MapsActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("fromCity",cityAddress);
+                intent.putExtras(bundle);
                 startActivity(intent);
             }
         });
@@ -116,6 +120,7 @@ public class ViewAppointmentActivity extends AppCompatActivity {
                     dateForRequest = new SimpleDateFormat("dd MMM yyyy");
                     String date = dateForRequest.format(newDate);
                     txtDate.setText(date);
+                    cityAddress = appointmentDetails.getCity_id();
                     getAddress(appointmentDetails.getCity_id());
                 }
             }

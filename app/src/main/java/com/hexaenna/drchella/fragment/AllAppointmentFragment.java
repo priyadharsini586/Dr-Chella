@@ -121,8 +121,9 @@ public class AllAppointmentFragment extends Fragment {
         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                String s_no = appointmentList.get(position).getSno();
+                deleteAppointmentFromServer(s_no,dialog,position);
                 MyItemRecyclerViewAdapter.ViewHolder viewHolder = (MyItemRecyclerViewAdapter.ViewHolder) recyclerView.findViewHolderForAdapterPosition(position);
-
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     viewHolder.ldtListItem.setBackgroundColor(getActivity().getResources().getColor(R.color.white));
                 }
@@ -147,6 +148,49 @@ public class AllAppointmentFragment extends Fragment {
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(getActivity().getResources().getColor(R.color.white)));
         dialog.setCancelable(false);
         dialog.show();*/
+    }
+
+    private void deleteAppointmentFromServer(final String app_sno, final DialogInterface dialogInterface, final int pos) {
+
+        if (isConnection != null) {
+            if (isConnection.equals(Constants.NETWORK_CONNECTED)) {
+
+                apiInterface = ApiClient.getClient().create(ApiInterface.class);
+                JSONObject jsonObject = new JSONObject();
+
+                try {
+                    UserRegisterDetails userRegisterDetails = UserRegisterDetails.getInstance();
+                    jsonObject.put("app_sno", app_sno);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                Call<AllAppointmentDetails> call = apiInterface.deleteAppointment(jsonObject);
+                call.enqueue(new Callback<AllAppointmentDetails>() {
+                    @Override
+                    public void onResponse(Call<AllAppointmentDetails> call, Response<AllAppointmentDetails> response) {
+                        if (response.isSuccessful()) {
+                            AllAppointmentDetails allAppointmentDetails = response.body();
+                            if (allAppointmentDetails.getStatus_code().equals(Constants.status_code1)) {
+                                dialogInterface.cancel();
+                                appointmentList.remove(pos);
+                                mAdapter.notifyItemRemoved(pos);
+                                mAdapter.notifyItemRangeChanged(pos,appointmentList .size());
+                                AllAppointmentDetails details = AllAppointmentDetails.getInstance();
+                                details.setS_no(app_sno);
+                            }
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<AllAppointmentDetails> call, Throwable t) {
+                        Log.e("failure", String.valueOf(t));
+                    }
+                });
+            }
+        }
     }
 
     private void getAppointmentData() {
@@ -182,6 +226,7 @@ public class AllAppointmentFragment extends Fragment {
                                     appoinmentslist.setCity_id(appoinmentslist.getCity_id());
                                     appoinmentslist.setTime(appoinmentslist.getTime());
                                     appoinmentslist.setDate(appoinmentslist.getDate());
+                                    appoinmentslist.setSno(appoinmentslist.getSno());
                                     appointmentList.add(appoinmentslist);
                                 }
                                 mAdapter = new MyItemRecyclerViewAdapter(appointmentList,getActivity());
@@ -242,5 +287,30 @@ public class AllAppointmentFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
+    }
+
+    @Override
+    public void setMenuVisibility(boolean menuVisible) {
+        super.setMenuVisibility(menuVisible);
+
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+
+        if (isVisibleToUser) {
+            AllAppointmentDetails allAppointmentDetails = AllAppointmentDetails.getInstance();
+            if (allAppointmentDetails.getS_no() != null) {
+                for (int i = 0; i < appointmentList.size(); i++) {
+                    AllAppointmentDetails.Appoinmentslist appoinmentslist = appointmentList.get(i);
+                    if (allAppointmentDetails.getS_no().equals(appoinmentslist.getSno())) {
+                        appointmentList.remove(i);
+                        mAdapter.notifyItemRemoved(i);
+                        mAdapter.notifyItemRangeChanged(i, appointmentList.size());
+                    }
+                }
+            }
+        }
     }
 }

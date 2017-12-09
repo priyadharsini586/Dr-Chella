@@ -3,6 +3,7 @@ package com.hexaenna.drchella.adapter;
 import android.content.Context;
 import android.os.Build;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,6 +52,7 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
         String date = dateForRequest.format(newDate);
 
         holder.mIdView.setText(mValues.get(position).getPtnt_name());
+        Log.e("text",mValues.get(position).getPtnt_name());
         holder.mContentView.setText(mValues.get(position).getTime() + " , " +date);
         holder.mCityView.setText (getAddress(mValues.get(position).getCity_id()));
         holder.mView.setOnClickListener(new View.OnClickListener() {
