@@ -1,7 +1,10 @@
 package com.hexaenna.drchella.activity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -24,6 +28,8 @@ import com.hexaenna.drchella.utils.Constants;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -41,6 +47,7 @@ public class ViewAppointmentActivity extends AppCompatActivity {
     ApiInterface apiInterface;
     ImageView btnBack,maps;
     String cityAddress;
+    LinearLayout ldtScreenShot;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +63,13 @@ public class ViewAppointmentActivity extends AppCompatActivity {
         txtHospitalAddressName = (TextView) findViewById(R.id.txtHospitalAddressName);
 
         proConfirm = (ProgressBar) findViewById(R.id.proConfirma);
+        ldtScreenShot= (LinearLayout)findViewById(R.id.ldtScreenShot);
+        ldtScreenShot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                takeScreenshot();
+            }
+        });
         proConfirm.setVisibility(View.GONE);
         maps = (ImageView) findViewById(R.id.maps);
         maps.setOnClickListener(new View.OnClickListener() {
@@ -171,5 +185,43 @@ public class ViewAppointmentActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+    }
+
+    private void takeScreenshot() {
+        Date now = new Date();
+        android.text.format.DateFormat.format("yyyy-MM-dd_hh:mm:ss", now);
+
+        try {
+            // image naming and path  to include sd card  appending name you choose for file
+                String mPath = Environment.getExternalStorageDirectory().toString() + "/" + now + ".jpg";
+
+            // create bitmap screen capture
+            View v1 = getWindow().getDecorView().getRootView();
+            v1.setDrawingCacheEnabled(true);
+            Bitmap bitmap = Bitmap.createBitmap(v1.getDrawingCache());
+            v1.setDrawingCacheEnabled(false);
+
+            File imageFile = new File(mPath);
+
+            FileOutputStream outputStream = new FileOutputStream(imageFile);
+            int quality = 100;
+            bitmap.compress(Bitmap.CompressFormat.JPEG, quality, outputStream);
+            outputStream.flush();
+            outputStream.close();
+            shareData(imageFile);
+//            openScreenshot(imageFile);
+        } catch (Throwable e) {
+            // Several error may come out with file handling or DOM
+            e.printStackTrace();
+        }
+    }
+
+
+    private void shareData(File imageFile) {
+        Intent share = new Intent(Intent.ACTION_SEND);
+        share.setType("image/*");
+        share.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(imageFile));
+        startActivity(Intent.createChooser(share, "Share Image"));
+
     }
 }

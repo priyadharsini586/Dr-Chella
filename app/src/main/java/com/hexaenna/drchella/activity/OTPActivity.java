@@ -66,10 +66,19 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
                 super.onReceive(context, intent);
 
 
-                Bundle b = intent.getExtras();
-                isConnection = b.getString(Constants.MESSAGE);
-                Log.e("newmesage", "" + isConnection);
-                getNetworkState();
+                if (isConnection == null) {
+                    Bundle b = intent.getExtras();
+                    if (b.getString(Constants.MESSAGE)!= null) {
+                        isConnection = b.getString(Constants.MESSAGE);
+                        if (isConnection.equals(Constants.NETWORK_CONNECTED)) {
+
+
+                                getNetworkState();
+                                Log.e("check splash","check");
+
+                        }
+                    }
+                }
             }
         };
         IntentFilter intentFilter = new IntentFilter();
@@ -348,7 +357,7 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
                 message = splitedMsg[1];*/
                 edtOTP.setText(splitedMsg[2]);
                 sendOtp();
-                Log.e("message",message);
+                Log.e("message from otp",message);
 
             }
         }

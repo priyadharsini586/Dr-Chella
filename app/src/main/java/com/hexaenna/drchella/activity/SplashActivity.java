@@ -92,17 +92,27 @@ public class SplashActivity extends AppCompatActivity implements  LoadImageTask.
                 public void onReceive(Context context, Intent intent) {
                     super.onReceive(context, intent);
 
-//                    if (intent.getAction().equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
+                    if (intent.getAction().equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
 
 
                         if (isConnection == null) {
                             Bundle b = intent.getExtras();
-                            isConnection = b.getString(Constants.MESSAGE);
-                            getNetworkState();
+                            if (b.getString(Constants.MESSAGE) != null) {
+                                isConnection = b.getString(Constants.MESSAGE);
+                                if (isConnection.equals(Constants.NETWORK_CONNECTED)) {
+
+                                    if (alreadySend.equals("")) {
+                                        getNetworkState();
+                                        Log.e("check splash", "check");
+                                    }
+                                }
+                            }
                         }
-//                    }
+
+                    }
 
                 }
+
             };
             IntentFilter intentFilter = new IntentFilter();
             intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
@@ -110,6 +120,7 @@ public class SplashActivity extends AppCompatActivity implements  LoadImageTask.
             this.registerReceiver(networkChangeReceiver,
                     intentFilter);
         }
+//        }
         setContentView(R.layout.splash_activity);
 
         ldtSplash = (LinearLayout) findViewById(R.id.ldtSplash);
@@ -126,7 +137,7 @@ public class SplashActivity extends AppCompatActivity implements  LoadImageTask.
             public void onAnimationEnd(Animation animation) {
 
                 if (!databaseHandler.checkForTables()) {
-//                    checkEmail();
+                    checkEmail();
 
                 }else
                 {
@@ -463,6 +474,7 @@ public class SplashActivity extends AppCompatActivity implements  LoadImageTask.
                                         new Handler().postDelayed(new Runnable() {
                                             @Override
                                             public void run() {
+
                                                 Intent mainIntent = new Intent(SplashActivity.this, OTPActivity.class);
                                                 Bundle bundle = new Bundle();
                                                 bundle.putString("email", e_mail);

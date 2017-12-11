@@ -26,12 +26,14 @@ public class NetworkChangeReceiver extends BroadcastReceiver {
 
         if (action.equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
             NetworkInfo currentNetworkInfo = (NetworkInfo) intent.getParcelableExtra(ConnectivityManager.EXTRA_NETWORK_INFO);
+             boolean b = isOnline(context);
 
                 // do subroutines here
 
-                if (currentNetworkInfo.isConnected()) {
+                if (b) {
                     networkConnection = Constants.NETWORK_CONNECTED;
                     Toast.makeText(context, "Connected", Toast.LENGTH_SHORT).show();
+                    Log.e("check",""+b);
 
                 } else {
                     networkConnection = Constants.NETWORK_NOT_CONNECTED;
@@ -47,5 +49,14 @@ public class NetworkChangeReceiver extends BroadcastReceiver {
             context.sendBroadcast(i);
         }
 
+    }
+
+
+    public boolean isOnline(Context context) {
+
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        //should check null because in airplane mode it will be null
+        return (netInfo != null && netInfo.isConnected());
     }
 }
