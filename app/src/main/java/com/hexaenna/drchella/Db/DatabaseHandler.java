@@ -10,6 +10,7 @@ import java.util.List;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -184,25 +185,26 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 new String[] { String.valueOf(id) });
     }
 
-    // Deleting single contact
     public boolean checkForTables(){
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM " +TABLE_USER_DETAILS, null);
-
-        if(cursor != null){
-
-            cursor.moveToFirst();
-
+        cursor.moveToFirst();
             int count = cursor.getInt(0);
-
             if(count > 0){
+                cursor.close();
                 return true;
+            }else
+            {
+                cursor.close();
+                return false;
             }
 
-            cursor.close();
-        }
 
-        return false;
+
+
     }
+
+
+
 }

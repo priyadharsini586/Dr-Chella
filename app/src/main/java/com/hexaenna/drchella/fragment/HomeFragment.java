@@ -126,11 +126,11 @@ public class HomeFragment extends Fragment {
         rldUsertype1 = (RelativeLayout) rootView.findViewById(R.id.rldUsertype1);
         rldUsertype2.setVisibility(View.VISIBLE);
         rldUsertype1.setVisibility(View.VISIBLE);
-        if (!userDetails[3].equals("user")) {
+        if (userDetails[3].equals("user")) {
 
-            rldUsertype1.setVisibility(View.VISIBLE);
-            rldUsertype2.setVisibility(View.GONE);
-        }else {
+            rldUsertype2.setVisibility(View.VISIBLE);
+            rldUsertype1.setVisibility(View.GONE);
+        }else if (userDetails[3].equals("admin")){
             rldUsertype2.setVisibility(View.VISIBLE);
             rldUsertype1.setVisibility(View.GONE);
         }

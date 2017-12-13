@@ -76,6 +76,7 @@ public class SplashActivity extends AppCompatActivity implements  LoadImageTask.
     NetworkChangeReceiver networkChangeReceiver;
     ApiInterface apiInterface;
     String alreadySend = "";
+    boolean isPermission ;
 
     private static final String TAG = SplashActivity.class.getSimpleName();
     private BroadcastReceiver mRegistrationBroadcastReceiver;
@@ -102,8 +103,9 @@ public class SplashActivity extends AppCompatActivity implements  LoadImageTask.
                                 if (isConnection.equals(Constants.NETWORK_CONNECTED)) {
 
                                     if (alreadySend.equals("")) {
-                                        getNetworkState();
                                         Log.e("check splash", "check");
+                                        getNetworkState();
+
                                     }
                                 }
                             }
@@ -141,9 +143,9 @@ public class SplashActivity extends AppCompatActivity implements  LoadImageTask.
 
                 }else
                 {
+                    Log.e("check db","check db");
                     UserRegisterDetails userRegisterDetails = UserRegisterDetails.getInstance();
                     userRegisterDetails.setE_mail(getE_mail());
-
                     Intent mainIntent = new Intent(SplashActivity.this, HomeActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putString("email", getE_mail());
@@ -172,7 +174,7 @@ public class SplashActivity extends AppCompatActivity implements  LoadImageTask.
         permissions.add(Manifest.permission.SEND_SMS);
         permissions.add(Manifest.permission.READ_EXTERNAL_STORAGE);
         permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        permissions.add(Manifest.permission.CAMERA);
+//        permissions.add(Manifest.permission.CAMERA);
         permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
         permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION);
         permissionsToRequest = findUnAskedPermissions(permissions);
@@ -189,7 +191,13 @@ public class SplashActivity extends AppCompatActivity implements  LoadImageTask.
 
                     }
                 }
+                isPermission =false;
+
+                Toast.makeText(getApplicationContext(),"Permissions not granted.", Toast.LENGTH_LONG).show();
+
             } else {
+                Toast.makeText(getApplicationContext(),"Permissions already granted.", Toast.LENGTH_LONG).show();
+                isPermission = true;
                 ldtSplash.startAnimation(animBounce);
             }
 
@@ -263,15 +271,20 @@ public class SplashActivity extends AppCompatActivity implements  LoadImageTask.
                                                 requestPermissions(permissionsRejected.toArray(
                                                         new String[permissionsRejected.size()]), ALL_PERMISSIONS_RESULT);
 
+
+                                                isPermission = true;
                                                 ldtSplash.startAnimation(animBounce);
 //
                                             }
                                         }
                                     });
+                            Log.e("check","inpermission");
                             return;
                         }
                     }
                 } else {
+                    isPermission = true;
+                    Log.e("check","inpermission");
                    /* getE_mail();
                     ldtSplash.startAnimation(animBounce);
                     checkEmail();*/
@@ -429,7 +442,8 @@ public class SplashActivity extends AppCompatActivity implements  LoadImageTask.
     }
     private void checkEmail() {
 
-        if (alreadySend.equals("") && getE_mail() != null) {
+        Log.e("permission check",""+isPermission);
+        if (alreadySend.equals("") && getE_mail() != null && isPermission) {
             if (isConnection != null) {
                 if (isConnection.equals(Constants.NETWORK_CONNECTED)) {
                     final String e_mail = getE_mail();
@@ -471,9 +485,7 @@ public class SplashActivity extends AppCompatActivity implements  LoadImageTask.
                                             }
                                         }, 2000);
                                     } else if (login.getStatus_code().equals(Constants.status_code_1)) {
-                                        new Handler().postDelayed(new Runnable() {
-                                            @Override
-                                            public void run() {
+
 
                                                 registerDetails(Constants.status_code_1,login.getType());
                                               /*  Intent mainIntent = new Intent(SplashActivity.this, OTPActivity.class);
@@ -483,8 +495,8 @@ public class SplashActivity extends AppCompatActivity implements  LoadImageTask.
                                                 SplashActivity.this.startActivity(mainIntent);
                                                 overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
                                                 SplashActivity.this.finish();*/
-                                            }
-                                        }, 2000);
+
+
 
                                     } else if (login.getStatus_code().equals(Constants.status_code1)) {
 
@@ -556,14 +568,20 @@ public class SplashActivity extends AppCompatActivity implements  LoadImageTask.
                                     dateResponse.setPhoto(timeAndDateResponse.getProfile_pic());
                                     UserRegisterDetails userRegisterDetails = UserRegisterDetails.getInstance();
                                     userRegisterDetails.setMobileNum(timeAndDateResponse.getMobile());
-                                    databaseHandler.addUser(timeAndDateResponse.getName(),timeAndDateResponse.getMobile(),"0","",type);
-                                    if (timeAndDateResponse.getLang().equals("English"))
+                                    if (timeAndDateResponse.getProfile_pic() != null)
+                                        databaseHandler.addUser(timeAndDateResponse.getName(),timeAndDateResponse.getMobile(),"0",timeAndDateResponse.getProfile_pic(),type);
+                                    else
+                                        databaseHandler.addUser(timeAndDateResponse.getName(),timeAndDateResponse.getMobile(),"0","",type);
+
+                                   /* if (timeAndDateResponse.getLang().equals("English"))
                                     {
                                         databaseHandler.addLanguage("English","0");
                                     }else if (timeAndDateResponse.getLang().equals("Tamil"))
                                     {
                                         databaseHandler.addLanguage("Tamil","0");
-                                    }
+                                    }*/
+                                    databaseHandler.addLanguage("English","0");
+
                                     if (timeAndDateResponse.getProfile_pic() != null)
                                         new LoadImageTask(SplashActivity.this).execute(timeAndDateResponse.getProfile_pic());
                                     if (from.equals(Constants.status_code1)) {
