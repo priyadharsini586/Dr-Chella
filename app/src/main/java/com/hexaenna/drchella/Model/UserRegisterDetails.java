@@ -5,7 +5,7 @@ package com.hexaenna.drchella.Model;
  */
 
 public class UserRegisterDetails {
-    private String mobileNum,uniqueId,otp,e_mail,userName;
+    private String mobileNum,uniqueId,otp,e_mail,userName,type;
     private static UserRegisterDetails ourInstance = new UserRegisterDetails();
     private UserRegisterDetails(){}
 

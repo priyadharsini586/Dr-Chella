@@ -51,10 +51,11 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
     EditText edtOTP;
     LinearLayout ldtResendOTP;
     String mobileNumber;
-    String userName = "urchospitals";
+    String userName = "urchospitals",fromWhere;
     String password = "admin123";
     String senderId = "URCmed";
     String message = "";
+
     UserRegisterDetails userRegisterDetails = UserRegisterDetails.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,10 +115,10 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
 
 
         mobileNumber =userRegisterDetails.getMobileNum();
-        /*Bundle bundle = this.getIntent().getExtras();
-        if (bundle.getString("mobileNumber") != null) {
-            mobileNumber = bundle.getString("mobileNumber");
-        }*/
+        Bundle bundle = this.getIntent().getExtras();
+        if (bundle.getString("fromWhere") != null) {
+            fromWhere = bundle.getString("fromWhere");
+        }
 
     }
 
@@ -160,7 +161,16 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
                         if (requestAndResponse.getStatus_message() != null)
                         {
                             progressBar.setVisibility(View.GONE);
-                            Toast.makeText(getApplicationContext(),requestAndResponse.getStatus_message(),Toast.LENGTH_LONG).show();
+                            if (fromWhere.equals(Constants.status_code1))
+                            {
+                                Toast.makeText(getApplicationContext(),requestAndResponse.getStatus_message(),Toast.LENGTH_LONG).show();
+
+                            }else if (fromWhere.equals(Constants.status_code_1))
+                            {
+                                UserRegisterDetails userRegisterDetails = UserRegisterDetails.getInstance();
+                                userRegisterDetails.setOtp(requestAndResponse.getVerify_code());
+                                sendSms();
+                            }
                         }
 
                     }
@@ -288,7 +298,12 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
                 if (snackbar != null) {
                     snackbar.dismiss();
                 }
-                sendSms();
+                if (fromWhere.equals(Constants.status_code1)) {
+                    sendSms();
+                }else if (fromWhere.equals(Constants.status_code_1))
+                {
+                    resendOtp();
+                }
             }
         }
     }

@@ -191,9 +191,11 @@ public class DrTalksActivity extends Fragment  {
     @Override
     public void onPause() {
         super.onPause();
-        if (youTubeView.isPlaying())
-            config.setMillSec(youTubeView.getCurrentTimeMillis());
-        Log.e("pause", String.valueOf(youTubeView.getCurrentTimeMillis()));
+        if (youTubeView != null) {
+            if (youTubeView.isPlaying())
+                config.setMillSec(youTubeView.getCurrentTimeMillis());
+            Log.e("pause", String.valueOf(youTubeView.getCurrentTimeMillis()));
+        }
     }
 
     public void getVideo()

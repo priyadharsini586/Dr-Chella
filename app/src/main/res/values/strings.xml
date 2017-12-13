@@ -122,12 +122,12 @@
     <string name="tamil_time">நேரம்</string>
 
     <!--hospital-->
-    <string name="erode_hospital">URC Hospital,Erode</string>
-    <string name="coimbatore_hospital">Geneomm Hospital</string>
-    <string name="namakkal_hospital">MM Hospital</string>
-    <string name="mayiladu_hospital">SA Medical Centre</string>
-    <string name="kollidam_hospital">SA Medical Centre</string>
-    <string name="chennai_hospital">Medway Medical Centre</string>
+    <string name="erode_hospital">URC Hospital, Erode</string>
+    <string name="coimbatore_hospital">Geneomm Hospital, Coimbatore</string>
+    <string name="namakkal_hospital">MM Hospital, Namakkal</string>
+    <string name="mayiladu_hospital">SA Medical Centre, Mayiladudurai</string>
+    <string name="kollidam_hospital">SA Medical Centre, Kollidam</string>
+    <string name="chennai_hospital">Medway Medical Centre, Chennai</string>
 
     <string name="tamil_erode_hospital">URC ஹாஸ்பிடல்</string>
     <string name="tamil_coimbatore_hospital">Geneomm ஹாஸ்பிடல்</string>

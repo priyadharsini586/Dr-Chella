@@ -2,6 +2,7 @@ package com.hexaenna.drchella.api;
 
 import com.hexaenna.drchella.Model.AllAppointmentDetails;
 import com.hexaenna.drchella.Model.AppointmentDetails;
+import com.hexaenna.drchella.Model.GetExcelModel;
 import com.hexaenna.drchella.Model.HealthTipsDetails;
 import com.hexaenna.drchella.Model.MessageRequestAndResponse;
 import com.hexaenna.drchella.Model.RegisterRequestAndResponse;
@@ -102,5 +103,9 @@ public interface ApiInterface {
 
     @POST("get_video.php")
     Call<VideoDetails> getVideo();
+
+    @FormUrlEncoded
+    @POST("appointmnt_report.php")
+    Call<GetExcelModel>getExcelDetails(@Field("x") JSONObject email);
 }
 

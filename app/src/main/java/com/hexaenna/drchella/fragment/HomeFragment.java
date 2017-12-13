@@ -8,6 +8,8 @@ import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,12 +22,18 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.androidadvance.topsnackbar.TSnackbar;
+import com.google.gson.Gson;
+import com.google.gson.internal.LinkedTreeMap;
+import com.google.gson.reflect.TypeToken;
+import com.hexaenna.drchella.Db.DatabaseHandler;
 import com.hexaenna.drchella.Model.AppointmentDetails;
+import com.hexaenna.drchella.Model.GetExcelModel;
 import com.hexaenna.drchella.Model.TimeAndDateResponse;
 import com.hexaenna.drchella.Model.UserRegisterDetails;
 import com.hexaenna.drchella.R;
 import com.hexaenna.drchella.activity.BookAppointmentActivity;
 import com.hexaenna.drchella.activity.ViewAppointmentActivity;
+import com.hexaenna.drchella.adapter.GetExcelAdapter;
 import com.hexaenna.drchella.api.ApiClient;
 import com.hexaenna.drchella.api.ApiInterface;
 import com.hexaenna.drchella.utils.Constants;
@@ -40,7 +48,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -65,13 +77,16 @@ public class HomeFragment extends Fragment {
     ImageView imgScedule;
     ProgressBar progressHome;
     String sendUrl = "b";
-
+    RelativeLayout rldUsertype2,rldUsertype1;
+    String[] userDetails;
+    LinearLayout ldtListExcel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_home, container, false);
-
+        DatabaseHandler databaseHandler = new DatabaseHandler(getActivity());
+        userDetails =  databaseHandler.getUserName("0");
         networkChangeReceiver = new NetworkChangeReceiver()
         {
             @Override
@@ -103,6 +118,22 @@ public class HomeFragment extends Fragment {
         ldtNoAppoint.setVisibility(View.GONE);
         ldtAppointment = (LinearLayout) rootView.findViewById(R.id.ldtAppointment);
         ldtAppointment.setVisibility(View.GONE);
+
+
+        ldtListExcel = (LinearLayout) rootView.findViewById(R.id.ldtListExcel);
+
+        rldUsertype2 = (RelativeLayout) rootView.findViewById(R.id.rldUsertype2);
+        rldUsertype1 = (RelativeLayout) rootView.findViewById(R.id.rldUsertype1);
+        rldUsertype2.setVisibility(View.VISIBLE);
+        rldUsertype1.setVisibility(View.VISIBLE);
+        if (!userDetails[3].equals("user")) {
+
+            rldUsertype1.setVisibility(View.VISIBLE);
+            rldUsertype2.setVisibility(View.GONE);
+        }else {
+            rldUsertype2.setVisibility(View.VISIBLE);
+            rldUsertype1.setVisibility(View.GONE);
+        }
 
         /*btnView = (Button) rootView.findViewById(R.id.btnView);
         btnView.setOnClickListener(new View.OnClickListener() {
@@ -168,8 +199,7 @@ public class HomeFragment extends Fragment {
                                         for (int i = 0; i < appointmentLit.size(); i++) {
                                             TimeAndDateResponse.appoinments appoinments = appointmentLit.get(i);
                                             Log.e("appointment", appoinments.getDate());
-                                            LayoutInflater layoutInflater =
-                                                    (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                                            LayoutInflater layoutInflater =(LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                                             View addView = layoutInflater.inflate(R.layout.add_appointment_layout, null);
                                             txtTime = (TextView) addView.findViewById(R.id.txtTime);
                                             txtRemaingDays = (TextView) addView.findViewById(R.id.txtRemaingDays);
@@ -359,8 +389,11 @@ public class HomeFragment extends Fragment {
                     snackbar.dismiss();
 
                 }
+                if (!userDetails[3].equals("user"))
+                    registerDetails();
+                else
+                    getExcel();
 
-                registerDetails();
             }
         }
     }
@@ -392,7 +425,99 @@ public class HomeFragment extends Fragment {
         Log.e("onResume","onResume recreated");
         if (isConnection != null) {
             sendUrl = "b";
-            registerDetails();
+            if (!userDetails[3].equals("user"))
+                registerDetails();
+            else
+                getExcel();
+        }
+    }
+
+
+    public void getExcel()
+    {
+        if (isConnection.equals(Constants.NETWORK_CONNECTED)) {
+            if (sendUrl.equals("b")) {
+                apiInterface = ApiClient.getClient().create(ApiInterface.class);
+                sendUrl = "send";
+                JSONObject jsonObject = new JSONObject();
+
+                Calendar calCurr = Calendar.getInstance();
+                SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy");
+                final String formattedDate = df.format(calCurr.getTime());
+                try {
+                    jsonObject.put("adate","07.12.2017");
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                Call<GetExcelModel> call = apiInterface.getExcelDetails(jsonObject);
+                call.enqueue(new Callback<GetExcelModel>() {
+                    @Override
+                    public  void onResponse(Call<GetExcelModel> call, Response<GetExcelModel> response) {
+                        if (response.isSuccessful())
+                        {
+                            GetExcelModel getExcelModel = response.body();
+
+                            if (getExcelModel.getStatus_code().equals(Constants.status_code1))
+                            {
+                                HashMap<String,ArrayList> getCityDetails = getExcelModel.getCity();
+                                ldtListExcel.removeAllViews();
+                                ArrayList lstKey = new ArrayList();
+                                ArrayList<ArrayList> lstValue= new ArrayList();
+                                for (Map.Entry<String,ArrayList> entry : getCityDetails.entrySet()) {
+                                    String key = entry.getKey();
+                                    lstKey.add(key);
+                                    lstValue.add(entry.getValue());
+                                }
+
+                                LayoutInflater layoutInflater =(LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                                for (int i=0;i < lstKey.size() ; i ++)
+                                {
+                                    ArrayList getExcelModels = lstValue.get(i);
+                                    ArrayList<GetExcelModel> getExcelModelsList1 = new ArrayList<GetExcelModel>();
+
+                                    for (int j =0 ; j< getExcelModels.size() ;j ++)
+                                    {
+                                        LinkedTreeMap objects =(LinkedTreeMap) getExcelModels.get(j);
+
+                                            GetExcelModel getExcelModelList = new GetExcelModel();
+                                            String name = (String) objects.get("name");
+                                            String time = (String) objects.get("time");
+                                            String phone = (String) objects.get("phone");
+                                            String gender = (String) objects.get("gender");
+                                            String age = (String) objects.get("age");
+                                            getExcelModelList.setName(name);
+                                            getExcelModelList.setAge(age);
+                                            getExcelModelList.setTime(time);
+                                            getExcelModelList.setPhone(phone);
+                                            getExcelModelList.setGender(gender);
+                                            getExcelModelsList1.add(getExcelModelList);
+
+
+                                    }
+
+                                    View addView = layoutInflater.inflate(R.layout.multiple_excel, null);
+                                    RecyclerView recyclerView = (RecyclerView) addView.findViewById(R.id.lstLst);
+                                    GetExcelAdapter getExcelAdapter = new GetExcelAdapter(getExcelModelsList1,getActivity());
+                                    recyclerView.setHasFixedSize(true);
+                                    recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                                    recyclerView.setNestedScrollingEnabled(false);
+                                    recyclerView.setAdapter(getExcelAdapter);
+                                    ldtListExcel.addView(addView);
+                                }
+
+
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<GetExcelModel> call, Throwable t) {
+                        Log.e("failure", String.valueOf(t));
+                    }
+                });
+            }
         }
     }
 }
@@ -402,5 +527,7 @@ public class HomeFragment extends Fragment {
 www.1message.com
         username:urchospitals
         password:admin123
+
+        http://drchella.in/admin/excel_report.php?x={"adate":"07.12.2017}
 */
 

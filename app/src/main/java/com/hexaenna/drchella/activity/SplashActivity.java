@@ -92,7 +92,7 @@ public class SplashActivity extends AppCompatActivity implements  LoadImageTask.
                 public void onReceive(Context context, Intent intent) {
                     super.onReceive(context, intent);
 
-                    if (intent.getAction().equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
+//                    if (intent.getAction().equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
 
 
                         if (isConnection == null) {
@@ -109,7 +109,7 @@ public class SplashActivity extends AppCompatActivity implements  LoadImageTask.
                             }
                         }
 
-                    }
+//                    }
 
                 }
 
@@ -448,9 +448,9 @@ public class SplashActivity extends AppCompatActivity implements  LoadImageTask.
                     Call<RegisterRequestAndResponse> call = apiInterface.checkEmail(jsonObject);
                     call.enqueue(new Callback<RegisterRequestAndResponse>() {
                         @Override
-                        public void onResponse(Call<RegisterRequestAndResponse> call, Response<RegisterRequestAndResponse> response) {
+                        public void onResponse(Call<RegisterRequestAndResponse> call, final Response<RegisterRequestAndResponse> response) {
                             if (response.isSuccessful()) {
-                                RegisterRequestAndResponse login = response.body();
+                                final RegisterRequestAndResponse login = response.body();
 
                                 if (login.getStatus_code() != null) {
 
@@ -475,19 +475,20 @@ public class SplashActivity extends AppCompatActivity implements  LoadImageTask.
                                             @Override
                                             public void run() {
 
-                                                Intent mainIntent = new Intent(SplashActivity.this, OTPActivity.class);
+                                                registerDetails(Constants.status_code_1,login.getType());
+                                              /*  Intent mainIntent = new Intent(SplashActivity.this, OTPActivity.class);
                                                 Bundle bundle = new Bundle();
                                                 bundle.putString("email", e_mail);
                                                 mainIntent.putExtras(bundle);
                                                 SplashActivity.this.startActivity(mainIntent);
                                                 overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
-                                                SplashActivity.this.finish();
+                                                SplashActivity.this.finish();*/
                                             }
                                         }, 2000);
 
                                     } else if (login.getStatus_code().equals(Constants.status_code1)) {
 
-                                                registerDetails();
+                                                registerDetails(Constants.status_code1,login.getType());
 
 
                                     }
@@ -526,7 +527,7 @@ public class SplashActivity extends AppCompatActivity implements  LoadImageTask.
 
 
 
-    private void registerDetails() {
+    private void registerDetails(final String from, final String type) {
 
         String mailId = getE_mail();
         if (isConnection.equals(Constants.NETWORK_CONNECTED) && getE_mail() != null) {
@@ -553,7 +554,9 @@ public class SplashActivity extends AppCompatActivity implements  LoadImageTask.
                                 if (timeAndDateResponse.getProfile_pic() != null) {
                                     TimeAndDateResponse dateResponse = new TimeAndDateResponse();
                                     dateResponse.setPhoto(timeAndDateResponse.getProfile_pic());
-                                    databaseHandler.addUser(timeAndDateResponse.getName(),timeAndDateResponse.getMobile(),"0","");
+                                    UserRegisterDetails userRegisterDetails = UserRegisterDetails.getInstance();
+                                    userRegisterDetails.setMobileNum(timeAndDateResponse.getMobile());
+                                    databaseHandler.addUser(timeAndDateResponse.getName(),timeAndDateResponse.getMobile(),"0","",type);
                                     if (timeAndDateResponse.getLang().equals("English"))
                                     {
                                         databaseHandler.addLanguage("English","0");
@@ -561,13 +564,26 @@ public class SplashActivity extends AppCompatActivity implements  LoadImageTask.
                                     {
                                         databaseHandler.addLanguage("Tamil","0");
                                     }
-
-                                    new LoadImageTask(SplashActivity.this).execute(timeAndDateResponse.getProfile_pic());
-
-                                    Intent mainIntent = new Intent(SplashActivity.this, HomeActivity.class);
-                                    SplashActivity.this.startActivity(mainIntent);
-                                    overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
-                                    SplashActivity.this.finish();
+                                    if (timeAndDateResponse.getProfile_pic() != null)
+                                        new LoadImageTask(SplashActivity.this).execute(timeAndDateResponse.getProfile_pic());
+                                    if (from.equals(Constants.status_code1)) {
+                                        Intent mainIntent = new Intent(SplashActivity.this, HomeActivity.class);
+                                        Bundle bundle = new Bundle();
+                                        bundle.putString("fromWhere", Constants.status_code1);
+                                        mainIntent.putExtras(bundle);
+                                        SplashActivity.this.startActivity(mainIntent);
+                                        overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+                                        SplashActivity.this.finish();
+                                    }else if (from.equals(Constants.status_code_1))
+                                    {
+                                        Intent mainIntent = new Intent(SplashActivity.this, OTPActivity.class);
+                                        Bundle bundle = new Bundle();
+                                        bundle.putString("fromWhere", Constants.status_code_1);
+                                        mainIntent.putExtras(bundle);
+                                        SplashActivity.this.startActivity(mainIntent);
+                                        overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+                                        SplashActivity.this.finish();
+                                    }
                                 }
                             }
                         }

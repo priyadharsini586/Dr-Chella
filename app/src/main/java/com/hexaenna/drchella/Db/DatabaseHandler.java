@@ -33,6 +33,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String USER_NAME = "user_name";
     private static final String USER_MBL = "mbl_number";
     private static final String USER_ID = "user_id";
+    private static final String USER_TYPE = "user_type";
     private static final String USER_PROFILE_PIC= "profile_pic";
 
     public DatabaseHandler(Context context) {
@@ -47,6 +48,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + KEY_LANGUAGE + " TEXT " + ")";
         String CREATE_USER_TABLE = "CREATE TABLE " + TABLE_USER_DETAILS + "("
                 + USER_ID + " TEXT ,"
+                + USER_TYPE + " TEXT ,"
                 + USER_NAME + " TEXT ,"
                 + USER_PROFILE_PIC + " TEXT ,"
                 + USER_MBL + " TEXT " + ")";
@@ -81,7 +83,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close(); // Closing database connection
     }
 
-    public void addUser(String userNmae,String mbl,String id,String profile_pic) {
+    public void addUser(String userNmae,String mbl,String id,String profile_pic,String type) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -89,6 +91,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(USER_ID,id);
         values.put(USER_MBL,mbl);
         values.put(USER_PROFILE_PIC,profile_pic);
+        values.put(USER_TYPE,type);
 
         // Inserting Row
         db.insert(TABLE_USER_DETAILS, null, values);
@@ -111,17 +114,19 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return language;
     }
 
+
+
     public String[] getUserName(String id) {
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(TABLE_USER_DETAILS, new String[] { USER_NAME,
-                        USER_MBL,USER_PROFILE_PIC}, USER_ID + "=?",
+                        USER_MBL,USER_PROFILE_PIC,USER_TYPE}, USER_ID + "=?",
                 new String[] { String.valueOf(id) }, null, null, null, null);
         if (cursor != null)
             cursor.moveToFirst();
 
 
-        String[] userDetails = {cursor.getString(0),cursor.getString(1),cursor.getString(2)};
+        String[] userDetails = {cursor.getString(0),cursor.getString(1),cursor.getString(2),cursor.getString(3)};
 
         // return contact
         return userDetails;
