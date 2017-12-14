@@ -107,5 +107,9 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("appointmnt_report.php")
     Call<GetExcelModel>getExcelDetails(@Field("x") JSONObject email);
+
+    @FormUrlEncoded
+    @POST("check_appointment.php")
+    Call<TimeAndDateResponse>getReport(@Field("x") JSONObject email);
 }
 

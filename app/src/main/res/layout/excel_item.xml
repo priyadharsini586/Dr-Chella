@@ -3,21 +3,16 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:padding="12dp"
+    android:id="@+id/ldtMainBg"
+    android:background="@drawable/background_selector">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:weightSum="4">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@android:color/black"
-        android:id="@+id/name"
-        android:text="@string/accept"
-        android:layout_weight="1"
-        android:gravity="center"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -30,7 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@android:color/black"
-        android:id="@+id/phone"
+        android:id="@+id/name"
         android:text="@string/accept"
         android:layout_weight="1"
         android:gravity="center"/>
@@ -39,6 +34,14 @@
         android:layout_height="wrap_content"
         android:textColor="@android:color/black"
         android:id="@+id/age"
+        android:text="@string/accept"
+        android:layout_weight="1"
+        android:gravity="center"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
+        android:id="@+id/phone"
         android:text="@string/accept"
         android:layout_weight="1"
         android:gravity="center"/>

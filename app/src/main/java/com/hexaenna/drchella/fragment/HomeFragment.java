@@ -1,25 +1,33 @@
 package com.hexaenna.drchella.fragment;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.FileProvider;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.androidadvance.topsnackbar.TSnackbar;
 import com.google.gson.Gson;
@@ -36,12 +44,21 @@ import com.hexaenna.drchella.activity.ViewAppointmentActivity;
 import com.hexaenna.drchella.adapter.GetExcelAdapter;
 import com.hexaenna.drchella.api.ApiClient;
 import com.hexaenna.drchella.api.ApiInterface;
+import com.hexaenna.drchella.custom_view.SimpleDividerItemDecoration;
 import com.hexaenna.drchella.utils.Constants;
 import com.hexaenna.drchella.service.NetworkChangeReceiver;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -80,6 +97,7 @@ public class HomeFragment extends Fragment {
     RelativeLayout rldUsertype2,rldUsertype1;
     String[] userDetails;
     LinearLayout ldtListExcel;
+    TextView txtDownload;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -120,6 +138,15 @@ public class HomeFragment extends Fragment {
         ldtAppointment.setVisibility(View.GONE);
 
 
+        txtDownload = (TextView) rootView.findViewById(R.id.txtDownload);
+        txtDownload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkPdf();
+               /* */
+
+            }
+        });
         ldtListExcel = (LinearLayout) rootView.findViewById(R.id.ldtListExcel);
 
         rldUsertype2 = (RelativeLayout) rootView.findViewById(R.id.rldUsertype2);
@@ -389,10 +416,12 @@ public class HomeFragment extends Fragment {
                     snackbar.dismiss();
 
                 }
-                if (!userDetails[3].equals("user"))
+                if (userDetails[3].equals("user")) {
                     registerDetails();
-                else
+                }
+                else if (userDetails[3].equals("admin")) {
                     getExcel();
+                }
 
             }
         }
@@ -425,10 +454,12 @@ public class HomeFragment extends Fragment {
         Log.e("onResume","onResume recreated");
         if (isConnection != null) {
             sendUrl = "b";
-            if (!userDetails[3].equals("user"))
+            if (userDetails[3].equals("user")) {
                 registerDetails();
-            else
+            }
+            else if (userDetails[3].equals("admin")) {
                 getExcel();
+            }
         }
     }
 
@@ -501,13 +532,24 @@ public class HomeFragment extends Fragment {
                                     RecyclerView recyclerView = (RecyclerView) addView.findViewById(R.id.lstLst);
                                     GetExcelAdapter getExcelAdapter = new GetExcelAdapter(getExcelModelsList1,getActivity());
                                     recyclerView.setHasFixedSize(true);
+                                    recyclerView.addItemDecoration(new SimpleDividerItemDecoration(getActivity()));
                                     recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                                     recyclerView.setNestedScrollingEnabled(false);
+                                    TextView txtCoimbaore = (TextView) addView.findViewById(R.id.txtCoimbaore);
+                                    String city = String.valueOf(lstKey.get(i));
+                                    txtCoimbaore.setText(getAddressString(city));
                                     recyclerView.setAdapter(getExcelAdapter);
                                     ldtListExcel.addView(addView);
                                 }
 
 
+                            }else
+                            {
+                                rldUsertype2.setVisibility(View.VISIBLE);
+                                rldUsertype1.setVisibility(View.GONE);
+                                TextView txtNoApp = (TextView) rootView.findViewById(R.id.txtNoApp);
+                                txtNoApp.setVisibility(View.VISIBLE);
+                                txtDownload.setVisibility(View.GONE);
                             }
                         }
                     }
@@ -518,6 +560,229 @@ public class HomeFragment extends Fragment {
                     }
                 });
             }
+        }
+    }
+
+    public String getAddressString(String city)
+    {
+        String returnAddress;
+        if (city.equals("1"))
+        {
+            returnAddress = getActivity().getString(R.string.chennai_hospital);
+
+        }else if (city.equals("2"))
+        {
+            returnAddress = getActivity().getString(R.string.erode_hospital);
+
+        }else if (city.equals("3"))
+        {
+            returnAddress = getActivity().getString(R.string.coimbatore_hospital);
+
+
+        }else if (city.equals("4"))
+        {
+            returnAddress = getActivity().getString(R.string.namakkal_hospital);
+
+        }else if (city.equals("5"))
+        {
+            returnAddress = getActivity().getString(R.string.mayiladu_hospital);
+            txtHospitalName.setText(getActivity().getString(R.string.mayiladu_hospital));
+            txtAddress.setText(getActivity().getString(R.string.may_hospital_address));
+        }else if (city.equals("6"))
+        {
+            returnAddress = getActivity().getString(R.string.kollidam_hospital);
+
+        }else
+        {
+            returnAddress = " ";
+        }
+
+        return returnAddress;
+    }
+
+
+    public void download(String url,String pdfName)
+    {
+
+        boolean fileExists =  new File(Environment.getExternalStorageDirectory() + "/chella/" +  pdfName).isFile();
+        if (fileExists)
+            view(pdfName);
+        else {
+//            ldtProgressBar.setVisibility(View.VISIBLE);
+            getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+            new DownloadFile().execute(url,pdfName);
+        }
+    }
+
+
+    public void view(String pdfName)
+    {
+        File pdfFile = new File(Environment.getExternalStorageDirectory() + "/chella/" + pdfName);
+        Uri path=null;
+        if (Build.VERSION.SDK_INT >= 24) {
+            path = FileProvider.getUriForFile(getActivity(), "com.hexaenna.drchella", pdfFile);
+        } else {
+            path = Uri.fromFile(pdfFile);
+        }
+
+        // -> filename = maven.pdf
+        Intent pdfIntent = new Intent(Intent.ACTION_VIEW);
+        pdfIntent.setDataAndType(path, "application/pdf");
+        pdfIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+        try{
+            startActivity(pdfIntent);
+        }catch(ActivityNotFoundException e){
+            Toast.makeText(getActivity(), "No Application available to view PDF ", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private class DownloadFile extends AsyncTask<String, Integer, Void> {
+
+        private static final int  MEGABYTE = 1024;
+        public  float per = 0;
+        String fileName = null;
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+        }
+
+        @Override
+        protected Void doInBackground(String... strings) {
+            String fileUrl = strings[0];   // -> http://maven.apache.org/maven-1.x/maven.pdf
+            fileName = strings[1];  // -> maven.pdf
+            String extStorageDirectory = Environment.getExternalStorageDirectory().toString();
+            File pdfFile = null;
+
+            File folder = new File(extStorageDirectory, "chella");
+            folder.mkdir();
+
+            pdfFile = new File(folder, fileName);
+
+            try {
+                pdfFile.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                int downloadedSize = 0;
+
+
+                URL url = new URL(fileUrl);
+                HttpURLConnection urlConnection = (HttpURLConnection)url.openConnection();
+                //urlConnection.setRequestMethod("GET");
+                //urlConnection.setDoOutput(true);
+                urlConnection.connect();
+
+                InputStream inputStream = urlConnection.getInputStream();
+                FileOutputStream fileOutputStream = new FileOutputStream(pdfFile);
+                int totalSize = urlConnection.getContentLength();
+
+                byte[] buffer = new byte[MEGABYTE];
+                int bufferLength = 0;
+                while((bufferLength = inputStream.read(buffer))>0 ){
+                    fileOutputStream.write(buffer, 0, bufferLength);
+                    downloadedSize += bufferLength;
+                    per = ((float) downloadedSize / totalSize) * 100;
+                    Integer percentage = (int) per;
+
+                    publishProgress(percentage);
+                }
+                fileOutputStream.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
+            values[0] = Math.round(values[0]);
+            Log.e("percentage", String.valueOf(values[0]));
+//            progressBar.setProgress(values[0]);
+//            txtPercentage.setText(String.valueOf(values[0]) + "%");
+
+            if (values[0] == 100)
+            {
+//                ldtProgressBar.setVisibility(View.GONE);
+                Toast.makeText(getActivity(),"Download Completed",Toast.LENGTH_LONG).show();
+                getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+            }
+
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+//            isCompleted = true;
+
+        }
+
+        /* @Override
+        protected void onProgressUpdate(Void... values) {
+            super.onProgressUpdate(values);
+            Log.e("percentage", String.valueOf(percentage));
+            progressBar.setProgress(percentage);
+        }*/
+    }
+
+
+
+    public void checkPdf()
+    {
+        if (isConnection.equals(Constants.NETWORK_CONNECTED)) {
+
+                apiInterface = ApiClient.getClient().create(ApiInterface.class);
+
+            Calendar calCurr = Calendar.getInstance();
+            SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy");
+            final String formattedDate = df.format(calCurr.getTime());
+            JSONObject jsonObject = new JSONObject();
+            try {
+                jsonObject.put("adate","14.12.2017");
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            Call<TimeAndDateResponse> call = apiInterface.getReport(jsonObject);
+                call.enqueue(new Callback<TimeAndDateResponse>() {
+                    @Override
+                    public void onResponse(Call<TimeAndDateResponse> call, Response<TimeAndDateResponse> response) {
+                        if (response.isSuccessful()) {
+                            Log.e("successfull", String.valueOf(response.body()));
+                            TimeAndDateResponse timeAndDateResponse = response.body();
+                            if (timeAndDateResponse.getStatus_code().equals(Constants.status_code1))
+                            {
+                                Calendar calCurr = Calendar.getInstance();
+                                SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy");
+                                final String formattedDate = df.format(calCurr.getTime());
+                                String excelNAme = Constants.GET_EXCEL + "{\"adate\":"+ "\""+formattedDate + "\"}";
+                                Log.e("excel",excelNAme);
+                                download(excelNAme,"Appointments_report_"+"15.02.2017"+".pdf");
+
+                            }else if (timeAndDateResponse.equals(Constants.status_code0)) {
+                                Toast.makeText(getActivity(), timeAndDateResponse.getStatus_message(), Toast.LENGTH_LONG).show();
+                            }
+                            }
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<TimeAndDateResponse> call, Throwable t) {
+                        Log.e("failure", String.valueOf(t));
+                    }
+                });
+
         }
     }
 }

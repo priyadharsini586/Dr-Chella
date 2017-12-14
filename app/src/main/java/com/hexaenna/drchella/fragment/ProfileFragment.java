@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.hexaenna.drchella.R;
@@ -61,26 +62,31 @@ public class ProfileFragment extends Fragment implements MoreItemsActivity.OnBac
         view = inflater.inflate(R.layout.fragment_profile, container, false);
         ldtMain = (LinearLayout) view.findViewById(R.id.ldtMain);
         webHome = (WebView) view.findViewById(R.id.webHome);
+        ImageView imgContact = (ImageView) view.findViewById(R.id.imgContact);
         if (mParam2.equals(Constants.profile)){
             ldtMain.setVisibility(View.VISIBLE);
             webHome.loadUrl("file:///android_asset/profile.html");
+            imgContact.setVisibility(View.GONE);
         }else if (mParam2.equals(Constants.privacy_policy))
         {
             ldtMain.setVisibility(View.GONE);
             webHome.loadUrl("file:///android_asset/privacy_policy.html");
             ((MoreItemsActivity) getActivity()).setOnBackPressedListener(this);
+            imgContact.setVisibility(View.GONE);
         }else if (mParam2.equals(Constants.terms_and_condition))
         {
             ldtMain.setVisibility(View.GONE);
             webHome.loadUrl("file:///android_asset/terms_conditions.html");
             ((MoreItemsActivity) getActivity()).setOnBackPressedListener(this);
+            imgContact.setVisibility(View.GONE);
         }
-        /*else if (mParam2.equals(Constants.expertise))
+        else if (mParam2.equals(Constants.contact))
         {
             ldtMain.setVisibility(View.GONE);
-            webHome.loadUrl("file:///android_asset/expertise.html");
+            webHome.setVisibility(View.GONE);
+            imgContact.setVisibility(View.VISIBLE);
 
-        }*/
+        }
 
 
         return view;

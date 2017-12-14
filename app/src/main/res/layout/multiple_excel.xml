@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/ldtExcel"
             android:orientation="horizontal"
-            android:weightSum="2">
+            android:padding="15dp">
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -24,15 +24,10 @@
                 android:text="Coimbatore"
                 android:gravity="start"
                 android:layout_weight="1"
-                android:textColor="@android:color/black"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/txtCoimbaoreDownload"
-                android:text="Coimbatore"
-                android:gravity="end"
-                android:layout_weight="1"
-                android:textColor="@android:color/black"/>
+                android:textColor="#210238"
+                android:textSize="17sp"
+                />
+
         </LinearLayout>
 
 

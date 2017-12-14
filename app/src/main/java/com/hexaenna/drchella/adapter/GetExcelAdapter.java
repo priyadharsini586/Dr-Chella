@@ -1,11 +1,13 @@
 package com.hexaenna.drchella.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.hexaenna.drchella.Model.GetExcelModel;
@@ -37,6 +39,12 @@ public class GetExcelAdapter extends RecyclerView.Adapter<GetExcelAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
 
+
+        if (position % 2 == 0) {
+            holder.ldtMainBg.setBackgroundColor(Color.parseColor("#BCF7F0"));
+        } else {
+            holder.ldtMainBg.setBackgroundColor(Color.parseColor("#ffffff"));
+        }
         holder.getExcelModel = excelModelArrayList.get(position);
         holder.mName.setText(holder.getExcelModel.getName());
         holder.mTime.setText(holder.getExcelModel.getTime());
@@ -55,6 +63,7 @@ public class GetExcelAdapter extends RecyclerView.Adapter<GetExcelAdapter.ViewHo
 
         public final TextView mName,mTime,mPhone,mAge;
        GetExcelModel getExcelModel;
+        LinearLayout ldtMainBg;
 
         public ViewHolder(View view) {
             super(view);
@@ -63,6 +72,7 @@ public class GetExcelAdapter extends RecyclerView.Adapter<GetExcelAdapter.ViewHo
             mTime = (TextView) view.findViewById(R.id.time);
             mPhone = (TextView) view.findViewById(R.id.phone);
             mAge = (TextView) view.findViewById(R.id.age);
+            ldtMainBg = (LinearLayout) view.findViewById(R.id.ldtMainBg);
 
 
         }

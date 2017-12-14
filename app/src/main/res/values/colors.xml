@@ -12,6 +12,7 @@
     <color name="unselected_tab">#696969</color>
     <color name="view_color">#d7d7d7</color>
     <color name="time_show_color">#dbdbdb</color>
+    <color name="colorDivide">#d7d7d7</color>
 
 
     <item name="blue" type="color">#FF33B5E5</item>
