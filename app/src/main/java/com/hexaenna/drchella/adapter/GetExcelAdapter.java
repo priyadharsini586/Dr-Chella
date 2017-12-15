@@ -41,7 +41,7 @@ public class GetExcelAdapter extends RecyclerView.Adapter<GetExcelAdapter.ViewHo
 
 
         if (position % 2 == 0) {
-            holder.ldtMainBg.setBackgroundColor(Color.parseColor("#BCF7F0"));
+            holder.ldtMainBg.setBackgroundColor(Color.parseColor("#ddfbf7"));
         } else {
             holder.ldtMainBg.setBackgroundColor(Color.parseColor("#ffffff"));
         }
