@@ -155,12 +155,17 @@ public class HomeFragment extends Fragment {
         rldUsertype1.setVisibility(View.VISIBLE);
         if (userDetails[3].equals("user")) {
 
-            rldUsertype2.setVisibility(View.VISIBLE);
-            rldUsertype1.setVisibility(View.GONE);
+            rldUsertype1.setVisibility(View.VISIBLE);
+            rldUsertype2.setVisibility(View.GONE);
+            txtDownload.setVisibility(View.GONE);
         }else if (userDetails[3].equals("admin")){
             rldUsertype2.setVisibility(View.VISIBLE);
             rldUsertype1.setVisibility(View.GONE);
+            txtDownload.setVisibility(View.VISIBLE);
         }
+        txtDownload.setVisibility(View.GONE);
+        TextView txtNoApp = (TextView) rootView.findViewById(R.id.txtNoApp);
+        txtNoApp.setVisibility(View.GONE);
 
         /*btnView = (Button) rootView.findViewById(R.id.btnView);
         btnView.setOnClickListener(new View.OnClickListener() {
@@ -174,9 +179,9 @@ public class HomeFragment extends Fragment {
         imgScedule.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(),BookAppointmentActivity.class);
+              /*  Intent intent = new Intent(getActivity(),BookAppointmentActivity.class);
                 startActivity(intent);
-                getActivity().overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
+                getActivity().overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);*/
             }
         });
 
@@ -476,7 +481,7 @@ public class HomeFragment extends Fragment {
                 SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy");
                 final String formattedDate = df.format(calCurr.getTime());
                 try {
-                    jsonObject.put("adate","07.12.2017");
+                    jsonObject.put("adate",formattedDate);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -518,11 +523,13 @@ public class HomeFragment extends Fragment {
                                             String phone = (String) objects.get("phone");
                                             String gender = (String) objects.get("gender");
                                             String age = (String) objects.get("age");
+                                            String place = (String) objects.get("place");
                                             getExcelModelList.setName(name);
                                             getExcelModelList.setAge(age);
                                             getExcelModelList.setTime(time);
                                             getExcelModelList.setPhone(phone);
                                             getExcelModelList.setGender(gender);
+                                            getExcelModelList.setPlace(place);
                                             getExcelModelsList1.add(getExcelModelList);
 
 
@@ -539,7 +546,10 @@ public class HomeFragment extends Fragment {
                                     String city = String.valueOf(lstKey.get(i));
                                     txtCoimbaore.setText(getAddressString(city));
                                     recyclerView.setAdapter(getExcelAdapter);
+                                    txtDownload.setVisibility(View.VISIBLE);
                                     ldtListExcel.addView(addView);
+                                    TextView txtNoApp = (TextView) rootView.findViewById(R.id.txtNoApp);
+                                    txtNoApp.setVisibility(View.GONE);
                                 }
 
 
@@ -748,7 +758,7 @@ public class HomeFragment extends Fragment {
             final String formattedDate = df.format(calCurr.getTime());
             JSONObject jsonObject = new JSONObject();
             try {
-                jsonObject.put("adate","14.12.2017");
+                jsonObject.put("adate",formattedDate);
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -768,7 +778,7 @@ public class HomeFragment extends Fragment {
                                 final String formattedDate = df.format(calCurr.getTime());
                                 String excelNAme = Constants.GET_EXCEL + "{\"adate\":"+ "\""+formattedDate + "\"}";
                                 Log.e("excel",excelNAme);
-                                download(excelNAme,"Appointments_report_"+"15.02.2017"+".pdf");
+                                download(excelNAme,"Appointments_report_"+formattedDate+".pdf");
 
                             }else if (timeAndDateResponse.equals(Constants.status_code0)) {
                                 Toast.makeText(getActivity(), timeAndDateResponse.getStatus_message(), Toast.LENGTH_LONG).show();

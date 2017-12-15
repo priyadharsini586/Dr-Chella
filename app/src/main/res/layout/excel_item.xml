@@ -11,16 +11,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:weightSum="4">
+        android:weightSum="5">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@android:color/black"
         android:id="@+id/time"
-        android:text="@string/accept"
+        android:text="10:20 AM"
         android:layout_weight="1"
-        android:gravity="center"/>
+        android:gravity="center"
+        android:textSize="@dimen/excel_text_size"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -28,22 +29,35 @@
         android:id="@+id/name"
         android:text="@string/accept"
         android:layout_weight="1"
-        android:gravity="center"/>
+        android:gravity="center"
+        android:textSize="@dimen/excel_text_size"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@android:color/black"
         android:id="@+id/age"
-        android:text="@string/accept"
-        android:layout_weight="1"
-        android:gravity="center"/>
+        android:text="12"
+        android:layout_weight="1.1"
+        android:gravity="center"
+        android:textSize="@dimen/excel_text_size"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@android:color/black"
         android:id="@+id/phone"
-        android:text="@string/accept"
+        android:text="7200244766"
         android:layout_weight="1"
-        android:gravity="center"/>
+        android:gravity="center"
+        android:textSize="@dimen/excel_text_size"
+        android:maxLength="10"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/black"
+            android:id="@+id/place"
+            android:text="@string/accept"
+            android:layout_weight="0.9"
+            android:gravity="center"
+            android:textSize="@dimen/excel_text_size"/>
     </LinearLayout>
 </LinearLayout>

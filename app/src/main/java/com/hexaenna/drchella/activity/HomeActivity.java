@@ -243,7 +243,7 @@ public class HomeActivity extends AppCompatActivity implements  LoadImageTask.Li
                     MenuItem itemCart = menuNotification.findItem(R.id.action_cart);
                     LayerDrawable icon = (LayerDrawable) itemCart.getIcon();
                     setBadgeCount(context, icon, count);
-                    Toast.makeText(getApplicationContext(), "Push notification: " + message, Toast.LENGTH_LONG).show();
+//                    Toast.makeText(getApplicationContext(), "Push notification: " + message, Toast.LENGTH_LONG).show();
 
 
                 }
@@ -304,6 +304,9 @@ public class HomeActivity extends AppCompatActivity implements  LoadImageTask.Li
                 count = "0";
                 imgCount = Integer.parseInt(count);
                 setBadgeCount(this, icon, count);
+                Intent intent = new Intent(getApplicationContext(), MoreItemsActivity.class);
+                intent.putExtra(Constants.fromMore,Constants.daily_health_tips);
+                startActivity(intent);
                 return true;
 
             default:

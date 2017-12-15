@@ -193,10 +193,10 @@ public class SplashActivity extends AppCompatActivity implements  LoadImageTask.
                 }
                 isPermission =false;
 
-                Toast.makeText(getApplicationContext(),"Permissions not granted.", Toast.LENGTH_LONG).show();
+//                Toast.makeText(getApplicationContext(),"Permissions not granted.", Toast.LENGTH_LONG).show();
 
             } else {
-                Toast.makeText(getApplicationContext(),"Permissions already granted.", Toast.LENGTH_LONG).show();
+//                Toast.makeText(getApplicationContext(),"Permissions already granted.", Toast.LENGTH_LONG).show();
                 isPermission = true;
                 ldtSplash.startAnimation(animBounce);
             }

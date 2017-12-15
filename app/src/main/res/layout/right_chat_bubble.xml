@@ -16,15 +16,16 @@
             >
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingBottom="10dp"
-        android:background="@drawable/bubble_by_me"
+        android:background="@drawable/bubble_right"
         android:layout_alignParentRight="true"
         android:padding="10dp"
         android:minWidth="150dp"
-        android:id="@+id/layBg">
+        android:id="@+id/layBg"
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -49,8 +50,8 @@
             />
             </LinearLayout>
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="220dp"
+            android:layout_height="200dp"
             android:src="@mipmap/ic_launcher"
             android:id="@+id/imgMsg"
             />
@@ -62,7 +63,7 @@
             android:textColor="@android:color/black"
             android:textSize="@dimen/testimony_content"
            android:text="hi"
-            />
+           android:maxWidth="250dp" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -83,13 +84,13 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:id="@+id/ldtCircle"
-            android:gravity="bottom"
+            android:gravity="start"
             android:paddingRight="10dp"
             android:paddingLeft="5dp">
             <de.hdodenhof.circleimageview.CircleImageView
                 xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:src="@mipmap/ic_testimony_user_name"
                 app:civ_border_width="1dp"
                 app:civ_border_color="@color/colorPrimaryDark"

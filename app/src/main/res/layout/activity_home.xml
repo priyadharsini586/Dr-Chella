@@ -9,80 +9,6 @@
     android:fitsSystemWindows="true"
     tools:context="com.hexaenna.drchella.activity.HomeActivity">
 
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/appbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppBarOverlay"
-        >
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
-            app:popupTheme="@style/PopupOverlay"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp">
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/ldtCircle">
-                <de.hdodenhof.circleimageview.CircleImageView
-                    xmlns:app="http://schemas.android.com/apk/res-auto"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@mipmap/ic_profile"
-                    app:civ_border_width="1dp"
-                    app:civ_border_color="#FFFFFF"
-                    android:id="@+id/ic_profile"
-                    />
-                <!--<ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@mipmap/ic_profile"
-                   android:padding="10dp"
-                    android:id="@+id/ic_profile"
-                    android:background="@drawable/image_rounded"/>-->
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingLeft="10dp">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="HExaennea"
-                android:textColor="@android:color/white"
-                android:id="@+id/txtName"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="123548679"
-                    android:textColor="@android:color/white"
-                    android:id="@+id/txtMobileNumber"
-                    />
-            </LinearLayout>
-        </android.support.v7.widget.Toolbar>
-
-
-        <android.support.design.widget.TabLayout
-            android:id ="@+id/tabs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:color/white"
-            app:elevation="0dp"
-            app:tabGravity="fill"
-            app:tabIndicatorColor="@color/white"
-            app:tabIndicatorHeight="0dp"
-            app:tabMode="fixed"
-            app:tabTextColor="@color/white"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"/>
-
-    </android.support.design.widget.AppBarLayout>
     <ProgressBar
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -122,5 +48,80 @@
       </LinearLayout>
 
   </LinearLayout>
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            app:popupTheme="@style/PopupOverlay">
+
+            <LinearLayout
+                android:id="@+id/ldtCircle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/ic_profile"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@mipmap/ic_profile"
+                    app:civ_border_color="#FFFFFF"
+                    app:civ_border_width="1dp" />
+                <!--<ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/ic_profile"
+                   android:padding="10dp"
+                    android:id="@+id/ic_profile"
+                    android:background="@drawable/image_rounded"/>-->
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="10dp">
+
+                <TextView
+                    android:id="@+id/txtName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="HExaennea"
+                    android:textColor="@android:color/white" />
+
+                <TextView
+                    android:id="@+id/txtMobileNumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="123548679"
+                    android:textColor="@android:color/white" />
+            </LinearLayout>
+        </android.support.v7.widget.Toolbar>
+
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tabs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            app:elevation="0dp"
+            app:tabGravity="fill"
+            app:tabIndicatorColor="@color/white"
+            app:tabIndicatorHeight="0dp"
+            app:tabMode="fixed"
+            app:tabTextColor="@color/white" />
+
+    </android.support.design.widget.AppBarLayout>
 
 </android.support.design.widget.CoordinatorLayout>

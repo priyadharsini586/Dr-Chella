@@ -151,17 +151,17 @@
 
     <!--hospital address-->
     <string name="erode_hospital_address">No: 12/29, Sate Bank Road, Opp.South Indian Bank, Erode 638001</string>
-    <string name="erode_hospital_Phone">Phone No :+91 9750125555</string>
+    <string name="erode_hospital_Phone">Phone No: +91 9750125555</string>
     <string name="chennai_hospital_address">No: 26/1, United India Colony, Kodambakkam, Chennai 600024</string>
-    <string name="chennai_hospital_Phone">Phone No :+91 9750125555</string>
-    <string name="coimbatore_hospital_address">No: #320, Selva Towers, Avinashi Road, Next to FUN MALL,Pellamedu, Coimbatore 641004.</string>
-    <string name="coimbatore_hospital_Phone">Phone No :0422 25 75 666</string>
+    <string name="chennai_hospital_Phone">Phone No: +91 9750125555</string>
+    <string name="coimbatore_hospital_address">No: 320, Selva Towers, Avinashi Road, Next to FUN MALL,Pellamedu, Coimbatore 641004.</string>
+    <string name="coimbatore_hospital_Phone">Phone No: 0422 25 75 666</string>
     <string name="namakkal_hospital_address">No: 6/288, Tiruchy Road, Namakkal - 637001</string>
-    <string name="namakkal_hospital_Phone">Phone No :+91 97866505 75</string>
+    <string name="namakkal_hospital_Phone">Phone No: +91 97866505 75</string>
     <string name="may_hospital_address">Dr. Kaviarasan Clinic, Opp. to GH, Mayiladuthurai, Nagai Dt</string>
-    <string name="may_hospital_Phone">Phone No :+91 7373146666</string>
+    <string name="may_hospital_Phone">Phone No: +91 7373146666</string>
     <string name="kollidam_hospital_address">3/126,Main Road,Opp. Police Station,Kollidam,Nagai Dt</string>
-    <string name="kollidam_hospital_Phone">Phone No :+91 9655929498</string>`
+    <string name="kollidam_hospital_Phone">Phone No: +91 9655929498</string>`
 
 
     <string name="no_appointment"> Would you like to have an Appointment ? </string>
@@ -181,4 +181,6 @@
     <string name="map_namakkal_address">M.M. Hospital,Andavar Nagar,Namakkal,Tamil Nadu</string>
     <string name="map_mayiladudurai_address">Dr. Kaviarasan Clinic,Opp.to GH,Mayiladuthurai,Nagai District</string>
     <string name="map_kolidam_address">3/126,Main Road,Opp. Police Station,Kollidam,Nagai Dt</string>
+
+    <string name="no_video">To be uploaded..</string>
 </resources>

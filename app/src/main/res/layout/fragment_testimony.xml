@@ -2,7 +2,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#e9e9e9">
+    android:background="@drawable/appbackground">
 
     <ListView
         android:id="@+id/list_msg"
@@ -11,7 +11,6 @@
         android:layout_alignParentLeft="false"
         android:layout_alignParentTop="false"
         android:layout_marginBottom="20dp"
-        android:layout_marginTop="10dp"
         android:listSelector="@android:color/transparent"
         android:transcriptMode="alwaysScroll"
         android:divider="@null"

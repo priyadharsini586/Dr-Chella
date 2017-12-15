@@ -7,8 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.hexaenna.drchella.Db.DatabaseHandler;
 import com.hexaenna.drchella.R;
 
 import java.util.ArrayList;
@@ -47,12 +49,13 @@ public class MoreAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
-        
+
         if(convertView == null) {
             convertView = mInflater.inflate(R.layout.more_list, null);
             holder = new ViewHolder();
             holder.tvGender = (TextView) convertView.findViewById(R.id.moreItems);
             holder.imgIcon = (ImageView) convertView.findViewById(R.id.imgChangeImg);
+            holder.ldtList = (LinearLayout) convertView.findViewById(R.id.ldtList);
 
             convertView.setTag(holder);
         } else {
@@ -72,5 +75,6 @@ public class MoreAdapter extends BaseAdapter {
     class ViewHolder {
         TextView tvGender;
         ImageView imgIcon;
+        LinearLayout ldtList;
     }
 }

@@ -12,13 +12,13 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:id="@+id/ldtCircle"
-            android:gravity="bottom"
+            android:gravity="start"
             android:paddingLeft="10dp"
-            android:paddingRight="5dp">
+            >
             <de.hdodenhof.circleimageview.CircleImageView
                 xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:src="@mipmap/ic_testimony_user_name"
                 app:civ_border_width="1dp"
                 app:civ_border_color="@color/colorPrimary"
@@ -31,11 +31,11 @@
         android:paddingBottom="20dp" >
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingBottom="10dp"
-        android:background="@drawable/bubble_right"
+        android:background="@drawable/bubble_left"
         android:padding="10dp"
         android:minWidth="150dp"
         android:id="@+id/layBg">
@@ -62,11 +62,14 @@
             </LinearLayout>
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="220dp"
+            android:layout_height="200dp"
             android:src="@mipmap/ic_launcher"
             android:id="@+id/imgMsg"
             />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
         <TextView
             android:id="@+id/txt_msg"
             android:layout_width="wrap_content"
@@ -75,8 +78,8 @@
             android:textColor="@android:color/black"
             android:text="hifdg"
            android:textSize="@dimen/testimony_content"
-            />
-
+            android:maxWidth="250dp"/>
+        </LinearLayout>
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

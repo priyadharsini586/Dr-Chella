@@ -8,8 +8,10 @@ import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.hexaenna.drchella.activity.MoreItemsActivity;
 import com.hexaenna.drchella.activity.SplashActivity;
 import com.hexaenna.drchella.utils.Config;
+import com.hexaenna.drchella.utils.Constants;
 import com.hexaenna.drchella.utils.NotificationUtils;
 
 import org.json.JSONException;
@@ -100,8 +102,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 notificationUtils.playNotificationSound();
             } else {
                 // app is in background, show the notification in notification tray
-                Intent resultIntent = new Intent(getApplicationContext(), SplashActivity.class);
+                Intent resultIntent = new Intent(getApplicationContext(), MoreItemsActivity.class);
+                resultIntent.putExtra(Constants.fromMore,Constants.daily_health_tips);
                 resultIntent.putExtra("message", message);
+//                startActivity(intent);
+               /* Intent resultIntent = new Intent(getApplicationContext(), SplashActivity.class);
+                resultIntent.putExtra("message", message);*/
 
                 // check for image attachment
                 if (TextUtils.isEmpty(imageUrl)) {

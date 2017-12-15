@@ -85,9 +85,8 @@ public class ProfileFragment extends Fragment implements MoreItemsActivity.OnBac
             ldtMain.setVisibility(View.GONE);
             webHome.setVisibility(View.GONE);
             imgContact.setVisibility(View.VISIBLE);
-
+            ((MoreItemsActivity) getActivity()).setOnBackPressedListener(this);
         }
-
 
         return view;
     }

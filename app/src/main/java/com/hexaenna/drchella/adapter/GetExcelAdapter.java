@@ -50,6 +50,7 @@ public class GetExcelAdapter extends RecyclerView.Adapter<GetExcelAdapter.ViewHo
         holder.mTime.setText(holder.getExcelModel.getTime());
         holder.mPhone.setText(holder.getExcelModel.getPhone());
         holder.mAge.setText(holder.getExcelModel.getAge());
+        holder.mPlace.setText(holder.getExcelModel.getPlace());
         Log.e("name in excel",holder.getExcelModel.getName());
 
     }
@@ -61,7 +62,7 @@ public class GetExcelAdapter extends RecyclerView.Adapter<GetExcelAdapter.ViewHo
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        public final TextView mName,mTime,mPhone,mAge;
+        public final TextView mName,mTime,mPhone,mAge,mPlace;
        GetExcelModel getExcelModel;
         LinearLayout ldtMainBg;
 
@@ -72,6 +73,7 @@ public class GetExcelAdapter extends RecyclerView.Adapter<GetExcelAdapter.ViewHo
             mTime = (TextView) view.findViewById(R.id.time);
             mPhone = (TextView) view.findViewById(R.id.phone);
             mAge = (TextView) view.findViewById(R.id.age);
+            mPlace = (TextView) view.findViewById(R.id.place);
             ldtMainBg = (LinearLayout) view.findViewById(R.id.ldtMainBg);
 
 

@@ -53,6 +53,7 @@ public class MoreFragment extends Fragment {
     NetworkChangeReceiver networkChangeReceiver;
     String isConnection = null;
     ProgressBar progressChangeLang;
+    String[] userDetails;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -80,45 +81,50 @@ public class MoreFragment extends Fragment {
 
 
         lstMore = (ListView) rootView.findViewById(R.id.lstMore);
+        DatabaseHandler databaseHandler = new DatabaseHandler(getActivity());
+        userDetails =  databaseHandler.getUserName("0");
 
         moreAdapter = new MoreAdapter(getActivity(),getMoreList(),getImageList());
 
         lstMore.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.e("position", String.valueOf(position));
+
+                String textPosition = String.valueOf(getMoreList().get(position));
+                Log.e("position", String.valueOf(textPosition));
                 Intent intent = new Intent(getActivity(), MoreItemsActivity.class);
-                if (position == 0)
+                if (textPosition.equals("Your Appointment"))
                 {
                     intent.putExtra(Constants.fromMore,Constants.your_appointment);
                     startActivity(intent);
-                }else if (position == 6)
+                }else if (textPosition.equals("Refer Friends"))
                 {
                     shareData();
-                }else if (position == 1)
+                }else if (textPosition.equals("Change Language"))
                 {
-                    changeLanguage();
-                }else if (position == 3)
+                    Toast.makeText(getActivity(),"Coming Soon",Toast.LENGTH_LONG).show();
+//                    changeLanguage();
+                }else if (textPosition.equals("Daily Health Tips"))
                 {
                     intent.putExtra(Constants.fromMore,Constants.daily_health_tips);
                     startActivity(intent);
-                }else if (position == 2)
+                }else if (textPosition.equals("Testimony"))
                 {
                     intent.putExtra(Constants.fromMore,Constants.testimony);
                     startActivity(intent);
-                }else if (position == 4)
+                }else if (textPosition.equals("Consultation Location"))
                 {
                     intent.putExtra(Constants.fromMore,Constants.consulation_location);
                     startActivity(intent);
-                }else if (position == 8)
+                }else if (textPosition.equals("Privcy Policy"))
                 {
                     intent.putExtra(Constants.fromMore,Constants.privacy_policy);
                     startActivity(intent);
-                }else if (position == 7)
+                }else if (textPosition.equals("Terms And Conditions"))
                 {
                     intent.putExtra(Constants.fromMore,Constants.terms_and_condition);
                     startActivity(intent);
-                }else if (position == 5)
+                }else if (textPosition.equals("Contact"))
                 {
                     intent.putExtra(Constants.fromMore,Constants.contact);
                     startActivity(intent);
@@ -131,7 +137,7 @@ public class MoreFragment extends Fragment {
 
     private void shareData() {
 
-        String shareBody = "Get Dr Chella App book Your Appointment which is your convenient time..?";
+        String shareBody = "Get Dr. Chella App book Your Appointment which is your convenient time..?";
         Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
         sharingIntent.setType("text/plain");
         sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Subject Here");
@@ -142,12 +148,14 @@ public class MoreFragment extends Fragment {
     public ArrayList getMoreList()
     {
         moreList = new ArrayList<>();
+        if (!userDetails[3].equals("admin")) {
+            moreList.add("Your Appointment");
+        }
 
-        moreList.add("Your Appointment");
-        moreList.add("Change Language");
-        moreList.add("Testimony");
-        moreList.add("Daily Health Tips");
         moreList.add("Consultation Location");
+        moreList.add("Daily Health Tips");
+        moreList.add("Testimony");
+        moreList.add("Change Language");
         moreList.add("Contact");
         moreList.add("Refer Friends");
         moreList.add("Terms And Conditions");
@@ -159,11 +167,15 @@ public class MoreFragment extends Fragment {
     public ArrayList getImageList()
     {
         imgList = new ArrayList<>();
-        imgList.add(R.drawable.your_appointment);
-        imgList.add(R.drawable.lang);
-        imgList.add(R.drawable.testimony);
-        imgList.add(R.drawable.daily_health_tips);
+        if (!userDetails[3].equals("admin")) {
+            imgList.add(R.drawable.your_appointment);
+        }
+
+
         imgList.add(R.drawable.con_location);
+        imgList.add(R.drawable.daily_health_tips);
+        imgList.add(R.drawable.testimony);
+        imgList.add(R.drawable.lang);
         imgList.add(R.drawable.contact);
         imgList.add(R.drawable.refer_friend);
         imgList.add(R.drawable.tearm_conditions);

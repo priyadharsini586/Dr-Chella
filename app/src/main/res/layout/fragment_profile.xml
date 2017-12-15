@@ -21,7 +21,7 @@
         android:paddingBottom="10dp"
         android:id="@+id/ldtMain"
         android:orientation="horizontal"
-        android:visibility="gone">
+        >
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -89,7 +89,7 @@
         android:layout_height="match_parent"
         android:id="@+id/webHome"
         android:layout_below="@+id/view"
-      android:visibility="gone"/>
+      />
 
 
         </RelativeLayout>
@@ -99,5 +99,6 @@
         android:layout_height="match_parent"
         android:src="@drawable/contact_number"
         android:layout_centerInParent="true"
-        android:id="@+id/imgContact"/>
+        android:id="@+id/imgContact"
+        android:visibility="gone"/>
 </RelativeLayout>

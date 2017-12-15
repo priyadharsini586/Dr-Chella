@@ -19,6 +19,7 @@
     <dimen name="testimony_username">13sp</dimen>
     <dimen name="testimony_content">16sp</dimen>
     <dimen name="testimony_time">10sp</dimen>
+    <dimen name="excel_text_size">12sp</dimen>
     <!--Registration screen dimen-->
     <dimen name="edtt_text_padding">15dp</dimen>
     <dimen name="icon_padding">7dp</dimen>

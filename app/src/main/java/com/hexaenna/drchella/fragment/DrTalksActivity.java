@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,7 +40,8 @@ public class DrTalksActivity extends Fragment  {
     private String youLink;
     YouTubePlayerSupportFragment youTubePlayerFragment;
     Config config = Config.getInstance();
-    TextView txtTalks;
+    TextView txtTalks,novideo;
+    LinearLayout ldtVideo;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -50,6 +52,9 @@ public class DrTalksActivity extends Fragment  {
         transaction.add(R.id.youtube_layout, youTubePlayerFragment).commit();
 
         txtTalks = (TextView) rootView.findViewById(R.id.txtTalks);
+        ldtVideo = (LinearLayout) rootView.findViewById(R.id.ldtVideo);
+        novideo =(TextView) rootView.findViewById(R.id.novideo);
+        novideo.setVisibility(View.GONE);
         getVideo();
         // Initializing video player with developer key
 
@@ -211,8 +216,14 @@ public class DrTalksActivity extends Fragment  {
                     if (videoDetails.getStatus_code().equals(Constants.status_code1))
                     {
                         youLink = videoDetails.getUrl();
+                        ldtVideo.setVisibility(View.VISIBLE);
                         txtTalks.setText(videoDetails.getDesc());
+                        novideo.setVisibility(View.GONE);
                         youTubePlayerFragment.initialize(Config.DEVELOPER_KEY, onInitializedListener);
+                    }else if (videoDetails.getStatus_code().equals(Constants.status_code0))
+                    {
+                        ldtVideo.setVisibility(View.GONE);
+                        novideo.setVisibility(View.VISIBLE);
                     }
                 }
             }

@@ -128,7 +128,7 @@ public class MoreItemsActivity extends AppCompatActivity  {
           txtTitle.setText("Contact");
           FragmentManager fragmentManager = getSupportFragmentManager();
           FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-          fragmentTransaction.add(R.id.fragment_container,ProfileFragment.newInstance("from",Constants.terms_and_condition), "PRIVACY_POLICY_FRAGMENT");
+          fragmentTransaction.add(R.id.fragment_container,ProfileFragment.newInstance("from",Constants.contact), "PRIVACY_POLICY_FRAGMENT");
           fragmentTransaction.addToBackStack("PRIVACY_POLICY_FRAGMENT");
           fragmentTransaction.commit();
       }

@@ -65,7 +65,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        showLanguage();
+//        showLanguage();
         networkChangeReceiver = new NetworkChangeReceiver()
         {
             @Override
@@ -85,7 +85,10 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         this.registerReceiver(networkChangeReceiver,
                 intentFilter);
 
-
+        setContentView(R.layout.registration_activity);
+        setView();
+        final DatabaseHandler databaseHandler = new DatabaseHandler(getApplicationContext());
+        databaseHandler.addLanguage("English","0");
     }
 
     private void showLanguage() {
@@ -283,6 +286,9 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                                 userRegisterDetails.setMobileNum(edtMbl.getText().toString());
                                 userRegisterDetails.setUniqueId(login.getUnique_code());
                                 userRegisterDetails.setOtp(login.getVerify_code());
+                                Bundle bundle = new Bundle();
+                                bundle.putString("fromWhere", Constants.status_code1);
+                                intent.putExtras(bundle);
                                 userRegisterDetails.setE_mail(edtE_mail.getText().toString());
                                 DatabaseHandler databaseHandler = new DatabaseHandler(getApplicationContext());
                                 databaseHandler.addUser(edtName.getText().toString(),edtMbl.getText().toString(),"0","","");

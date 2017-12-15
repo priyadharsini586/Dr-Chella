@@ -12,7 +12,7 @@ import java.util.HashMap;
 
 public class GetExcelModel  implements Parcelable {
 
-    String status_message,success,time,name,phone,gender,age;
+    String status_message,success,time,name,phone,gender,age,place;
     String status_code;
     HashMap city;
 
@@ -86,6 +86,14 @@ public class GetExcelModel  implements Parcelable {
 
     public void setCity(HashMap city) {
         this.city = city;
+    }
+
+    public String getPlace() {
+        return place;
+    }
+
+    public void setPlace(String place) {
+        this.place = place;
     }
 
     @Override
