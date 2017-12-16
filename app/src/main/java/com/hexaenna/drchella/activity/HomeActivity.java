@@ -23,6 +23,7 @@ import android.support.v7.widget.Toolbar;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
@@ -200,6 +201,7 @@ public class HomeActivity extends AppCompatActivity implements  LoadImageTask.Li
         userRegisterDetails.setUserName(userDetails[0]);
         txtMobileNumber.setText(userDetails[1]);
         txtName.setText(userDetails[0]);
+        txtName.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_WORDS);
         UtilsClass utilsClass = new UtilsClass();
         Bitmap bitmap = utilsClass.StringToBitMap(userDetails[2]);
         if (bitmap != null) {
@@ -239,7 +241,8 @@ public class HomeActivity extends AppCompatActivity implements  LoadImageTask.Li
                     String message = intent.getStringExtra("message");
                     imgCount = imgCount + 1;
                     Log.e("notification aftercount", String.valueOf(imgCount));
-                    count = String.valueOf(imgCount);
+                    if (intent.getStringExtra("from").equals("tips"))
+                        count = String.valueOf(imgCount);
                     MenuItem itemCart = menuNotification.findItem(R.id.action_cart);
                     LayerDrawable icon = (LayerDrawable) itemCart.getIcon();
                     setBadgeCount(context, icon, count);

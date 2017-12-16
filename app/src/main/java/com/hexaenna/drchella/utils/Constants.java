@@ -27,6 +27,7 @@ public class Constants {
     public static String terms_and_condition = "terms_and_conditions";
     public static String contact = "contact";
     public static String expertise = "expertise";
+    public static String SETTING = "setting";
 
     public static String profile="Profile";
 

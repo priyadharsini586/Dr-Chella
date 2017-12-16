@@ -26,6 +26,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     // Contacts table name
     private static final String TABLE_LANGUAGE = "language";
     private static final String TABLE_USER_DETAILS= "user_details";
+    private static final String TABLE_APP_SETTING= "app_setting";
 
     // Contacts Table Columns names
     private static final String KEY_LANGUAGE = "language";
@@ -36,6 +37,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String USER_ID = "user_id";
     private static final String USER_TYPE = "user_type";
     private static final String USER_PROFILE_PIC= "profile_pic";
+
+    private static final String APP_ID = "app_id";
+    private static final String APP_NOTIFI = "ap_notify";
 
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -53,8 +57,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + USER_NAME + " TEXT ,"
                 + USER_PROFILE_PIC + " TEXT ,"
                 + USER_MBL + " TEXT " + ")";
+        String CREATE_APP_TABLE = "CREATE TABLE " + TABLE_APP_SETTING + "("
+                + APP_ID + " TEXT ,"
+                + APP_NOTIFI + " TEXT " + ")";
         db.execSQL(CREATE_CONTACTS_TABLE);
         db.execSQL(CREATE_USER_TABLE);
+        db.execSQL(CREATE_APP_TABLE);
     }
 
     // Upgrading database
@@ -63,6 +71,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         // Drop older table if existed
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_LANGUAGE);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_USER_DETAILS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_APP_SETTING);
         // Create tables again
         onCreate(db);
     }
@@ -83,7 +92,46 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.insert(TABLE_LANGUAGE, null, values);
         db.close(); // Closing database connection
     }
+    public void addNotify(String notify)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
 
+        ContentValues values = new ContentValues();
+        values.put(APP_NOTIFI, notify);
+        values.put(APP_ID,"0");// Contact Name
+
+        // Inserting Row
+        db.insert(TABLE_APP_SETTING, null, values);
+        db.close();
+    }
+
+
+    public  String getNotify(String id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.query(TABLE_APP_SETTING, new String[] { APP_NOTIFI
+                       }, APP_ID + "=?",
+                new String[] { String.valueOf(id) }, null, null, null, null);
+        if (cursor != null)
+            cursor.moveToFirst();
+
+
+        String notify = cursor.getString(0);
+        // return contact
+        return notify;
+    }
+
+    public int updateNotify(String notify) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(APP_ID, "0");
+        values.put(APP_NOTIFI, notify);
+
+        // updating row
+        return db.update(TABLE_APP_SETTING, values, APP_ID + " = ?",
+                new String[] { String.valueOf("0") });
+    }
     public void addUser(String userNmae,String mbl,String id,String profile_pic,String type) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -199,6 +247,26 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 cursor.close();
                 return false;
             }
+
+
+
+
+    }
+
+    public boolean checkTableForNotify(){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM " +TABLE_APP_SETTING, null);
+        cursor.moveToFirst();
+        int count = cursor.getInt(0);
+        if(count > 0){
+            cursor.close();
+            return true;
+        }else
+        {
+            cursor.close();
+            return false;
+        }
 
 
 

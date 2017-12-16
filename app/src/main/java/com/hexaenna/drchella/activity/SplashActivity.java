@@ -213,7 +213,6 @@ public class SplashActivity extends AppCompatActivity implements  LoadImageTask.
                         // gcm successfully registered
                         // now subscribe to `global` topic to receive app wide notifications
                         FirebaseMessaging.getInstance().subscribeToTopic(Config.TOPIC_GLOBAL);
-
                         displayFirebaseRegId();
 
                     } else if (intent.getAction().equals(Config.PUSH_NOTIFICATION)) {
@@ -221,7 +220,7 @@ public class SplashActivity extends AppCompatActivity implements  LoadImageTask.
 
                         String message = intent.getStringExtra("message");
 
-                        Toast.makeText(getApplicationContext(), "Push notification: " + message, Toast.LENGTH_LONG).show();
+//                        Toast.makeText(getApplicationContext(), "Push notification: " + message, Toast.LENGTH_LONG).show();
 
 
                     }

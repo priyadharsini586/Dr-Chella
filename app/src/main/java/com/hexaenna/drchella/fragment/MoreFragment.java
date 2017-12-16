@@ -129,6 +129,11 @@ public class MoreFragment extends Fragment {
                     intent.putExtra(Constants.fromMore,Constants.contact);
                     startActivity(intent);
                 }
+                else if (textPosition.equals("Settings"))
+                {
+                    intent.putExtra(Constants.fromMore,Constants.SETTING);
+                    startActivity(intent);
+                }
             }
         });
         lstMore.setAdapter(moreAdapter);

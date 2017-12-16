@@ -113,7 +113,7 @@ public class TestimonyAdapter extends BaseAdapter {
             if (chatBubble.getTestimonyPic() != null) {
 //            holder.imgMsg.setImageBitmap(chatBubble.getImageBitmap());
                 holder.imgMsg.setVisibility(View.VISIBLE);
-                imageLoader.DisplayImage(chatBubble.getTestimonyPic(), holder.imgMsg, R.drawable.default_image_testimony);
+                imageLoader.DisplayImage(chatBubble.getTestimonyPic(), holder.imgMsg, R.mipmap.ic_testimony_user_name);
             } else
                 holder.imgMsg.setVisibility(View.GONE);
         }else if (chatBubble.getFrom().equals("me"))

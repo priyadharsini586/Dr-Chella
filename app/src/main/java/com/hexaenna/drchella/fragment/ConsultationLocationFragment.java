@@ -15,6 +15,7 @@ import com.hexaenna.drchella.R;
 import com.hexaenna.drchella.activity.MoreItemsActivity;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 
 public class ConsultationLocationFragment extends Fragment implements MoreItemsActivity.OnBackPressedListener {
@@ -35,11 +36,14 @@ public class ConsultationLocationFragment extends Fragment implements MoreItemsA
         for (int i=0 ; i < getHospitalName().size() ;i++)
         {
             LinearLayout myLayout = (LinearLayout)mainView.findViewById(R.id.ldtLocationView);
+            int[] androidColors = getResources().getIntArray(R.array.androidcolors);
+            int randomAndroidColor = androidColors[new Random().nextInt(androidColors.length)];
             View consulation = getLayoutInflater(null).inflate(R.layout.fragment_consultation_location, myLayout, false);
             txtHospitalName = (TextView) consulation.findViewById(R.id.txtHospitalName);
             txtHospitalAddress = (TextView) consulation.findViewById(R.id.txtHospitalAddress);
             txtHospitalNum = (TextView) consulation.findViewById(R.id.txtHospitalNum);
             txtHospitalName.setText(hospitalName.get(i));
+            txtHospitalName.setTextColor(randomAndroidColor);
             txtHospitalAddress.setText(hospitalAddress.get(i));
             txtHospitalNum.setText(hospitalNum.get(i));
 

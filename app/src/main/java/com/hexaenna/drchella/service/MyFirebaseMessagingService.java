@@ -81,6 +81,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             boolean isBackground = data.getBoolean("is_background");
             String imageUrl = data.getString("image");
             String timestamp = data.getString("timestamp");
+            String from = data.getString("from");
             JSONObject payload = data.getJSONObject("payload");
 
             Log.e(TAG, "title: " + title);
@@ -89,32 +90,39 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             Log.e(TAG, "payload: " + payload.toString());
             Log.e(TAG, "imageUrl: " + imageUrl);
             Log.e(TAG, "timestamp: " + timestamp);
+            Log.e(TAG, "from: " + from);
 
 
             if (!NotificationUtils.isAppIsInBackground(getApplicationContext())) {
                 // app is in foreground, broadcast the push message
                 Intent pushNotification = new Intent(Config.PUSH_NOTIFICATION);
                 pushNotification.putExtra("message", message);
+                pushNotification.putExtra("from",from);
                 LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
 
                 // play notification sound
-                NotificationUtils notificationUtils = new NotificationUtils(getApplicationContext());
-                notificationUtils.playNotificationSound();
+                if (from.equals("tips")) {
+                    NotificationUtils notificationUtils = new NotificationUtils(getApplicationContext());
+                    notificationUtils.playNotificationSound();
+                }
             } else {
                 // app is in background, show the notification in notification tray
                 Intent resultIntent = new Intent(getApplicationContext(), MoreItemsActivity.class);
                 resultIntent.putExtra(Constants.fromMore,Constants.daily_health_tips);
                 resultIntent.putExtra("message", message);
+                resultIntent.putExtra("from",from);
 //                startActivity(intent);
                /* Intent resultIntent = new Intent(getApplicationContext(), SplashActivity.class);
                 resultIntent.putExtra("message", message);*/
 
                 // check for image attachment
-                if (TextUtils.isEmpty(imageUrl)) {
-                    showNotificationMessage(getApplicationContext(), title, message, timestamp, resultIntent);
-                } else {
-                    // image is present, show notification with image
-                    showNotificationMessageWithBigImage(getApplicationContext(), title, message, timestamp, resultIntent, imageUrl);
+                if (from.equals("tips")) {
+                    if (TextUtils.isEmpty(imageUrl)) {
+                        showNotificationMessage(getApplicationContext(), title, message, timestamp, resultIntent);
+                    } else {
+                        // image is present, show notification with image
+                        showNotificationMessageWithBigImage(getApplicationContext(), title, message, timestamp, resultIntent, imageUrl);
+                    }
                 }
             }
         } catch (JSONException e) {

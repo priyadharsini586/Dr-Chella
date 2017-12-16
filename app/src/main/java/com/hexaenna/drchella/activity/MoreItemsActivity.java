@@ -18,6 +18,7 @@ import com.hexaenna.drchella.fragment.ConsultationLocationFragment;
 import com.hexaenna.drchella.fragment.DailyHealthTipsFragment;
 import com.hexaenna.drchella.fragment.PastAppointmentFragment;
 import com.hexaenna.drchella.fragment.ProfileFragment;
+import com.hexaenna.drchella.fragment.SettingFragment;
 import com.hexaenna.drchella.fragment.TestimonyFragment;
 import com.hexaenna.drchella.fragment.UpcomingAppointmentFragment;
 import com.hexaenna.drchella.utils.Constants;
@@ -130,6 +131,16 @@ public class MoreItemsActivity extends AppCompatActivity  {
           FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
           fragmentTransaction.add(R.id.fragment_container,ProfileFragment.newInstance("from",Constants.contact), "PRIVACY_POLICY_FRAGMENT");
           fragmentTransaction.addToBackStack("PRIVACY_POLICY_FRAGMENT");
+          fragmentTransaction.commit();
+      }else if (fromWhereView.equals(Constants.SETTING))
+      {
+          mViewPager.setVisibility(View.GONE);
+          tabLayout.setVisibility(View.GONE);
+          txtTitle.setText("Setting");
+          FragmentManager fragmentManager = getSupportFragmentManager();
+          FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+          fragmentTransaction.add(R.id.fragment_container,new SettingFragment(), "SETTING_FRAGMENT");
+          fragmentTransaction.addToBackStack("SETTING_FRAGMENT");
           fragmentTransaction.commit();
       }
 
