@@ -1,5 +1,7 @@
 package com.hexaenna.drchella.activity;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +11,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.net.ConnectivityManager;
 import android.net.Uri;
@@ -32,6 +35,7 @@ import android.view.View;
 
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -239,10 +243,13 @@ public class HomeActivity extends AppCompatActivity implements  LoadImageTask.Li
                     // new push notification is received
                     Log.e("notification count", String.valueOf(imgCount));
                     String message = intent.getStringExtra("message");
+                    String title = intent.getStringExtra("title");
                     imgCount = imgCount + 1;
                     Log.e("notification aftercount", String.valueOf(imgCount));
                     if (intent.getStringExtra("from").equals("tips"))
                         count = String.valueOf(imgCount);
+                    else
+                        showAlert(HomeActivity.this,title,message);
                     MenuItem itemCart = menuNotification.findItem(R.id.action_cart);
                     LayerDrawable icon = (LayerDrawable) itemCart.getIcon();
                     setBadgeCount(context, icon, count);
@@ -252,6 +259,7 @@ public class HomeActivity extends AppCompatActivity implements  LoadImageTask.Li
                 }
             }
         };
+
 
     }
 
@@ -451,6 +459,35 @@ public class HomeActivity extends AppCompatActivity implements  LoadImageTask.Li
         }
     }
 
+    public void checkAlert()
+    {
+        if (isConnection.equals(Constants.NETWORK_CONNECTED)) {
+
+            apiInterface = ApiClient.getClient().create(ApiInterface.class);
+
+            Call<TimeAndDateResponse> call = apiInterface.getNotification();
+            call.enqueue(new Callback<TimeAndDateResponse>() {
+                @Override
+                public void onResponse(Call<TimeAndDateResponse> call, Response<TimeAndDateResponse> response) {
+                    if (response.isSuccessful()) {
+                        TimeAndDateResponse timeAndDateResponse = response.body();
+                        if (timeAndDateResponse.getStatus_code().equals(Constants.status_code1))
+                        {
+                            showAlert(HomeActivity.this,timeAndDateResponse.getTitle(),timeAndDateResponse.getNotification());
+                        }
+
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<TimeAndDateResponse> call, Throwable t) {
+                    Log.e("failure", String.valueOf(t));
+                }
+            });
+
+        }
+    }
     private void getNetworkState() {
 
         if (isConnection != null) {
@@ -477,7 +514,7 @@ public class HomeActivity extends AppCompatActivity implements  LoadImageTask.Li
                 if (snackbar != null) {
                     snackbar.dismiss();
                 }
-
+                checkAlert();
             }
         }
     }
@@ -508,7 +545,9 @@ public class HomeActivity extends AppCompatActivity implements  LoadImageTask.Li
         {
             Log.e("reg","Unregister receiver");
             this.unregisterReceiver(networkChangeReceiver);
+            LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
             networkChangeReceiver = null;
+            mRegistrationBroadcastReceiver=null;
         }
     }
 
@@ -529,4 +568,30 @@ public class HomeActivity extends AppCompatActivity implements  LoadImageTask.Li
     }
 
 
+
+    public void showAlert(Context context, String title, String msg)
+    {
+        final Dialog dialog = new Dialog(context);
+        dialog.setTitle(title);
+        dialog.setContentView(R.layout.show_emergency_dialog);
+        dialog.setCancelable(false);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(context.getResources().getColor(R.color.white)));
+        final Button btnOk = (Button) dialog.findViewById(R.id.btnOk);
+        btnOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        TextView txtTitle = (TextView)  dialog.findViewById(R.id.txtTitle);
+        txtTitle.setText(title);
+        TextView txtMessage = (TextView)  dialog.findViewById(R.id.txtMessage);
+        txtMessage.setText(msg);
+        dialog.show();
+
+
+
+
+
+    }
 }

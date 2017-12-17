@@ -1,9 +1,13 @@
 package com.hexaenna.drchella.activity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.hexaenna.drchella.R;
 import com.hexaenna.drchella.adapter.SectionsPagerAdapter;
 import com.hexaenna.drchella.fragment.AllAppointmentFragment;
@@ -21,7 +26,9 @@ import com.hexaenna.drchella.fragment.ProfileFragment;
 import com.hexaenna.drchella.fragment.SettingFragment;
 import com.hexaenna.drchella.fragment.TestimonyFragment;
 import com.hexaenna.drchella.fragment.UpcomingAppointmentFragment;
+import com.hexaenna.drchella.utils.Config;
 import com.hexaenna.drchella.utils.Constants;
+import com.hexaenna.drchella.utils.NotificationUtils;
 
 
 public class MoreItemsActivity extends AppCompatActivity  {
@@ -32,6 +39,7 @@ public class MoreItemsActivity extends AppCompatActivity  {
     String fromWhereView = null;
     TextView txtTitle;
     protected  OnBackPressedListener onBackPressedListener ;
+    BroadcastReceiver mRegistrationBroadcastReceiver;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +65,34 @@ public class MoreItemsActivity extends AppCompatActivity  {
         tabLayout.addOnTabSelectedListener(OnTabSelectedListener);
 
 
+        mRegistrationBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+
+                // checking for type intent filter
+                if (intent.getAction().equals(Config.REGISTRATION_COMPLETE)) {
+                    // gcm successfully registered
+                    // now subscribe to `global` topic to receive app wide notifications
+                    FirebaseMessaging.getInstance().subscribeToTopic(Config.TOPIC_GLOBAL);
+
+
+
+                } else if (intent.getAction().equals(Config.PUSH_NOTIFICATION)) {
+                    // new push notification is received
+
+                    String message = intent.getStringExtra("message");
+                    String title = intent.getStringExtra("title");
+
+                    if (!intent.getStringExtra("from").equals("tips")) {
+                        HomeActivity homeActivity = new HomeActivity();
+                        homeActivity.showAlert(MoreItemsActivity.this, title, message);
+                    }
+
+
+
+                }
+            }
+        };
         showView();
     }
 
@@ -196,5 +232,29 @@ public class MoreItemsActivity extends AppCompatActivity  {
         super.onActivityResult(requestCode, resultCode, data);
         TestimonyFragment testimonyFragment = new TestimonyFragment();
         testimonyFragment.onActivityResult(requestCode,resultCode,data);
+    }
+
+
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
+        mRegistrationBroadcastReceiver=null;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+                new IntentFilter(Config.REGISTRATION_COMPLETE));
+
+        // register new push message receiver
+        // by doing this, the activity will be notified each time a new message arrives
+        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+                new IntentFilter(Config.PUSH_NOTIFICATION));
+
+        // clear the notification area when the app is opened
+        NotificationUtils.clearNotifications(getApplicationContext());
     }
 }

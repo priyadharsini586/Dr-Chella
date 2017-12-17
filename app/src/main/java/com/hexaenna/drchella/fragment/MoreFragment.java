@@ -190,6 +190,12 @@ public class MoreFragment extends Fragment {
     }
 
 
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        getActivity().unregisterReceiver(networkChangeReceiver);
+    }
 
     private void changeLanguage() {
 

@@ -12,7 +12,7 @@ import java.util.List;
  */
 
 public class TimeAndDateResponse {
-   private   String status_code,status_message,success,app_sno = null,city_id,date,time,uniqid,photo,profile_pic,mobile,name,lang;
+   private   String status_code,status_message,success,app_sno = null,city_id,date,time,uniqid,photo,profile_pic,mobile,name,lang,title,notification;
     public List<appoinments> appoinments = new ArrayList<>();
     @SerializedName("Blocked_Array")
     @Expose
@@ -147,6 +147,22 @@ public class TimeAndDateResponse {
 
     public void setLang(String lang) {
         this.lang = lang;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getNotification() {
+        return notification;
+    }
+
+    public void setNotification(String notification) {
+        this.notification = notification;
     }
 
     public class appoinments

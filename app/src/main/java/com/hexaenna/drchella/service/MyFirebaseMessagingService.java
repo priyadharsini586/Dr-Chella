@@ -1,15 +1,24 @@
 package com.hexaenna.drchella.service;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.hexaenna.drchella.R;
 import com.hexaenna.drchella.activity.MoreItemsActivity;
 import com.hexaenna.drchella.activity.SplashActivity;
+import com.hexaenna.drchella.fragment.HomeFragment;
 import com.hexaenna.drchella.utils.Config;
 import com.hexaenna.drchella.utils.Constants;
 import com.hexaenna.drchella.utils.NotificationUtils;
@@ -76,8 +85,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         try {
             JSONObject data = json.getJSONObject("data");
 
-            String title = data.getString("title");
-            String message = data.getString("message");
+            final String title = data.getString("title");
+            final String message = data.getString("message");
             boolean isBackground = data.getBoolean("is_background");
             String imageUrl = data.getString("image");
             String timestamp = data.getString("timestamp");
@@ -97,6 +106,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 // app is in foreground, broadcast the push message
                 Intent pushNotification = new Intent(Config.PUSH_NOTIFICATION);
                 pushNotification.putExtra("message", message);
+                pushNotification.putExtra("title", title);
                 pushNotification.putExtra("from",from);
                 LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
 
@@ -110,6 +120,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 Intent resultIntent = new Intent(getApplicationContext(), MoreItemsActivity.class);
                 resultIntent.putExtra(Constants.fromMore,Constants.daily_health_tips);
                 resultIntent.putExtra("message", message);
+                resultIntent.putExtra("title", title);
                 resultIntent.putExtra("from",from);
 //                startActivity(intent);
                /* Intent resultIntent = new Intent(getApplicationContext(), SplashActivity.class);
@@ -149,4 +160,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         notificationUtils.showNotificationMessage(title, message, timeStamp, intent, imageUrl);
     }
+
+
+
 }

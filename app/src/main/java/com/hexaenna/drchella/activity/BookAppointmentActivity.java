@@ -1,6 +1,10 @@
 package com.hexaenna.drchella.activity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.icu.util.Calendar;
 import android.os.Build;
@@ -9,6 +13,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,11 +23,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.applandeo.materialcalendarview.CalendarView;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.hexaenna.drchella.Db.DatabaseHandler;
 import com.hexaenna.drchella.R;
 import com.hexaenna.drchella.fragment.ConformationFragment;
 import com.hexaenna.drchella.fragment.DateAndTimeFragment;
 import com.hexaenna.drchella.fragment.RegisterDetailsFragment;
+import com.hexaenna.drchella.utils.Config;
+import com.hexaenna.drchella.utils.NotificationUtils;
 
 public class BookAppointmentActivity extends AppCompatActivity {
 
@@ -30,6 +38,7 @@ public class BookAppointmentActivity extends AppCompatActivity {
    public static LinearLayout ldtBookingDetails,ldtDateTime,ldtConformation;
     public static TextView txtDateTime,txtBooking,txtConformation,txtToolbarText;
     protected  OnBackPressedListener onBackPressedListener ;
+    BroadcastReceiver mRegistrationBroadcastReceiver;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +69,34 @@ public class BookAppointmentActivity extends AppCompatActivity {
         fragmentTransaction.addToBackStack("DATE_AND_TIME_FRAGMENT");
         fragmentTransaction.commit();
 
+        mRegistrationBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
 
+                // checking for type intent filter
+                if (intent.getAction().equals(Config.REGISTRATION_COMPLETE)) {
+                    // gcm successfully registered
+                    // now subscribe to `global` topic to receive app wide notifications
+                    FirebaseMessaging.getInstance().subscribeToTopic(Config.TOPIC_GLOBAL);
+
+
+
+                } else if (intent.getAction().equals(Config.PUSH_NOTIFICATION)) {
+                    // new push notification is received
+
+                    String message = intent.getStringExtra("message");
+                    String title = intent.getStringExtra("title");
+
+                    if (!intent.getStringExtra("from").equals("tips")) {
+                        HomeActivity homeActivity = new HomeActivity();
+                        homeActivity.showAlert(BookAppointmentActivity.this, title, message);
+                    }
+
+
+
+                }
+            }
+        };
 
     }
 
@@ -97,4 +133,25 @@ public class BookAppointmentActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
+        mRegistrationBroadcastReceiver=null;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+                new IntentFilter(Config.REGISTRATION_COMPLETE));
+
+        // register new push message receiver
+        // by doing this, the activity will be notified each time a new message arrives
+        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+                new IntentFilter(Config.PUSH_NOTIFICATION));
+
+        // clear the notification area when the app is opened
+        NotificationUtils.clearNotifications(getApplicationContext());
+    }
 }

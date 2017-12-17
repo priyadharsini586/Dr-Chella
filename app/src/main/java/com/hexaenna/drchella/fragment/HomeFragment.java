@@ -1,11 +1,16 @@
 package com.hexaenna.drchella.fragment;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.ActivityNotFoundException;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -14,6 +19,8 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.FileProvider;
+import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -30,6 +37,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidadvance.topsnackbar.TSnackbar;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
 import com.google.gson.reflect.TypeToken;
@@ -45,6 +53,7 @@ import com.hexaenna.drchella.adapter.GetExcelAdapter;
 import com.hexaenna.drchella.api.ApiClient;
 import com.hexaenna.drchella.api.ApiInterface;
 import com.hexaenna.drchella.custom_view.SimpleDividerItemDecoration;
+import com.hexaenna.drchella.utils.Config;
 import com.hexaenna.drchella.utils.Constants;
 import com.hexaenna.drchella.service.NetworkChangeReceiver;
 
@@ -98,6 +107,8 @@ public class HomeFragment extends Fragment {
     String[] userDetails;
     LinearLayout ldtListExcel;
     TextView txtDownload;
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -188,6 +199,10 @@ public class HomeFragment extends Fragment {
         progressHome =(ProgressBar) rootView.findViewById(R.id.progressHome);
         progressHome.setVisibility(View.GONE);
         ldtAddAppointment = (LinearLayout) rootView.findViewById(R.id.ldtAddAppointment);
+
+
+
+
         return rootView;
     }
 
@@ -422,6 +437,7 @@ public class HomeFragment extends Fragment {
 
                 }
                 if (userDetails[3].equals("user")) {
+
                     registerDetails();
                 }
                 else if (userDetails[3].equals("admin")) {
@@ -460,12 +476,16 @@ public class HomeFragment extends Fragment {
         if (isConnection != null) {
             sendUrl = "b";
             if (userDetails[3].equals("user")) {
+//                checkAlert();
                 registerDetails();
             }
             else if (userDetails[3].equals("admin")) {
                 getExcel();
             }
+
         }
+
+
     }
 
 
@@ -794,6 +814,36 @@ public class HomeFragment extends Fragment {
                 });
 
         }
+    }
+
+
+
+
+    public void showAlert(Context context, String title, String msg)
+    {
+        final Dialog dialog = new Dialog(context);
+        dialog.setTitle(title);
+        dialog.setContentView(R.layout.show_emergency_dialog);
+        dialog.setCancelable(false);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(context.getResources().getColor(R.color.white)));
+        final Button btnOk = (Button) dialog.findViewById(R.id.btnOk);
+        btnOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        TextView txtTitle = (TextView)  dialog.findViewById(R.id.txtTitle);
+        txtTitle.setText(title);
+        TextView txtMessage = (TextView)  dialog.findViewById(R.id.txtMessage);
+        txtMessage.setText(msg);
+
+        dialog.show();
+
+
+
+
+
     }
 }
 

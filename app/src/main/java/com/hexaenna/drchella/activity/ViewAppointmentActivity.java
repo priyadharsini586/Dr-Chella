@@ -1,12 +1,16 @@
 package com.hexaenna.drchella.activity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -16,6 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.hexaenna.drchella.Model.AppointmentDetails;
 import com.hexaenna.drchella.Model.BookingDetails;
 import com.hexaenna.drchella.Model.TimeAndDateResponse;
@@ -23,7 +28,9 @@ import com.hexaenna.drchella.Model.UserRegisterDetails;
 import com.hexaenna.drchella.R;
 import com.hexaenna.drchella.api.ApiClient;
 import com.hexaenna.drchella.api.ApiInterface;
+import com.hexaenna.drchella.utils.Config;
 import com.hexaenna.drchella.utils.Constants;
+import com.hexaenna.drchella.utils.NotificationUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -48,6 +55,7 @@ public class ViewAppointmentActivity extends AppCompatActivity {
     ImageView btnBack,maps;
     String cityAddress;
     LinearLayout ldtScreenShot;
+    BroadcastReceiver mRegistrationBroadcastReceiver;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,7 +99,34 @@ public class ViewAppointmentActivity extends AppCompatActivity {
             }
         });
         getPatientDetails();
+        mRegistrationBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
 
+                // checking for type intent filter
+                if (intent.getAction().equals(Config.REGISTRATION_COMPLETE)) {
+                    // gcm successfully registered
+                    // now subscribe to `global` topic to receive app wide notifications
+                    FirebaseMessaging.getInstance().subscribeToTopic(Config.TOPIC_GLOBAL);
+
+
+
+                } else if (intent.getAction().equals(Config.PUSH_NOTIFICATION)) {
+                    // new push notification is received
+
+                    String message = intent.getStringExtra("message");
+                    String title = intent.getStringExtra("title");
+
+                    if (!intent.getStringExtra("from").equals("tips")) {
+                        HomeActivity homeActivity = new HomeActivity();
+                        homeActivity.showAlert(ViewAppointmentActivity.this, title, message);
+                    }
+
+
+
+                }
+            }
+        };
     }
 
     private void getPatientDetails() {
@@ -223,5 +258,27 @@ public class ViewAppointmentActivity extends AppCompatActivity {
         share.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(imageFile));
         startActivity(Intent.createChooser(share, "Share Image"));
 
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
+        mRegistrationBroadcastReceiver=null;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+                new IntentFilter(Config.REGISTRATION_COMPLETE));
+
+        // register new push message receiver
+        // by doing this, the activity will be notified each time a new message arrives
+        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+                new IntentFilter(Config.PUSH_NOTIFICATION));
+
+        // clear the notification area when the app is opened
+        NotificationUtils.clearNotifications(getApplicationContext());
     }
 }

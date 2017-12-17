@@ -104,6 +104,9 @@ public interface ApiInterface {
     @POST("get_video.php")
     Call<VideoDetails> getVideo();
 
+    @POST("get_notification.php")
+    Call<TimeAndDateResponse> getNotification();
+
     @FormUrlEncoded
     @POST("appointmnt_report.php")
     Call<GetExcelModel>getExcelDetails(@Field("x") JSONObject email);
@@ -111,5 +114,9 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("check_appointment.php")
     Call<TimeAndDateResponse>getReport(@Field("x") JSONObject email);
+
+    @FormUrlEncoded
+    @POST("update_phone.php")
+    Call<RegisterRequestAndResponse>update_PhoneNumber(@Field("x") JSONObject email);
 }
 
