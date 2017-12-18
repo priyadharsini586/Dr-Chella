@@ -64,6 +64,7 @@
     <string name="english_address">Short address:</string>
     <string name="english_address1">Short address</string>
     <string name="tamil_address">முகவரி:</string>
+    <string name="mobile_number">Mobile Number</string>
 
     <string name="mr">Mr</string>
     <string name="mrs">Mrs</string>
@@ -183,4 +184,6 @@
     <string name="map_kolidam_address">3/126,Main Road,Opp. Police Station,Kollidam,Nagai Dt</string>
 
     <string name="no_video">To be uploaded..</string>
+
+    <string name="text_mobile_number">Send otp to your registered Mobile E-mail and updated mobile number</string>
 </resources>

@@ -233,6 +233,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 new String[] { String.valueOf(id) });
     }
 
+    public int updateMobileNumber(String num) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(USER_ID, "0");
+        values.put(USER_MBL, num);
+
+        // updating row
+        return db.update(TABLE_USER_DETAILS, values, USER_ID + " = ?",
+                new String[] { String.valueOf("0") });
+    }
+
     public boolean checkForTables(){
 
         SQLiteDatabase db = this.getWritableDatabase();

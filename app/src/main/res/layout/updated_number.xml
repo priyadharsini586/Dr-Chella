@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_width="350dp"
+    android:layout_height="300dp"
+    android:orientation="vertical"
+    android:padding="20dp">
 
     <TextView
         android:layout_width="match_parent"
@@ -14,6 +16,13 @@
         android:textSize="@dimen/edit_text_size"
         android:textStyle="bold"
         android:padding="10dp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="visible"
+        android:id="@+id/ldtchaneOtp"
+        android:gravity="center">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -28,20 +37,34 @@
             android:gravity="center"
             android:textColor="@color/black"
             android:textSize="@dimen/edit_text_size"/>
-        <EditText
+
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/txtInputName"
+            android:layout_gravity="center"
+            android:gravity="center"
             android:layout_weight="1"
-            android:id="@+id/edtUpdatedNumber"
-            android:inputType="number"
-            android:textColor="@color/black"/>
+            app:errorTextAppearance="@style/error_appearance">
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:hint="@string/mobile_number"
+                style="@style/App_EditTextStyle"
+                android:background="@android:color/transparent"
+                android:layout_gravity="center"
+                android:id="@+id/edtUpdatedNumber"
+                android:maxLength="10"/>
+        </android.support.design.widget.TextInputLayout>
+
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
-        android:padding="10dp">
+        android:padding="15dp">
     <Button
         android:layout_width="50dp"
         android:layout_height="40dp"
@@ -50,4 +73,113 @@
         android:textColor="@color/white"
         android:id="@+id/btnOk"/>
     </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/ldtchaneNumber"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:visibility="gone"
+        android:paddingTop="10dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="@string/text_mobile_number"
+            android:gravity="center"/>
+
+
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:gravity="center"
+          android:orientation="vertical">
+          <LinearLayout
+              android:layout_width="wrap_content"
+              android:layout_height="match_parent"
+              android:padding="5dp">
+          <LinearLayout
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:padding="10dp"
+              android:background="@drawable/e_mail_edit_text_bg"
+              >
+              <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="Dr - "
+                  android:textSize="17sp"
+                  android:textColor="@android:color/black"
+                  android:layout_weight="0.2"/>
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="numberPassword"
+                android:hint="E-mail OTP"
+                android:background="@android:color/transparent"
+                android:layout_gravity="center"
+                android:id="@+id/edtE_mail_otp"
+                android:maxLength="4"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:textSize="17sp"/>
+          </LinearLayout>
+          </LinearLayout>
+          <LinearLayout
+              android:layout_width="wrap_content"
+              android:layout_height="match_parent"
+              android:padding="5dp">
+          <LinearLayout
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:padding="10dp"
+              android:background="@drawable/e_mail_edit_text_bg">
+              <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="Dr - "
+                  android:textSize="17sp"
+                  android:textColor="@android:color/black"
+                  android:layout_weight="0.2"/>
+          <EditText
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:inputType="numberPassword"
+              android:hint="Mobile OTP"
+              android:background="@android:color/transparent"
+              android:layout_gravity="center"
+              android:id="@+id/edtEMobileotp"
+              android:maxLength="4"
+              android:gravity="center"
+              android:textColor="@color/black"
+              android:textSize="17sp"/>
+          </LinearLayout>
+          </LinearLayout>
+
 </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="10dp">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:layout_gravity="center"
+            android:background="@color/book_title_orange"
+            android:text="@string/ok_button"
+            android:textColor="@color/white"
+            android:id="@+id/btnSend"/>
+        </LinearLayout>
+    </LinearLayout>
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:id="@+id/progress"/>
+</RelativeLayout>

@@ -118,5 +118,9 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("update_phone.php")
     Call<RegisterRequestAndResponse>update_PhoneNumber(@Field("x") JSONObject email);
+
+    @FormUrlEncoded
+    @POST("verify_update_phone.php")
+    Call<RegisterRequestAndResponse>submitOTP(@Field("x") JSONObject email);
 }
 

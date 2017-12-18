@@ -177,7 +177,6 @@ public class SplashActivity extends AppCompatActivity implements  LoadImageTask.
 //        permissions.add(Manifest.permission.CAMERA);
         permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
         permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION);
-        permissions.add(Manifest.permission.SYSTEM_ALERT_WINDOW);
         permissionsToRequest = findUnAskedPermissions(permissions);
 
         if (Build.VERSION.SDK_INT >= 23) {

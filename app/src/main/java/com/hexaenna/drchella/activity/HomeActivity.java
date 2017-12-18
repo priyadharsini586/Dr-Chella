@@ -532,6 +532,12 @@ public class HomeActivity extends AppCompatActivity implements  LoadImageTask.Li
 
         // clear the notification area when the app is opened
         NotificationUtils.clearNotifications(getApplicationContext());
+        if (databaseHandler != null)
+        {
+            String[] userDetails =  databaseHandler.getUserName("0");
+            if (userDetails[1] != null)
+                txtMobileNumber.setText(userDetails[1]);
+        }
     }
 
     @Override
