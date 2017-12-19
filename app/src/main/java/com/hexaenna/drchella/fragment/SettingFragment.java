@@ -10,8 +10,11 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,6 +66,7 @@ public class SettingFragment extends Fragment  implements MoreItemsActivity.OnBa
     String message = "";
     LinearLayout ldtchaneNumber,ldtchaneOtp;
     ProgressBar progress;
+    TextInputLayout txtInputMobileNumber;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -163,11 +167,23 @@ public class SettingFragment extends Fragment  implements MoreItemsActivity.OnBa
         progress = (ProgressBar) dialog.findViewById(R.id.progress);
         progress.setVisibility(View.GONE);
         btnSend = (Button) dialog.findViewById(R.id.btnSend);
+        txtInputMobileNumber = (TextInputLayout) dialog.findViewById(R.id.txtInputMobileNumber);
+        Button btnCancel = (Button) dialog.findViewById(R.id.btnCancel);
+
+        isMobileValidate();
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+            }
+        });
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progress.setVisibility(View.VISIBLE);
-                submitOTP(dialog);
+                if (!edtUpdatedNumber.getText().toString().equals("")) {
+                    progress.setVisibility(View.VISIBLE);
+                    submitOTP(dialog);
+                }
 
             }
         });
@@ -179,6 +195,49 @@ public class SettingFragment extends Fragment  implements MoreItemsActivity.OnBa
             }
         });
         dialog.show();
+    }
+
+
+    public boolean isMobileValidate()
+    {
+        final boolean[] isMblNum = {false};
+        edtUpdatedNumber.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                int length = s.length();
+
+                if (s.length() < 10)
+                {
+                    txtInputMobileNumber.setErrorEnabled(true);
+                    txtInputMobileNumber.setError("Enter your correct mobile number");
+                    isMblNum[0] = false;
+
+                }else
+                {
+                    isMblNum[0] = true;
+                    txtInputMobileNumber.setErrorEnabled(false);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) { }
+        });
+
+        if(edtUpdatedNumber.getText().toString().isEmpty())
+        {
+
+
+            isMblNum[0] = false;
+
+        }else
+        {
+            isMblNum[0] = true;
+
+        }
+        return isMblNum[0];
     }
 
     private void getDataBaseConnect() {

@@ -78,13 +78,17 @@
         </android.support.constraint.ConstraintLayout>
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/ldtSendMenu"
+        android:layout_alignParentBottom="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:weightSum="3"
-        android:layout_alignParentBottom="true"
-        android:id="@+id/ldtSendMenu"
         android:background="@color/white">
 
         <ImageView
@@ -107,22 +111,30 @@
             android:layout_weight="1.2"
             android:text="Send"
             android:id="@+id/sendTestimony"/>
+
     </LinearLayout>
 
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ldtSendMenu"
+        android:background="@android:color/white"
+        >
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/ldtSendMenu"
         android:padding="10dp"
         android:id="@+id/rldSendImage"
-        android:visibility="gone">
+        >
         <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
             android:src="@drawable/chella"
             android:layout_margin="20dp"
-            android:id="@+id/imgSendImg"/>
+            android:id="@+id/imgSendImg"
+            android:layout_centerInParent="true"/>
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -131,4 +143,11 @@
             android:layout_alignParentRight="true"
             android:id="@+id/imgCloseImg"/>
     </RelativeLayout>
+    </LinearLayout>
+    </LinearLayout>
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:id="@+id/progress"/>
 </RelativeLayout>

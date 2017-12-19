@@ -2,7 +2,8 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -14,28 +15,40 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:gravity="center">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Mr.Priya "
-                android:padding="10dp"
-                android:textSize="@dimen/edit_text_size"
-                android:textColor="@android:color/darker_gray"
-                android:id="@+id/txtName"/>
+            android:gravity="center"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp">
+
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="10dp"
-                android:background="@color/colorPrimary">
+                android:background="@drawable/appointment_bg"
+               >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Mr.Priya "
+                    android:padding="10dp"
+                    android:textSize="@dimen/edit_text_size"
+                    android:textColor="@android:color/white"
+                    android:id="@+id/txtName"
+                    android:gravity="center"
+                    android:textStyle="bold"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="#ededed" />
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Your Appointment on "
                     android:textColor="@android:color/white"
                     android:textStyle="bold"
-                    android:id="@+id/txtBookAppointment"/>
+                    android:id="@+id/txtBookAppointment"
+                    android:gravity="center"
+                    android:paddingTop="3dp"/>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -45,7 +58,8 @@
                     android:textStyle="bold"
                     android:id="@+id/txtTime"
                     android:gravity="center"
-                    android:paddingTop="5dp"/>
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"/>
             </LinearLayout>
             <TextView
                 android:layout_width="wrap_content"
@@ -69,9 +83,5 @@
 
 
     </LinearLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#ededed"
-        android:elevation="1dp"/>
+
 </LinearLayout>

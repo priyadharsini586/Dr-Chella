@@ -72,11 +72,12 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             public void onReceive(Context context, Intent intent) {
                 super.onReceive(context, intent);
 
-
-                Bundle b = intent.getExtras();
-                isConnection = b.getString(Constants.MESSAGE);
-                Log.e("newmesage", "" + isConnection);
-                getNetworkState();
+                if (isConnection == null) {
+                    Bundle b = intent.getExtras();
+                    isConnection = b.getString(Constants.MESSAGE);
+                    Log.e("newmesage", "" + isConnection);
+                    getNetworkState();
+                }
             }
         };
         IntentFilter intentFilter = new IntentFilter();
@@ -291,7 +292,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                                 intent.putExtras(bundle);
                                 userRegisterDetails.setE_mail(edtE_mail.getText().toString());
                                 DatabaseHandler databaseHandler = new DatabaseHandler(getApplicationContext());
-                                databaseHandler.addUser(edtName.getText().toString(),edtMbl.getText().toString(),"0","","");
+                                databaseHandler.addUser(edtName.getText().toString(),edtMbl.getText().toString(),"0","","user");
                                 startActivity(intent);
                                 RegistrationActivity.this.finish();
                             }else

@@ -309,6 +309,15 @@ public class ConformationFragment extends Fragment implements View.OnClickListen
                         if (timeAndDateResponse.getStatus_code() != null) {
                             if (timeAndDateResponse.getStatus_code().equals(Constants.status_code1)) {
                                 Toast.makeText(getActivity(), timeAndDateResponse.getStatus_message(), Toast.LENGTH_SHORT).show();
+                                BookingDetails bookingDetails = BookingDetails.getInstance();
+                                bookingDetails.setCity(null);
+                                bookingDetails.setSelectedCity(null);
+                                bookingDetails.setSelectedDate(null);
+                                bookingDetails.setBookedList(null);
+                                bookingDetails.setBlockedList(null);
+                                bookingDetails.setSelectedPosition(-1);
+                                bookingDetails.setAppSeno(null);
+                                RegisterDetailsFragment.countDownTimer.cancel();
                                 getActivity().finish();
                             } else if (timeAndDateResponse.getStatus_code().equals(Constants.status_code_1)) {
                                 if (timeAndDateResponse.getStatus_message() != null)
@@ -388,6 +397,14 @@ public class ConformationFragment extends Fragment implements View.OnClickListen
                                 Toast.makeText(getActivity(), timeAndDateResponse.getStatus_message(), Toast.LENGTH_SHORT).show();
 //                                sendSms(timeAndDateResponse.getUniqid());
                                 RegisterDetailsFragment.countDownTimer.cancel();
+                                BookingDetails bookingDetails = BookingDetails.getInstance();
+                                bookingDetails.setCity(null);
+                                bookingDetails.setSelectedCity(null);
+                                 bookingDetails.setSelectedDate(null);
+                                 bookingDetails.setBookedList(null);
+                                 bookingDetails.setBlockedList(null);
+                                 bookingDetails.setSelectedPosition(-1);
+                                bookingDetails.setAppSeno(null);
                                 getActivity().finish();
                             } else if (timeAndDateResponse.getStatus_code().equals(Constants.status_code_1)) {
                                 if (timeAndDateResponse.getStatus_message() != null)

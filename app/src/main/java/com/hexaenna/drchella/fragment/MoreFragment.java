@@ -103,7 +103,7 @@ public class MoreFragment extends Fragment {
                     shareData();
                 }else if (textPosition.equals("Change Language"))
                 {
-                    Toast.makeText(getActivity(),"Coming Soon",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(),"Will update you shortly..",Toast.LENGTH_LONG).show();
 //                    changeLanguage();
                 }else if (textPosition.equals("Daily Health Tips"))
                 {

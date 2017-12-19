@@ -21,6 +21,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.FileProvider;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -42,6 +44,7 @@ import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
 import com.google.gson.reflect.TypeToken;
 import com.hexaenna.drchella.Db.DatabaseHandler;
+import com.hexaenna.drchella.Model.AllAppointmentDetails;
 import com.hexaenna.drchella.Model.AppointmentDetails;
 import com.hexaenna.drchella.Model.GetExcelModel;
 import com.hexaenna.drchella.Model.TimeAndDateResponse;
@@ -50,8 +53,10 @@ import com.hexaenna.drchella.R;
 import com.hexaenna.drchella.activity.BookAppointmentActivity;
 import com.hexaenna.drchella.activity.ViewAppointmentActivity;
 import com.hexaenna.drchella.adapter.GetExcelAdapter;
+import com.hexaenna.drchella.adapter.MyItemRecyclerViewAdapter;
 import com.hexaenna.drchella.api.ApiClient;
 import com.hexaenna.drchella.api.ApiInterface;
+import com.hexaenna.drchella.custom_view.RecyclerTouchListener;
 import com.hexaenna.drchella.custom_view.SimpleDividerItemDecoration;
 import com.hexaenna.drchella.utils.Config;
 import com.hexaenna.drchella.utils.Constants;
@@ -92,13 +97,13 @@ public class HomeFragment extends Fragment {
 
     View rootView;
     String isConnection = null;
-    LinearLayout ldtNoAppoint,ldtAppointment,ldtAddAppointment;
+    LinearLayout ldtNoAppoint,ldtAppointment,ldtAddAppointment,ldtRecycle,ldtMainView;
     TSnackbar snackbar;
     RelativeLayout rldMainLayout;
     View snackbarView;
     NetworkChangeReceiver networkChangeReceiver;
     ApiInterface apiInterface;
-    TextView txtBookAppointment,txtRemaingDays,txtHospitalName,txtAddress,txtTime,txtName;
+    TextView txtBookAppointment,txtRemaingDays,txtHospitalName,txtAddress,txtTime,txtName,txtPhone;
     Button btnView;
     ImageView imgScedule;
     ProgressBar progressHome;
@@ -107,7 +112,10 @@ public class HomeFragment extends Fragment {
     String[] userDetails;
     LinearLayout ldtListExcel;
     TextView txtDownload;
-
+    private RecyclerView recyclerView;
+    private MyItemRecyclerViewAdapter mAdapter;
+    private List<AllAppointmentDetails.Appoinmentslist> appointmentList = new ArrayList<>();
+    TextView txtUpcoming;
 
 
     @Override
@@ -141,13 +149,43 @@ public class HomeFragment extends Fragment {
 //        txtRemaingDays = (TextView) rootView.findViewById(R.id.txtRemaingDays);
         txtHospitalName = (TextView) rootView.findViewById(R.id.txtHospitalName);
         txtAddress = (TextView) rootView.findViewById(R.id.txtAddress);
-//        txtTime = (TextView) rootView.findViewById(R.id.txtTime);
+        txtPhone = (TextView) rootView.findViewById(R.id.txtPhone);
 
         ldtNoAppoint = (LinearLayout) rootView.findViewById(R.id.ldtNoAppoint);
         ldtNoAppoint.setVisibility(View.GONE);
         ldtAppointment = (LinearLayout) rootView.findViewById(R.id.ldtAppointment);
         ldtAppointment.setVisibility(View.GONE);
 
+        txtUpcoming = (TextView) rootView.findViewById(R.id.txtUpcoming);
+        txtUpcoming.setVisibility(View.GONE);
+
+        ldtRecycle = (LinearLayout) rootView.findViewById(R.id.ldtRecycle);
+        ldtRecycle.setVisibility(View.GONE);
+
+        recyclerView = (RecyclerView) rootView.findViewById(R.id.list);
+
+        ldtMainView = (LinearLayout) rootView.findViewById(R.id.ldtMainView);
+        recyclerView.setHasFixedSize(true);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), recyclerView, new RecyclerTouchListener.ClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+
+               /* Intent intent = new Intent(getActivity(), ViewAppointmentActivity.class);
+                startActivity(intent);*/
+
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+                Log.e("position",""+position);
+
+            }
+        }));
 
         txtDownload = (TextView) rootView.findViewById(R.id.txtDownload);
         txtDownload.setOnClickListener(new View.OnClickListener() {
@@ -243,8 +281,8 @@ public class HomeFragment extends Fragment {
                                     appointmentLit = timeAndDateResponse.getAppoinments();
                                     ldtAddAppointment.removeAllViews();
                                     if (appointmentLit.size() != 0) {
-                                        for (int i = 0; i < appointmentLit.size(); i++) {
-                                            TimeAndDateResponse.appoinments appoinments = appointmentLit.get(i);
+//                                        for (int i = 0; i < appointmentLit.size(); i++) {
+                                            TimeAndDateResponse.appoinments appoinments = appointmentLit.get(0);
                                             Log.e("appointment", appoinments.getDate());
                                             LayoutInflater layoutInflater =(LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                                             View addView = layoutInflater.inflate(R.layout.add_appointment_layout, null);
@@ -306,7 +344,7 @@ public class HomeFragment extends Fragment {
                                                 }
                                             });
                                             ldtAddAppointment.addView(addView);
-                                        }
+//                                        }
                                     }
                                /* if (timeAndDateResponse.getDate() != null) {
                                     try {
@@ -385,10 +423,12 @@ public class HomeFragment extends Fragment {
         {
             txtHospitalName.setText(getActivity().getString(R.string.chennai_hospital));
             txtAddress.setText(getActivity().getString(R.string.chennai_hospital_address));
+            txtPhone.setText(getActivity().getString(R.string.chennai_hospital_Phone));
         }else if (city.equals("2"))
         {
             txtHospitalName.setText(getActivity().getString(R.string.erode_hospital));
             txtAddress.setText(getActivity().getString(R.string.erode_hospital_address));
+            txtPhone.setText(getActivity().getString(R.string.erode_hospital_Phone));
         }else if (city.equals("3"))
         {
             txtHospitalName.setText(getActivity().getString(R.string.coimbatore_hospital));
@@ -397,14 +437,17 @@ public class HomeFragment extends Fragment {
         {
             txtHospitalName.setText(getActivity().getString(R.string.namakkal_hospital));
             txtAddress.setText(getActivity().getString(R.string.namakkal_hospital_address));
+            txtPhone.setText(getActivity().getString(R.string.namakkal_hospital_Phone));
         }else if (city.equals("5"))
         {
             txtHospitalName.setText(getActivity().getString(R.string.mayiladu_hospital));
             txtAddress.setText(getActivity().getString(R.string.may_hospital_address));
+            txtPhone.setText(getActivity().getString(R.string.may_hospital_Phone));
         }else if (city.equals("6"))
         {
             txtHospitalName.setText(getActivity().getString(R.string.kollidam_hospital));
             txtAddress.setText(getActivity().getString(R.string.kollidam_hospital_address));
+            txtPhone.setText(getActivity().getString(R.string.kollidam_hospital_Phone));
         }
     }
 
@@ -439,6 +482,7 @@ public class HomeFragment extends Fragment {
                 if (userDetails[3].equals("user")) {
 
                     registerDetails();
+                    getAppointmentData();
                 }
                 else if (userDetails[3].equals("admin")) {
                     getExcel();
@@ -478,6 +522,7 @@ public class HomeFragment extends Fragment {
             if (userDetails[3].equals("user")) {
 //                checkAlert();
                 registerDetails();
+                getAppointmentData();
             }
             else if (userDetails[3].equals("admin")) {
                 getExcel();
@@ -568,11 +613,13 @@ public class HomeFragment extends Fragment {
                                     recyclerView.setAdapter(getExcelAdapter);
                                     txtDownload.setVisibility(View.VISIBLE);
                                     ldtListExcel.addView(addView);
+
                                     TextView txtNoApp = (TextView) rootView.findViewById(R.id.txtNoApp);
+                                    rldUsertype2.setVisibility(View.VISIBLE);
                                     txtNoApp.setVisibility(View.GONE);
                                 }
 
-
+                                ldtListExcel.setVisibility(View.VISIBLE);
                             }else
                             {
                                 rldUsertype2.setVisibility(View.VISIBLE);
@@ -844,6 +891,93 @@ public class HomeFragment extends Fragment {
 
 
 
+    }
+
+
+
+    private void getAppointmentData() {
+
+        if (isConnection != null) {
+            if (isConnection.equals(Constants.NETWORK_CONNECTED)) {
+
+                apiInterface = ApiClient.getClient().create(ApiInterface.class);
+                JSONObject jsonObject = new JSONObject();
+
+                try {
+                    UserRegisterDetails userRegisterDetails = UserRegisterDetails.getInstance();
+                    jsonObject.put("user_email", userRegisterDetails.getE_mail());
+                    jsonObject.put("act","upcoming");
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                Call<AllAppointmentDetails> call = apiInterface.allAppointment(jsonObject);
+                call.enqueue(new Callback<AllAppointmentDetails>() {
+                    @Override
+                    public void onResponse(Call<AllAppointmentDetails> call, Response<AllAppointmentDetails> response) {
+                        if (response.isSuccessful()) {
+
+                            AllAppointmentDetails allAppointmentDetails = response.body();
+                            appointmentList = new ArrayList<AllAppointmentDetails.Appoinmentslist>();
+                            if (allAppointmentDetails.getStatus_code().equals(Constants.status_code1)) {
+                                List<AllAppointmentDetails.Appoinmentslist> appoinmentslists = allAppointmentDetails.getAppoinments();
+                                if (appoinmentslists.size() != 1) {
+                                    for (int i = 0; i < appoinmentslists.size(); i++) {
+                                        AllAppointmentDetails.Appoinmentslist appoinmentslist = appoinmentslists.get(i);
+                                        appoinmentslist.setPtnt_name(appoinmentslist.getPtnt_name());
+                                        appoinmentslist.setCity_id(appoinmentslist.getCity_id());
+                                        appoinmentslist.setTime(appoinmentslist.getTime());
+                                        appoinmentslist.setDate(appoinmentslist.getDate());
+                                        appoinmentslist.setSno(appoinmentslist.getSno());
+                                        appointmentList.add(appoinmentslist);
+                                    }
+                                    mAdapter = new MyItemRecyclerViewAdapter(appointmentList, getActivity());
+                                    recyclerView.setAdapter(mAdapter);
+                                    mAdapter.notifyDataSetChanged();
+                                    Log.e("size", "" + appointmentList.size());
+                                    recyclerView.setVisibility(View.VISIBLE);
+                                    txtUpcoming.setVisibility(View.VISIBLE);
+                                    ldtRecycle.setVisibility(View.VISIBLE);
+                                }else
+                                {
+                                    recyclerView.setVisibility(View.GONE);
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                        txtUpcoming.setBackgroundColor(getActivity().getColor(R.color.white));
+                                        ldtRecycle.setBackgroundColor(getActivity().getColor(R.color.white));
+                                        ldtMainView.setBackgroundColor(getActivity().getColor(R.color.white));
+                                    }else
+                                    {
+                                        ldtMainView.setBackgroundColor(getActivity().getResources().getColor(R.color.white));
+                                        txtUpcoming.setBackgroundColor(getActivity().getResources().getColor(R.color.white));
+                                    }
+                                }
+
+                            }else if (allAppointmentDetails.getStatus_code().equals(Constants.status_code0))
+                            {
+                                recyclerView.setVisibility(View.GONE);
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                    txtUpcoming.setBackgroundColor(getActivity().getColor(R.color.white));
+                                    ldtRecycle.setBackgroundColor(getActivity().getColor(R.color.white));
+                                    ldtMainView.setBackgroundColor(getActivity().getColor(R.color.white));
+                                }else
+                                {
+                                    ldtMainView.setBackgroundColor(getActivity().getResources().getColor(R.color.white));
+                                    txtUpcoming.setBackgroundColor(getActivity().getResources().getColor(R.color.white));
+                                }
+
+                            }
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<AllAppointmentDetails> call, Throwable t) {
+                        Log.e("failure", String.valueOf(t));
+                    }
+                });
+            }
+        }
     }
 }
 

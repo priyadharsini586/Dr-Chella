@@ -120,7 +120,7 @@ public class HomeActivity extends AppCompatActivity implements  LoadImageTask.Li
     int imgCount = 0;
     Menu menuNotification;
     DatabaseHandler databaseHandler;
-
+    String[] userDetails;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -200,7 +200,7 @@ public class HomeActivity extends AppCompatActivity implements  LoadImageTask.Li
 
 
         DatabaseHandler databaseHandler = new DatabaseHandler(getApplicationContext());
-        String[] userDetails =  databaseHandler.getUserName("0");
+        userDetails  =  databaseHandler.getUserName("0");
         UserRegisterDetails userRegisterDetails = UserRegisterDetails.getInstance();
         userRegisterDetails.setUserName(userDetails[0]);
         txtMobileNumber.setText(userDetails[1]);
@@ -514,7 +514,8 @@ public class HomeActivity extends AppCompatActivity implements  LoadImageTask.Li
                 if (snackbar != null) {
                     snackbar.dismiss();
                 }
-                checkAlert();
+                if (!userDetails[3].equals("admin"))
+                    checkAlert();
             }
         }
     }
@@ -535,6 +536,10 @@ public class HomeActivity extends AppCompatActivity implements  LoadImageTask.Li
         if (databaseHandler != null)
         {
             String[] userDetails =  databaseHandler.getUserName("0");
+            if (userDetails[2].equals(""))
+            {
+                ic_profile.setImageResource(R.mipmap.ic_profile);
+            }
             if (userDetails[1] != null)
                 txtMobileNumber.setText(userDetails[1]);
         }

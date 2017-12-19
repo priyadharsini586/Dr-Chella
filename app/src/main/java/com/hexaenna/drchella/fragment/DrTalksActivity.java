@@ -52,8 +52,11 @@ public class DrTalksActivity extends Fragment  {
         transaction.add(R.id.youtube_layout, youTubePlayerFragment).commit();
 
         txtTalks = (TextView) rootView.findViewById(R.id.txtTalks);
+        txtTalks.setVisibility(View.GONE);
         ldtVideo = (LinearLayout) rootView.findViewById(R.id.ldtVideo);
+        ldtVideo.setVisibility(View.GONE);
         novideo =(TextView) rootView.findViewById(R.id.novideo);
+        novideo.setVisibility(View.GONE);
         novideo.setVisibility(View.GONE);
         getVideo();
         // Initializing video player with developer key

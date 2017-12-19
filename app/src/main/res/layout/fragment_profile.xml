@@ -12,7 +12,8 @@
         android:layout_height="match_parent">
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            >
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -21,7 +22,7 @@
         android:paddingBottom="10dp"
         android:id="@+id/ldtMain"
         android:orientation="horizontal"
-        >
+       >
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -94,11 +95,22 @@
 
         </RelativeLayout>
     </ScrollView>
-    <ImageView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/contact_number"
-        android:layout_centerInParent="true"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:id="@+id/imgContact"
-        android:visibility="gone"/>
+       >
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:src="@drawable/contact_bg"
+            android:scaleType="centerCrop"/>
+
+        <ImageView
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:src="@drawable/contact_number"
+            android:layout_gravity="center"/>
+    </LinearLayout>
 </RelativeLayout>

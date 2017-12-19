@@ -1355,6 +1355,7 @@ public class DateAndTimeFragment extends Fragment implements View.OnClickListene
     }
     public ArrayList<String> getKollidamTimeSlotList()
     {
+        timeSlotList = new ArrayList<>();
         timeSlotList.add("6:00 PM");
         timeSlotList.add("6:20 PM");
         timeSlotList.add("6:40 PM");

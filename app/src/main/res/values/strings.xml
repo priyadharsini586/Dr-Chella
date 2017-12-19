@@ -185,5 +185,5 @@
 
     <string name="no_video">To be uploaded..</string>
 
-    <string name="text_mobile_number">Send otp to your registered Mobile E-mail and updated mobile number</string>
+    <string name="text_mobile_number">We sent mobile and E_Mail Validation, Please update boath below the fields</string>
 </resources>

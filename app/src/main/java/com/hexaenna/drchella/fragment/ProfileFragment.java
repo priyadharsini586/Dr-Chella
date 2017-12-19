@@ -62,7 +62,7 @@ public class ProfileFragment extends Fragment implements MoreItemsActivity.OnBac
         view = inflater.inflate(R.layout.fragment_profile, container, false);
         ldtMain = (LinearLayout) view.findViewById(R.id.ldtMain);
         webHome = (WebView) view.findViewById(R.id.webHome);
-        ImageView imgContact = (ImageView) view.findViewById(R.id.imgContact);
+        LinearLayout imgContact = (LinearLayout) view.findViewById(R.id.imgContact);
         if (mParam2.equals(Constants.profile)){
             ldtMain.setVisibility(View.VISIBLE);
             webHome.loadUrl("file:///android_asset/profile.html");

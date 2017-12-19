@@ -447,7 +447,7 @@ public class SplashActivity extends AppCompatActivity implements  LoadImageTask.
                 if (isConnection.equals(Constants.NETWORK_CONNECTED)) {
                     final String e_mail = getE_mail();
 
-
+                    alreadySend = "send";
 //            Log.e("djjkdfdhd",e_mail);
                     apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
@@ -468,12 +468,10 @@ public class SplashActivity extends AppCompatActivity implements  LoadImageTask.
                                 if (login.getStatus_code() != null) {
 
                                     Log.e("output from splash", login.getStatus_message());
-                                    alreadySend = "send";
+
                                     if (login.getStatus_code().equals(Constants.status_code0)) {
 
-                                        new Handler().postDelayed(new Runnable() {
-                                            @Override
-                                            public void run() {
+
                                                 Intent mainIntent = new Intent(SplashActivity.this, RegistrationActivity.class);
                                                 Bundle bundle = new Bundle();
                                                 bundle.putString("email", e_mail);
@@ -481,8 +479,7 @@ public class SplashActivity extends AppCompatActivity implements  LoadImageTask.
                                                 SplashActivity.this.startActivity(mainIntent);
                                                 overridePendingTransition(R.anim.enter_from_left, R.anim.exit_to_right);
                                                 SplashActivity.this.finish();
-                                            }
-                                        }, 2000);
+
                                     } else if (login.getStatus_code().equals(Constants.status_code_1)) {
 
 

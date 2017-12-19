@@ -13,7 +13,14 @@ public class BookingDetails {
     int selectedPosition = -1;
     ArrayList<String> bookedList,blockedList;
     private static BookingDetails ourInstance = new BookingDetails();
-    private BookingDetails(){}
+    public BookingDetails()
+    {
+        city = null;
+        selectedCity = null;
+        selectedDate = null;
+        selectedTime = null;
+
+    }
 
     public static BookingDetails getInstance() {
         return ourInstance;

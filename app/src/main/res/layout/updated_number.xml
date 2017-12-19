@@ -2,7 +2,7 @@
 <RelativeLayout
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="350dp"
+    android:layout_width="300dp"
     android:layout_height="300dp"
     android:orientation="vertical"
     android:padding="20dp">
@@ -15,19 +15,21 @@
         android:gravity="center"
         android:textSize="@dimen/edit_text_size"
         android:textStyle="bold"
-        android:padding="10dp"/>
+        android:padding="10dp"
+        android:id="@+id/txtMsg"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:visibility="visible"
+        android:visibility="gone"
         android:id="@+id/ldtchaneOtp"
         android:gravity="center">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:weightSum="2">
+        android:weightSum="2"
+        android:paddingBottom="20dp">
 
         <TextView
             android:layout_width="match_parent"
@@ -36,12 +38,13 @@
             android:layout_weight="1"
             android:gravity="center"
             android:textColor="@color/black"
-            android:textSize="@dimen/edit_text_size"/>
+            android:textSize="@dimen/edit_text_size"
+            android:layout_gravity="center"/>
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/txtInputName"
+            android:id="@+id/txtInputMobileNumber"
             android:layout_gravity="center"
             android:gravity="center"
             android:layout_weight="1"
@@ -55,23 +58,47 @@
                 android:background="@android:color/transparent"
                 android:layout_gravity="center"
                 android:id="@+id/edtUpdatedNumber"
-                android:maxLength="10"/>
+                android:maxLength="10"
+                android:paddingLeft="5dp"/>
         </android.support.design.widget.TextInputLayout>
 
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_gravity="bottom"
         android:gravity="center"
-        android:padding="15dp">
+        android:weightSum="1"
+        android:padding="12dp"
+        >
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:gravity="center">
     <Button
-        android:layout_width="50dp"
+        android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:background="@color/book_title_orange"
         android:text="@string/ok_button"
         android:textColor="@color/white"
-        android:id="@+id/btnOk"/>
+        android:id="@+id/btnOk"
+       android:layout_gravity="center"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:gravity="center">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:background="@color/book_title_orange"
+            android:text="@string/cancel_button"
+            android:textColor="@color/white"
+            android:id="@+id/btnCancel"
+            />
+        </LinearLayout>
     </LinearLayout>
     </LinearLayout>
 
@@ -82,8 +109,8 @@
         android:id="@+id/ldtchaneNumber"
         android:layout_gravity="center"
         android:gravity="center"
-        android:visibility="gone"
-        android:paddingTop="10dp">
+        android:paddingTop="10dp"
+        android:layout_below="@+id/txtMsg">
 
         <TextView
             android:layout_width="match_parent"
@@ -126,7 +153,8 @@
                 android:maxLength="4"
                 android:gravity="center"
                 android:textColor="@color/black"
-                android:textSize="17sp"/>
+                style="@style/App_EditTextStyle_email_mbl"
+                android:textColorHint="#D3D3D3" />
           </LinearLayout>
           </LinearLayout>
           <LinearLayout
@@ -156,7 +184,8 @@
               android:maxLength="4"
               android:gravity="center"
               android:textColor="@color/black"
-              android:textSize="17sp"/>
+              android:textColorHint="#D3D3D3"
+              style="@style/App_EditTextStyle_email_mbl"/>
           </LinearLayout>
           </LinearLayout>
 
@@ -166,7 +195,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:padding="10dp">
+            android:padding="10dp"
+                >
         <Button
             android:layout_width="wrap_content"
             android:layout_height="45dp"

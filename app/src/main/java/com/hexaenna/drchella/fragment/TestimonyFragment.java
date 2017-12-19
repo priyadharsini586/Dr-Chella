@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -78,6 +79,7 @@ public class TestimonyFragment extends Fragment implements MoreItemsActivity.OnB
     NetworkChangeReceiver networkChangeReceiver;
     ApiInterface apiInterface;
     String isConnection = null,send = "";
+    ProgressBar progress;
 
     public static Activity TestimonyFragment()
     {
@@ -91,6 +93,8 @@ public class TestimonyFragment extends Fragment implements MoreItemsActivity.OnB
         ldtMenu = (LinearLayout) view.findViewById(R.id.ldtMenu);
         imgSendImage = (ImageView) view.findViewById(R.id.imgSendImage);
         group = view.findViewById(R.id.group);
+        progress = (ProgressBar) view.findViewById(R.id.progress);
+        progress.setVisibility(View.GONE);
         group.hide();
         context = getActivity();
         imgSendImage.setOnClickListener(new View.OnClickListener() {
@@ -152,6 +156,7 @@ public class TestimonyFragment extends Fragment implements MoreItemsActivity.OnB
                 if (edtContent.getText().toString().trim().equals("")) {
                     Toast.makeText(getActivity(), "Please input some text...", Toast.LENGTH_SHORT).show();
                 } else {
+                    progress.setVisibility(View.VISIBLE);
                     sendTestimony();
 
                 }
@@ -339,6 +344,7 @@ public class TestimonyFragment extends Fragment implements MoreItemsActivity.OnB
                                 send = "send";
                                 Collections.reverse(ChatBubbles);
                                 adapter.notifyDataSetChanged();
+                                progress.setVisibility(View.GONE);
                             }
                         }
                     }
@@ -405,6 +411,7 @@ public class TestimonyFragment extends Fragment implements MoreItemsActivity.OnB
                                 adapter.notifyDataSetChanged();
                                 edtContent.setText("");
                                 imgCloseImg.performClick();
+                                progress.setVisibility(View.GONE);
                             }
                         }
                     }
@@ -429,6 +436,7 @@ public class TestimonyFragment extends Fragment implements MoreItemsActivity.OnB
 
                 if (send.equals(""))
                 {
+                    progress.setVisibility(View.VISIBLE);
                     displayTestimony();
                 }
             }
