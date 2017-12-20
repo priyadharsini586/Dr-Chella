@@ -213,7 +213,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
            @Override
            public void onFailure(Call<MapDetails> call, Throwable t) {
-               Log.e("failure","fail");
+
            }
        });
     }

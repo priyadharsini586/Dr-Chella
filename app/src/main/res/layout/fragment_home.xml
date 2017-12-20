@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
    android:orientation="vertical"
-    android:background="#f1f1f1"
+    android:background="@android:color/white"
     android:id="@+id/ldtMainView">
 
 
@@ -20,7 +20,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:id="@+id/rldUsertype1">
+            android:id="@+id/rldUsertype1"
+            android:visibility="gone">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -63,7 +64,8 @@
             android:text="No 26/1, United India Colony, Kodambakkam, Chennai, Tamil Nadu 600024"
             android:textSize="13sp"
             android:gravity="center"
-            android:padding="10dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
             android:id="@+id/txtAddress"/>
 
         <TextView
@@ -74,23 +76,32 @@
             android:textSize="13sp"
             android:gravity="center"
             android:id="@+id/txtPhone"
-            android:paddingBottom="5dp"/>
+            android:paddingBottom="10dp"/>
     </LinearLayout>
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#ededed"
-            android:elevation="1dp"/>
+            android:background="@drawable/shawdow_view"
+            android:elevation="1dp"
+            />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
+            android:textColor="#434343"
             android:text="Upcoming Appointments"
-            android:textSize="13sp"
+            android:textSize="15sp"
             android:gravity="center"
             android:padding="10dp"
             android:textStyle="bold"
-            android:id="@+id/txtUpcoming"/>
+            android:id="@+id/txtUpcoming"
+            android:background="@drawable/rounded_corner"
+           />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@drawable/shawdow_view"
+            android:elevation="1dp"
+            />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -103,8 +114,6 @@
             android:name="com.hexaenna.drchella.fragment.YourAppointmentFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
             app:layoutManager="LinearLayoutManager"
             tools:context="com.hexaenna.drchella.fragment.AllAppointmentFragment"
             tools:listitem="@layout/fragment_item"
@@ -117,7 +126,7 @@
         android:layout_gravity="center_vertical"
         android:id="@+id/ldtNoAppoint"
         android:orientation="vertical"
-        android:visibility="visible"
+        android:visibility="gone"
         android:background="@color/white">
         <ImageView
             android:layout_width="match_parent"
@@ -139,37 +148,70 @@
             android:textColor="@android:color/black"
             android:textSize="@dimen/edit_text_size"/>
     </LinearLayout>
-    <ProgressBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:id="@+id/progressHome"
-        />
+
         </RelativeLayout>
         </ScrollView>
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/rldUsertype2">
+            android:layout_height="match_parent"
+            android:id="@+id/rldUsertype2"
+            android:visibility="visible">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="end"
                 android:id="@+id/ldtDownload"
-                >
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Download"
+                 android:weightSum="3">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+            <ImageView
+                android:layout_width="55dp"
+                android:layout_height="55dp"
                 android:textSize="17sp"
-                android:layout_gravity="end"
+                android:layout_gravity="start"
                 android:paddingRight="17dp"
                 android:paddingTop="10dp"
-                android:textColor="#1c2d83"
-                android:textStyle="bold"
-                android:id="@+id/txtDownload"/>
+                android:id="@+id/txtDownload"
+                android:src="@drawable/pdf_icon"
+                />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_weight="1">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="17sp"
+                        android:layout_gravity="center"
+                        android:paddingRight="17dp"
+                        android:paddingTop="10dp"
+                        android:id="@+id/txtDate"
+                        android:src="@drawable/pdf_icon"
+                        android:textColor="@android:color/black"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:layout_weight="1">
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="end"
+                    android:paddingRight="17dp"
+                    android:paddingTop="10dp"
+                    android:id="@+id/imgCal"
+                    android:src="@drawable/ic_calendar"
+                    />
+                </LinearLayout>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -188,6 +230,14 @@
             android:layout_centerInParent="true"
             android:textColor="@android:color/black"
             android:gravity="center"
-            android:layout_centerHorizontal="true"/>
+            android:layout_centerHorizontal="true"
+            android:visibility="gone"/>
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:id="@+id/progressHome"
+            />
     </RelativeLayout>
 </LinearLayout>

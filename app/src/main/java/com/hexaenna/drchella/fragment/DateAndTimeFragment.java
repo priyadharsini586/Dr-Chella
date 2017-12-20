@@ -515,7 +515,7 @@ public class DateAndTimeFragment extends Fragment implements View.OnClickListene
 
                 @Override
                 public void onFailure(Call<TimeAndDateResponse> call, Throwable t) {
-                    Log.e("output", t.getMessage());
+
                 }
             });
 
@@ -705,7 +705,7 @@ public class DateAndTimeFragment extends Fragment implements View.OnClickListene
 
                 @Override
                 public void onFailure(Call<TimeAndDateResponse> call, Throwable t) {
-                    Log.e("output", t.getMessage());
+
                 }
             });
 
@@ -1103,7 +1103,6 @@ public class DateAndTimeFragment extends Fragment implements View.OnClickListene
 
                 @Override
                 public void onFailure(Call<TimeAndDateResponse> call, Throwable t) {
-                    Log.e("output", t.getMessage());
                 }
             });
 
@@ -1165,7 +1164,16 @@ public class DateAndTimeFragment extends Fragment implements View.OnClickListene
 
     @Override
     public void onBackPressed() {
-
+        BookingDetails bookingDetails = BookingDetails.getInstance();
+        bookingDetails.setCity(null);
+        bookingDetails.setSelectedCity(null);
+        bookingDetails.setSelectedDate(null);
+        bookingDetails.setBookedList(null);
+        bookingDetails.setBlockedList(null);
+        bookingDetails.setSelectedPosition(-1);
+        bookingDetails.setAppSeno(null);
+        if (RegisterDetailsFragment.countDownTimer != null)
+            RegisterDetailsFragment.countDownTimer.cancel();
         getActivity().finish();
 
     }

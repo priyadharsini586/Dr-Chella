@@ -176,8 +176,6 @@ public class MoreFragment extends Fragment {
         if (!userDetails[3].equals("admin")) {
             imgList.add(R.drawable.your_appointment);
         }
-
-
         imgList.add(R.drawable.con_location);
         imgList.add(R.drawable.daily_health_tips);
         imgList.add(R.drawable.testimony);
@@ -195,6 +193,16 @@ public class MoreFragment extends Fragment {
     public void onStop() {
         super.onStop();
         LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(networkChangeReceiver);
+        if (networkChangeReceiver == null)
+        {
+            Log.e("reg","Do not unregister receiver as it was never registered");
+        }
+        else
+        {
+            Log.e("reg","Unregister receiver");
+            getActivity().unregisterReceiver(networkChangeReceiver);
+            networkChangeReceiver = null;
+        }
 
     }
 
@@ -295,7 +303,7 @@ public class MoreFragment extends Fragment {
 
                     @Override
                     public void onFailure(Call<HealthTipsDetails> call, Throwable t) {
-                        Log.e("failure", String.valueOf(t));
+
                     }
                 });
             }

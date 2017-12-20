@@ -154,7 +154,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.3"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:background="@android:color/transparent">
 
                 <RadioGroup
                     android:layout_width="match_parent"
@@ -162,7 +163,8 @@
                     android:orientation="horizontal"
                     android:weightSum="3"
                     android:id="@+id/radioSexGroup"
-                    android:gravity="center">
+                    android:gravity="center"
+                    >
 
                     <RadioButton
                         android:layout_width="wrap_content"
@@ -242,10 +244,10 @@
                     </LinearLayout>
 
                 </RadioGroup>
-                <View
+              <!--  <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="@color/colorPrimary"/>
+                    android:background="@color/colorPrimary"/>-->
             </LinearLayout>
 
 
@@ -324,7 +326,8 @@
                     android:inputType="number"
                     android:hint="@string/english_patient_mobile1"
                     style="@style/App_Book_Appointment"
-                    android:maxLength="10"/>
+                    android:maxLength="10"
+                    />
             </android.support.design.widget.TextInputLayout>
         </LinearLayout>
 

@@ -22,6 +22,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -58,6 +59,7 @@ public class AllAppointmentFragment extends Fragment {
     ApiInterface apiInterface;
     String isConnection = null;
     LinearLayout txtNodata;
+    ProgressBar progress;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -70,7 +72,8 @@ public class AllAppointmentFragment extends Fragment {
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-
+        progress = (ProgressBar) view.findViewById(R.id.progress);
+        progress.setVisibility(View.GONE);
         networkChangeReceiver = new NetworkChangeReceiver()
         {
             @Override
@@ -157,7 +160,7 @@ public class AllAppointmentFragment extends Fragment {
 
                 apiInterface = ApiClient.getClient().create(ApiInterface.class);
                 JSONObject jsonObject = new JSONObject();
-
+                progress.setVisibility(View.VISIBLE);
                 try {
                     UserRegisterDetails userRegisterDetails = UserRegisterDetails.getInstance();
                     jsonObject.put("app_sno", app_sno);
@@ -181,12 +184,12 @@ public class AllAppointmentFragment extends Fragment {
                                 details.setS_no(app_sno);
                             }
                         }
-
+                        progress.setVisibility(View.GONE);
                     }
 
                     @Override
                     public void onFailure(Call<AllAppointmentDetails> call, Throwable t) {
-                        Log.e("failure", String.valueOf(t));
+
                     }
                 });
             }
@@ -200,7 +203,7 @@ public class AllAppointmentFragment extends Fragment {
 
                 apiInterface = ApiClient.getClient().create(ApiInterface.class);
                 JSONObject jsonObject = new JSONObject();
-
+                progress.setVisibility(View.VISIBLE);
                 try {
                     UserRegisterDetails userRegisterDetails = UserRegisterDetails.getInstance();
                     jsonObject.put("user_email", userRegisterDetails.getE_mail());
@@ -241,12 +244,13 @@ public class AllAppointmentFragment extends Fragment {
                                 txtNodata.setVisibility(View.VISIBLE);
                             }
                         }
+                        progress.setVisibility(View.GONE);
 
                     }
 
                     @Override
                     public void onFailure(Call<AllAppointmentDetails> call, Throwable t) {
-                        Log.e("failure", String.valueOf(t));
+
                     }
                 });
             }

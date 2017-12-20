@@ -331,7 +331,7 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
 
                 @Override
                 public void onFailure(Call<String> call, Throwable t) {
-                    Log.e("Failed",  t.getMessage());
+
 
 
 

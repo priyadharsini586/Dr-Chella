@@ -407,11 +407,20 @@ public class TestimonyFragment extends Fragment implements MoreItemsActivity.OnB
 
                                 ChatBubbles.add(details);
 
+                                list_msg.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        // Select the last row so it will scroll into view...
+                                        list_msg.setSelection(adapter.getCount() - 1);
+                                    }
+                                });
                                 myMessage = false;
                                 adapter.notifyDataSetChanged();
                                 edtContent.setText("");
                                 imgCloseImg.performClick();
                                 progress.setVisibility(View.GONE);
+
+
                             }
                         }
                     }

@@ -25,6 +25,7 @@ import android.widget.TextView;
 import com.applandeo.materialcalendarview.CalendarView;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.hexaenna.drchella.Db.DatabaseHandler;
+import com.hexaenna.drchella.Model.BookingDetails;
 import com.hexaenna.drchella.R;
 import com.hexaenna.drchella.fragment.ConformationFragment;
 import com.hexaenna.drchella.fragment.DateAndTimeFragment;
@@ -138,6 +139,15 @@ public class BookAppointmentActivity extends AppCompatActivity {
         super.onStop();
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
         mRegistrationBroadcastReceiver=null;
+
+        BookingDetails bookingDetails = BookingDetails.getInstance();
+        bookingDetails.setCity(null);
+        bookingDetails.setSelectedCity(null);
+        bookingDetails.setSelectedDate(null);
+        bookingDetails.setBookedList(null);
+        bookingDetails.setBlockedList(null);
+        bookingDetails.setSelectedPosition(-1);
+        bookingDetails.setAppSeno(null);
     }
 
     @Override

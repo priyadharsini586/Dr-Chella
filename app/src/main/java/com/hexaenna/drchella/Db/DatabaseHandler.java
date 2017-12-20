@@ -132,6 +132,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return db.update(TABLE_APP_SETTING, values, APP_ID + " = ?",
                 new String[] { String.valueOf("0") });
     }
+
+    public int updateUserType(String type) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(USER_ID, "0");
+        values.put(USER_TYPE, type);
+
+        // updating row
+        return db.update(TABLE_USER_DETAILS, values, USER_ID + " = ?",
+                new String[] { String.valueOf("0") });
+    }
     public void addUser(String userNmae,String mbl,String id,String profile_pic,String type) {
         SQLiteDatabase db = this.getWritableDatabase();
 

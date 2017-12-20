@@ -12,11 +12,20 @@ import java.util.List;
  */
 
 public class TimeAndDateResponse {
-   private   String status_code,status_message,success,app_sno = null,city_id,date,time,uniqid,photo,profile_pic,mobile,name,lang,title,notification;
+   private   String status_code,status_message,success,app_sno = null,city_id,date,time,uniqid,photo,profile_pic,mobile,name,lang,title,notification,user_type;
     public List<appoinments> appoinments = new ArrayList<>();
     @SerializedName("Blocked_Array")
     @Expose
    private ArrayList<String> Blocked_Array = null ;
+
+    public String getUser_type() {
+        return user_type;
+    }
+
+    public void setUser_type(String user_type) {
+        this.user_type = user_type;
+    }
+
     @SerializedName("Booked_Array")
     @Expose
   private   ArrayList<String> Booked_Array = new ArrayList<>();
@@ -167,7 +176,7 @@ public class TimeAndDateResponse {
 
     public class appoinments
     {
-        private String city_id,date,time,ptnt_name;
+        private String city_id,date,time,ptnt_name,sno;
 
         public String getCity_id() {
             return city_id;
@@ -199,6 +208,14 @@ public class TimeAndDateResponse {
 
         public void setPtnt_name(String ptnt_name) {
             this.ptnt_name = ptnt_name;
+        }
+
+        public String getSno() {
+            return sno;
+        }
+
+        public void setSno(String sno) {
+            this.sno = sno;
         }
     }
 }

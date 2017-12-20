@@ -25,7 +25,7 @@
     <string name="tamil_date_and_time">தேதி &amp;நேரம்</string>
     <string name="booking_details">Booking Details</string>
     <string name="tamil_booking_details">பதிவு விவரங்கள்</string>
-    <string name="conformation">Conformation</string>
+    <string name="conformation">Confirmation</string>
     <string name="tamil_conformation">உறுதிப்படுத்தல்</string>
 
     <!-- TODO: Remove or change this placeholder text -->
@@ -112,7 +112,7 @@
     <string name="tamil_conform">உறுதி</string>
     <!--order summary-->
     <string name="chella_dr_app">Dr. Chellakumarasamy MD.,</string>
-    <string name="con">Appointment Conformation</string>
+    <string name="con">Appointment Confirmation</string>
     <string name="tamil_chella_dr_app">டாக்டர். செல்லகுமாரசாமி MD.,</string>
     <string name="tamil_chella_dr_app1">பதிவு உறுதிப்படுத்தல்</string>
     <string name="date">Date</string>

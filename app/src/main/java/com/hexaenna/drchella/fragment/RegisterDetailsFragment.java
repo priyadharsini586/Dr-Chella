@@ -16,6 +16,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
+import android.text.Selection;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -323,6 +324,11 @@ public class RegisterDetailsFragment extends Fragment implements View.OnClickLis
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 int length = s.length();
+              /*  String text_value = edtApplicantNumber.getText().toString().trim();
+                if(!text_value.startsWith("+91 ") && text_value.length() > 4) {
+                    edtApplicantNumber.setText("+91 " + s.toString());
+                    Selection.setSelection(edtApplicantNumber.getText(), edtApplicantNumber.getText().length());
+                }*/
 
                 if (s.length() < 10)
                 {
@@ -640,7 +646,7 @@ public class RegisterDetailsFragment extends Fragment implements View.OnClickLis
 
                 @Override
                 public void onFailure(Call<TimeAndDateResponse> call, Throwable t) {
-                    Log.e("output", t.getMessage());
+
                 }
             });
 
@@ -713,8 +719,10 @@ public class RegisterDetailsFragment extends Fragment implements View.OnClickLis
     @Override
     public void onBackPressed() {
         Log.e("backpressed","register fragment");
-        countDownTimer.cancel();
-        countDownTimer = null;
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+            countDownTimer = null;
+        }
 
         cancelAppointment();
     }

@@ -281,7 +281,6 @@ public class SettingFragment extends Fragment  implements MoreItemsActivity.OnBa
 
                 @Override
                 public void onFailure(Call<String> call, Throwable t) {
-                    Log.e("Failed",  t.getMessage());
 
 
 
@@ -415,5 +414,6 @@ public class SettingFragment extends Fragment  implements MoreItemsActivity.OnBa
     public void onPause() {
         super.onPause();
         LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(receiver);
+        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(networkChangeReceiver);
     }
 }

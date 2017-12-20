@@ -415,7 +415,7 @@ public class HomeActivity extends AppCompatActivity implements  LoadImageTask.Li
 
                     @Override
                     public void onFailure(Call<RegisterRequestAndResponse> call, Throwable t) {
-                        Log.e("output", t.getMessage());
+
                     }
                 });
             } else {
@@ -464,16 +464,35 @@ public class HomeActivity extends AppCompatActivity implements  LoadImageTask.Li
         if (isConnection.equals(Constants.NETWORK_CONNECTED)) {
 
             apiInterface = ApiClient.getClient().create(ApiInterface.class);
+            JSONObject jsonObject = new JSONObject();
+            UserRegisterDetails userRegisterDetails = UserRegisterDetails.getInstance();
 
-            Call<TimeAndDateResponse> call = apiInterface.getNotification();
+            try {
+                jsonObject.put("email",userRegisterDetails.getE_mail());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            Call<TimeAndDateResponse> call = apiInterface.getNotification(jsonObject);
             call.enqueue(new Callback<TimeAndDateResponse>() {
                 @Override
                 public void onResponse(Call<TimeAndDateResponse> call, Response<TimeAndDateResponse> response) {
                     if (response.isSuccessful()) {
                         TimeAndDateResponse timeAndDateResponse = response.body();
+                        String userType = timeAndDateResponse.getUser_type();
+                        Log.e("check","alert");
+                        //1 means admin 0  means user
+                        if (userType.equals("1"))
+                        {
+                            databaseHandler.updateUserType("admin");
+                        }else if (userType.equals("0"))
+                        {
+                            databaseHandler.updateUserType("user");
+                        }
+
                         if (timeAndDateResponse.getStatus_code().equals(Constants.status_code1))
                         {
-                            showAlert(HomeActivity.this,timeAndDateResponse.getTitle(),timeAndDateResponse.getNotification());
+                            if (userType.equals("0"))
+                                showAlert(HomeActivity.this,timeAndDateResponse.getTitle(),timeAndDateResponse.getNotification());
                         }
 
                     }
@@ -482,7 +501,7 @@ public class HomeActivity extends AppCompatActivity implements  LoadImageTask.Li
 
                 @Override
                 public void onFailure(Call<TimeAndDateResponse> call, Throwable t) {
-                    Log.e("failure", String.valueOf(t));
+
                 }
             });
 
@@ -514,7 +533,7 @@ public class HomeActivity extends AppCompatActivity implements  LoadImageTask.Li
                 if (snackbar != null) {
                     snackbar.dismiss();
                 }
-                if (!userDetails[3].equals("admin"))
+                if (userDetails[3].equals("user"))
                     checkAlert();
             }
         }

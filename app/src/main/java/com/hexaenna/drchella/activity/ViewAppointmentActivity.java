@@ -176,7 +176,7 @@ public class ViewAppointmentActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<AppointmentDetails> call, Throwable t) {
-                Log.e("output", t.getMessage());
+
             }
         });
     }

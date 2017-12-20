@@ -19,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 
 import com.hexaenna.drchella.Model.AllAppointmentDetails;
 import com.hexaenna.drchella.Model.UserRegisterDetails;
@@ -50,6 +51,7 @@ public class PastAppointmentFragment extends Fragment {
     ApiInterface apiInterface;
     String isConnection = null;
     LinearLayout txtNodata;
+    ProgressBar progress;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -60,7 +62,8 @@ public class PastAppointmentFragment extends Fragment {
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-
+        progress = (ProgressBar) view.findViewById(R.id.progress);
+        progress.setVisibility(View.GONE);
         networkChangeReceiver = new NetworkChangeReceiver()
         {
             @Override
@@ -154,7 +157,7 @@ public class PastAppointmentFragment extends Fragment {
 
                     @Override
                     public void onFailure(Call<AllAppointmentDetails> call, Throwable t) {
-                        Log.e("failure", String.valueOf(t));
+
                     }
                 });
             }
@@ -288,7 +291,7 @@ public class PastAppointmentFragment extends Fragment {
 
                     @Override
                     public void onFailure(Call<AllAppointmentDetails> call, Throwable t) {
-                        Log.e("failure", String.valueOf(t));
+
                     }
                 });
             }

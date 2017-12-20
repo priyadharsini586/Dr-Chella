@@ -309,7 +309,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
                 @Override
                 public void onFailure(Call<RegisterRequestAndResponse> call, Throwable t) {
-                    Log.e("output", t.getMessage());
+
                 }
             });
 

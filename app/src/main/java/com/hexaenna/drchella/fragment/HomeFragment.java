@@ -17,6 +17,8 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.NonNull;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.FileProvider;
 import android.support.v4.content.LocalBroadcastManager;
@@ -31,6 +33,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -51,6 +54,7 @@ import com.hexaenna.drchella.Model.TimeAndDateResponse;
 import com.hexaenna.drchella.Model.UserRegisterDetails;
 import com.hexaenna.drchella.R;
 import com.hexaenna.drchella.activity.BookAppointmentActivity;
+import com.hexaenna.drchella.activity.MoreItemsActivity;
 import com.hexaenna.drchella.activity.ViewAppointmentActivity;
 import com.hexaenna.drchella.adapter.GetExcelAdapter;
 import com.hexaenna.drchella.adapter.MyItemRecyclerViewAdapter;
@@ -61,6 +65,11 @@ import com.hexaenna.drchella.custom_view.SimpleDividerItemDecoration;
 import com.hexaenna.drchella.utils.Config;
 import com.hexaenna.drchella.utils.Constants;
 import com.hexaenna.drchella.service.NetworkChangeReceiver;
+import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.prolificinteractive.materialcalendarview.DayViewDecorator;
+import com.prolificinteractive.materialcalendarview.DayViewFacade;
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -93,7 +102,7 @@ import retrofit2.Response;
  * Created by admin on 11/10/2017.
  */
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment  implements OnDateSelectedListener {
 
     View rootView;
     String isConnection = null;
@@ -103,20 +112,23 @@ public class HomeFragment extends Fragment {
     View snackbarView;
     NetworkChangeReceiver networkChangeReceiver;
     ApiInterface apiInterface;
-    TextView txtBookAppointment,txtRemaingDays,txtHospitalName,txtAddress,txtTime,txtName,txtPhone;
+    TextView txtBookAppointment,txtRemaingDays,txtHospitalName,txtAddress,txtTime,txtName,txtPhone,txtDate;
     Button btnView;
-    ImageView imgScedule;
+    ImageView imgScedule,imgCal;
     ProgressBar progressHome;
     String sendUrl = "b";
     RelativeLayout rldUsertype2,rldUsertype1;
     String[] userDetails;
     LinearLayout ldtListExcel;
-    TextView txtDownload;
+    ImageView txtDownload;
     private RecyclerView recyclerView;
     private MyItemRecyclerViewAdapter mAdapter;
     private List<AllAppointmentDetails.Appoinmentslist> appointmentList = new ArrayList<>();
     TextView txtUpcoming;
-
+    int currentDate,currentMonth,endMonth,endDate;
+    String fromCal = "";
+    Calendar  c,cal;
+    String s_no = "";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -164,6 +176,17 @@ public class HomeFragment extends Fragment {
 
         recyclerView = (RecyclerView) rootView.findViewById(R.id.list);
 
+        imgCal= (ImageView) rootView.findViewById(R.id.imgCal);
+        imgCal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openDialogFromCalendar();
+
+            }
+        });
+
+        txtDate =(TextView) rootView.findViewById(R.id.txtDate);
+
         ldtMainView = (LinearLayout) rootView.findViewById(R.id.ldtMainView);
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
@@ -175,8 +198,9 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View view, int position) {
 
-               /* Intent intent = new Intent(getActivity(), ViewAppointmentActivity.class);
-                startActivity(intent);*/
+                Intent intent = new Intent(getActivity(), MoreItemsActivity.class);
+                intent.putExtra(Constants.fromMore,Constants.your_appointment);
+                startActivity(intent);
 
             }
 
@@ -187,7 +211,7 @@ public class HomeFragment extends Fragment {
             }
         }));
 
-        txtDownload = (TextView) rootView.findViewById(R.id.txtDownload);
+        txtDownload = (ImageView) rootView.findViewById(R.id.txtDownload);
         txtDownload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -207,12 +231,15 @@ public class HomeFragment extends Fragment {
             rldUsertype1.setVisibility(View.VISIBLE);
             rldUsertype2.setVisibility(View.GONE);
             txtDownload.setVisibility(View.GONE);
+            imgCal.setVisibility(View.GONE);
         }else if (userDetails[3].equals("admin")){
             rldUsertype2.setVisibility(View.VISIBLE);
             rldUsertype1.setVisibility(View.GONE);
             txtDownload.setVisibility(View.VISIBLE);
+            imgCal.setVisibility(View.VISIBLE);
         }
         txtDownload.setVisibility(View.GONE);
+        imgCal.setVisibility(View.GONE);
         TextView txtNoApp = (TextView) rootView.findViewById(R.id.txtNoApp);
         txtNoApp.setVisibility(View.GONE);
 
@@ -239,9 +266,80 @@ public class HomeFragment extends Fragment {
         ldtAddAppointment = (LinearLayout) rootView.findViewById(R.id.ldtAddAppointment);
 
 
-
-
         return rootView;
+    }
+
+    private void openDialogFromCalendar() {
+
+        final Dialog dialog = new Dialog(getActivity());
+        dialog.setContentView(R.layout.open_calendar_view_admin);
+        dialog.setCancelable(false);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(getActivity().getResources().getColor(R.color.white)));
+        Button btnOk =(Button) dialog.findViewById(R.id.btnOk);
+        btnOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+                sendUrl = "b";
+                getExcel();
+            }
+        });
+        MaterialCalendarView calendarView = (MaterialCalendarView) dialog.findViewById(R.id.calendarView);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            c = Calendar.getInstance();
+            cal = Calendar.getInstance(); //Get the Calendar instance
+            cal.add(Calendar.MONTH, 3);//Three months from now
+            cal.getTime();
+
+            int thisYear = c.get(Calendar.YEAR);
+            int thisMonth = c.get(Calendar.MONTH);
+
+            currentDate = c.get(Calendar.DATE);
+            currentMonth = c.get(Calendar.MONTH);
+
+            int end_year = cal.get(Calendar.YEAR);
+            int end_month = cal.get(Calendar.MONTH);
+
+            endDate = cal.get(Calendar.DATE);
+            endMonth = cal.get(Calendar.MONTH);
+
+
+            calendarView.state().edit()
+                    .setMinimumDate(CalendarDay.from(thisYear, thisMonth, 1))
+                    .setMaximumDate(CalendarDay.from(end_year, end_month, 31))
+                    .commit();
+
+        } else {
+            java.util.Calendar c = java.util.Calendar.getInstance();
+            java.util.Calendar cal = java.util.Calendar.getInstance();
+               /* c = Calendar.getInstance();
+                cal = Calendar.getInstance();*/ //Get the Calendar instance
+            cal.add(java.util.Calendar.MONTH, 3);//Three months from now
+            cal.getTime();
+
+            int thisYear = c.get(java.util.Calendar.YEAR);
+            int thisMonth = c.get(java.util.Calendar.MONTH);
+
+            currentDate = c.get(java.util.Calendar.DATE);
+            currentMonth = c.get(java.util.Calendar.MONTH);
+
+            int end_year = cal.get(java.util.Calendar.YEAR);
+            int end_month = cal.get(java.util.Calendar.MONTH);
+
+            endDate = cal.get(java.util.Calendar.DATE);
+            endMonth = cal.get(java.util.Calendar.MONTH);
+
+
+            calendarView.state().edit()
+                    .setMinimumDate(CalendarDay.from(thisYear, thisMonth, 1))
+                    .setMaximumDate(CalendarDay.from(end_year, end_month, 31))
+                    .commit();
+
+        }
+        calendarView.addDecorator(new PriviousDayDisableDecorator(getActivity(), currentDate, currentMonth, endDate, endMonth));
+//        calendarView.addDecorators(new  SelectedDayDecorator(30, R.color.red_not_avaliable));
+        calendarView.setOnDateChangedListener(this);
+        dialog.show();
     }
 
 
@@ -283,6 +381,7 @@ public class HomeFragment extends Fragment {
                                     if (appointmentLit.size() != 0) {
 //                                        for (int i = 0; i < appointmentLit.size(); i++) {
                                             TimeAndDateResponse.appoinments appoinments = appointmentLit.get(0);
+                                            s_no = appoinments.getSno();
                                             Log.e("appointment", appoinments.getDate());
                                             LayoutInflater layoutInflater =(LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                                             View addView = layoutInflater.inflate(R.layout.add_appointment_layout, null);
@@ -388,11 +487,12 @@ public class HomeFragment extends Fragment {
                                 }
                             }
                         }
+                        progressHome.setVisibility(View.GONE);
+
                     }
 
                     @Override
                     public void onFailure(Call<TimeAndDateResponse> call, Throwable t) {
-                        Log.e("failure", String.valueOf(t));
                     }
                 });
             }
@@ -526,6 +626,7 @@ public class HomeFragment extends Fragment {
             }
             else if (userDetails[3].equals("admin")) {
                 getExcel();
+                fromCal = "";
             }
 
         }
@@ -537,6 +638,8 @@ public class HomeFragment extends Fragment {
     public void getExcel()
     {
         if (isConnection.equals(Constants.NETWORK_CONNECTED)) {
+            progressHome.setVisibility(View.VISIBLE);
+            imgCal.setVisibility(View.VISIBLE);
             if (sendUrl.equals("b")) {
                 apiInterface = ApiClient.getClient().create(ApiInterface.class);
                 sendUrl = "send";
@@ -545,8 +648,16 @@ public class HomeFragment extends Fragment {
                 Calendar calCurr = Calendar.getInstance();
                 SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy");
                 final String formattedDate = df.format(calCurr.getTime());
+
                 try {
-                    jsonObject.put("adate",formattedDate);
+                    if (fromCal.equals("")) {
+                        jsonObject.put("adate", formattedDate);
+                        txtDate.setText(formattedDate);
+                    }
+                    else {
+                        jsonObject.put("adate", fromCal);
+                        txtDate.setText(fromCal);
+                    }
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -620,6 +731,7 @@ public class HomeFragment extends Fragment {
                                 }
 
                                 ldtListExcel.setVisibility(View.VISIBLE);
+                                progressHome.setVisibility(View.GONE);
                             }else
                             {
                                 rldUsertype2.setVisibility(View.VISIBLE);
@@ -627,17 +739,20 @@ public class HomeFragment extends Fragment {
                                 TextView txtNoApp = (TextView) rootView.findViewById(R.id.txtNoApp);
                                 txtNoApp.setVisibility(View.VISIBLE);
                                 txtDownload.setVisibility(View.GONE);
+                                ldtListExcel.setVisibility(View.GONE);
+                                progressHome.setVisibility(View.GONE);
                             }
                         }
+                        progressHome.setVisibility(View.GONE);
                     }
 
                     @Override
                     public void onFailure(Call<GetExcelModel> call, Throwable t) {
-                        Log.e("failure", String.valueOf(t));
                     }
                 });
             }
         }
+        progressHome.setVisibility(View.GONE );
     }
 
     public String getAddressString(String city)
@@ -713,6 +828,19 @@ public class HomeFragment extends Fragment {
         }catch(ActivityNotFoundException e){
             Toast.makeText(getActivity(), "No Application available to view PDF ", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
+        Date date5 = date.getDate();
+        DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+        DateFormat dateForRequest = new SimpleDateFormat("dd.MM.yyyy");
+        String reportDate = df.format(date5);
+        String dateRequest = dateForRequest.format(date5);
+        Log.e("date", String.valueOf(dateRequest));
+
+         fromCal = dateRequest;
+
     }
 
     private class DownloadFile extends AsyncTask<String, Integer, Void> {
@@ -856,7 +984,7 @@ public class HomeFragment extends Fragment {
 
                     @Override
                     public void onFailure(Call<TimeAndDateResponse> call, Throwable t) {
-                        Log.e("failure", String.valueOf(t));
+
                     }
                 });
 
@@ -930,7 +1058,8 @@ public class HomeFragment extends Fragment {
                                         appoinmentslist.setTime(appoinmentslist.getTime());
                                         appoinmentslist.setDate(appoinmentslist.getDate());
                                         appoinmentslist.setSno(appoinmentslist.getSno());
-                                        appointmentList.add(appoinmentslist);
+                                        if (!s_no.equals(appoinmentslist.getSno()))
+                                            appointmentList.add(appoinmentslist);
                                     }
                                     mAdapter = new MyItemRecyclerViewAdapter(appointmentList, getActivity());
                                     recyclerView.setAdapter(mAdapter);
@@ -968,17 +1097,60 @@ public class HomeFragment extends Fragment {
 
                             }
                         }
-
+                        progressHome.setVisibility(View.GONE);
                     }
 
                     @Override
                     public void onFailure(Call<AllAppointmentDetails> call, Throwable t) {
-                        Log.e("failure", String.valueOf(t));
+
                     }
                 });
             }
         }
     }
+
+    private static class PriviousDayDisableDecorator implements DayViewDecorator {
+
+        int currentDate;
+        int currentMonth;
+        int lastDate;
+        int lastMonth;
+        Context context;
+        public PriviousDayDisableDecorator(Context context,int currentDate,int currentMonth,int lastDate,int lastMonth)
+        {
+            this.currentDate = currentDate;
+            this.currentMonth = currentMonth;
+            this.lastDate = lastDate;
+            this.lastMonth = lastMonth;
+            this.context = context;
+        }
+
+        @Override
+        public boolean shouldDecorate(CalendarDay day) {
+
+            int date = day.getDay();
+            if (currentMonth == day.getMonth())
+                return date < currentDate;
+            else if (lastMonth == day.getMonth())
+            {
+                return date > lastDate;
+            }else {
+                return false;
+            }
+
+        }
+
+
+        @Override
+        public void decorate(DayViewFacade view) {
+            view.setDaysDisabled(true);
+         /*   if (view.areDaysDisabled())
+                view.setSelectionDrawable(ContextCompat.getDrawable(context,R.drawable.calendar_selected_date));*/
+
+        }
+
+    }
+
 }
 
 

@@ -202,6 +202,7 @@ public class SplashActivity extends AppCompatActivity implements  LoadImageTask.
             }
 
 
+
         }
 
         mRegistrationBroadcastReceiver = new BroadcastReceiver() {
@@ -230,7 +231,10 @@ public class SplashActivity extends AppCompatActivity implements  LoadImageTask.
 
 
 
-
+        if (!canAskPermission())
+            isPermission =true;
+        else
+            Log.e("check","false");
 
     }
 
@@ -441,6 +445,7 @@ public class SplashActivity extends AppCompatActivity implements  LoadImageTask.
     }
     private void checkEmail() {
 
+
         Log.e("permission check",""+isPermission);
         if (alreadySend.equals("") && getE_mail() != null && isPermission) {
             if (isConnection != null) {
@@ -507,7 +512,7 @@ public class SplashActivity extends AppCompatActivity implements  LoadImageTask.
 
                         @Override
                         public void onFailure(Call<RegisterRequestAndResponse> call, Throwable t) {
-                            Log.e("output", t.getMessage());
+
                         }
                     });
 

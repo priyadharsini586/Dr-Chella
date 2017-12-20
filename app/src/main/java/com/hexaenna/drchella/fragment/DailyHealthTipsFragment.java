@@ -184,7 +184,7 @@ public class DailyHealthTipsFragment extends Fragment implements MoreItemsActivi
 
                     @Override
                     public void onFailure(Call<HealthTipsDetails> call, Throwable t) {
-                        Log.e("failure", String.valueOf(t));
+
                     }
                 });
             }

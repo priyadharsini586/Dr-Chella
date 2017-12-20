@@ -333,7 +333,7 @@ public class ConformationFragment extends Fragment implements View.OnClickListen
 
                 @Override
                 public void onFailure(Call<TimeAndDateResponse> call, Throwable t) {
-                    Log.e("output", t.getMessage());
+
                 }
             });
 
@@ -420,7 +420,7 @@ public class ConformationFragment extends Fragment implements View.OnClickListen
 
                 @Override
                 public void onFailure(Call<TimeAndDateResponse> call, Throwable t) {
-                    Log.e("output", t.getMessage());
+
                 }
             });
 
@@ -539,7 +539,7 @@ public class ConformationFragment extends Fragment implements View.OnClickListen
 
                 @Override
                 public void onFailure(Call<String> call, Throwable t) {
-                    Log.e("Failed",  t.getMessage());
+
 
 
 
