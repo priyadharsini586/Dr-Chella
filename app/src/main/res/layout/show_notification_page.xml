@@ -12,12 +12,13 @@
         android:layout_height="500dp"
         android:orientation="vertical"
         android:layout_margin="20dp"
-        android:background="@android:color/white" >
+        android:background="@drawable/notification_app_curved_bg"
+        android:padding="5dp">
     <android.support.v4.view.ViewPager
         android:id="@+id/notifi_viewpager"
         android:layout_width="match_parent"
         android:layout_height="450dp"
-        />
+       />
     <!--<android.support.design.widget.TabLayout
         android:id="@+id/tab_layout"
         android:layout_width="match_parent"

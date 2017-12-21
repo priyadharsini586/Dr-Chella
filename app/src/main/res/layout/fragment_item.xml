@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="#f1f1f1"
+    android:background="@drawable/drop_shadow_card_view"
     >
 
     <LinearLayout

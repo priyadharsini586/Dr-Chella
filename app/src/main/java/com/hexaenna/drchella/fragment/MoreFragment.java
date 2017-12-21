@@ -143,7 +143,7 @@ public class MoreFragment extends Fragment {
 
     private void shareData() {
 
-        String shareBody = "Get Dr. Chella App book Your Appointment which is your convenient time..?";
+        String shareBody = "Would you like to have an appointment with Dr. Chella, Download the app following link https://play.google.com/store/apps/details?id=com.hexaenna.drchella&hl=en";
         Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
         sharingIntent.setType("text/plain");
         sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Subject Here");

@@ -22,6 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import com.hexaenna.drchella.Model.AllAppointmentDetails;
+import com.hexaenna.drchella.Model.AppointmentDetails;
 import com.hexaenna.drchella.Model.UserRegisterDetails;
 import com.hexaenna.drchella.R;
 import com.hexaenna.drchella.activity.ViewAppointmentActivity;
@@ -88,7 +89,11 @@ public class PastAppointmentFragment extends Fragment {
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), recyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-
+                AllAppointmentDetails.Appoinmentslist appoinmentslist = appointmentList.get(position);
+                AppointmentDetails appointmentDetails = AppointmentDetails.getInstance();
+                appointmentDetails.setCity(appoinmentslist.getCity_id());
+                appointmentDetails.setDate(appoinmentslist.getDate());
+                appointmentDetails.setTime(appoinmentslist.getTime());
                 Intent intent = new Intent(getActivity(), ViewAppointmentActivity.class);
                 startActivity(intent);
 

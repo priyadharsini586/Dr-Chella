@@ -38,6 +38,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -106,7 +107,7 @@ public class HomeFragment extends Fragment  implements OnDateSelectedListener {
 
     View rootView;
     String isConnection = null;
-    LinearLayout ldtNoAppoint,ldtAppointment,ldtAddAppointment,ldtRecycle,ldtMainView;
+    LinearLayout ldtNoAppoint,ldtAppointment,ldtAddAppointment,ldtRecycle;
     TSnackbar snackbar;
     RelativeLayout rldMainLayout;
     View snackbarView;
@@ -129,6 +130,7 @@ public class HomeFragment extends Fragment  implements OnDateSelectedListener {
     String fromCal = "";
     Calendar  c,cal;
     String s_no = "";
+    ScrollView scrView,ldtMainView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -186,8 +188,9 @@ public class HomeFragment extends Fragment  implements OnDateSelectedListener {
         });
 
         txtDate =(TextView) rootView.findViewById(R.id.txtDate);
+//        scrView= (ScrollView) rootView.findViewById(R.id.scrView);
 
-        ldtMainView = (LinearLayout) rootView.findViewById(R.id.ldtMainView);
+        ldtMainView = (ScrollView) rootView.findViewById(R.id.ldtMainView);
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
@@ -264,6 +267,7 @@ public class HomeFragment extends Fragment  implements OnDateSelectedListener {
         progressHome =(ProgressBar) rootView.findViewById(R.id.progressHome);
         progressHome.setVisibility(View.GONE);
         ldtAddAppointment = (LinearLayout) rootView.findViewById(R.id.ldtAddAppointment);
+
 
 
         return rootView;
@@ -438,6 +442,7 @@ public class HomeFragment extends Fragment  implements OnDateSelectedListener {
                                             addView.setOnClickListener(new View.OnClickListener() {
                                                 @Override
                                                 public void onClick(View v) {
+
                                                     Intent intent = new Intent(getActivity(), ViewAppointmentActivity.class);
                                                     startActivity(intent);
                                                 }
@@ -630,7 +635,9 @@ public class HomeFragment extends Fragment  implements OnDateSelectedListener {
             }
 
         }
-
+       /* if (ldtMainView != null) {
+            ldtMainView.fullScroll(View.FOCUS_UP);
+        }*/
 
     }
 
@@ -1068,6 +1075,10 @@ public class HomeFragment extends Fragment  implements OnDateSelectedListener {
                                     recyclerView.setVisibility(View.VISIBLE);
                                     txtUpcoming.setVisibility(View.VISIBLE);
                                     ldtRecycle.setVisibility(View.VISIBLE);
+                                    ldtRecycle.setFocusable(false);
+                                    ldtMainView.fullScroll(View.FOCUS_UP);
+                                    recyclerView.setFocusable(false);
+
                                 }else
                                 {
                                     recyclerView.setVisibility(View.GONE);
@@ -1149,6 +1160,27 @@ public class HomeFragment extends Fragment  implements OnDateSelectedListener {
 
         }
 
+    }
+
+    @Override
+    public void setMenuVisibility(boolean menuVisible) {
+        super.setMenuVisibility(menuVisible);
+        if (menuVisible)
+        {
+            Log.e("home visible","visible");
+            if (ldtMainView != null) {
+
+                ldtMainView.fullScroll(View.FOCUS_UP);
+                recyclerView.setFocusable(false);
+            }
+        }else
+        {
+            if (ldtMainView != null) {
+                Log.e("home visible", "invisible");
+                ldtMainView.fullScroll(View.FOCUS_UP);
+                recyclerView.setFocusable(false);
+            }
+        }
     }
 
 }

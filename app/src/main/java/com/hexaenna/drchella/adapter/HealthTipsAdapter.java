@@ -45,6 +45,8 @@ public class HealthTipsAdapter extends RecyclerView.Adapter<HealthTipsAdapter.My
         holder.title.setText(tipsDetails.getTitle());
         holder.time.setText(tipsDetails.getDt_time());
         holder.noti.setText(tipsDetails.getTips());
+
+
         imageLoader.DisplayImage(tipsDetails.getTips_pic(),holder.img,R.mipmap.ic_default_health_tips);
 
     }

@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 
 import com.hexaenna.drchella.R;
 import com.hexaenna.drchella.activity.MoreItemsActivity;
@@ -29,7 +30,7 @@ public class ProfileFragment extends Fragment implements MoreItemsActivity.OnBac
     WebView webHome;
     View view;
     LinearLayout ldtMain;
-
+    ScrollView scrView;
     public ProfileFragment() {
         // Required empty public constructor
     }
@@ -87,6 +88,11 @@ public class ProfileFragment extends Fragment implements MoreItemsActivity.OnBac
             imgContact.setVisibility(View.VISIBLE);
             ((MoreItemsActivity) getActivity()).setOnBackPressedListener(this);
         }
+        scrView= (ScrollView) view.findViewById(R.id.scrView);
+
+        scrView.fullScroll(View.FOCUS_UP);
+        webHome.setFocusable(false);
+
 
         return view;
     }
@@ -101,6 +107,41 @@ public class ProfileFragment extends Fragment implements MoreItemsActivity.OnBac
     @Override
     public void onBackPressed() {
         getActivity().finish();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (scrView != null) {
+
+            scrView.fullScroll(View.FOCUS_UP);
+
+        }
+
+    }
+
+    @Override
+    public void setMenuVisibility(boolean menuVisible) {
+        super.setMenuVisibility(menuVisible);
+        Log.e("profile visible","visible"+menuVisible);
+        if (menuVisible)
+        {
+            Log.e("profile visible","visible");
+            if (scrView != null) {
+
+                scrView.fullScroll(View.FOCUS_UP);
+                webHome.setFocusable(false);
+            }
+        }else
+        {
+            if (scrView != null) {
+
+                scrView.fullScroll(View.FOCUS_UP);
+                webHome.setFocusable(false);
+            }
+            Log.e("profile visible","invisible");
+        }
     }
 }
 

@@ -1,4 +1,4 @@
-<LinearLayout
+<ScrollView
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -6,16 +6,19 @@
     android:layout_height="match_parent"
    android:orientation="vertical"
     android:background="@android:color/white"
-    android:id="@+id/ldtMainView">
+    android:id="@+id/ldtMainView"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
 
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/ldtMainview">
-        <ScrollView
+      <!--  <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:id="@+id/scrView">-->
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -107,7 +110,8 @@
             android:layout_height="wrap_content"
             android:background="#f1f1f1"
             android:id="@+id/ldtRecycle"
-            android:visibility="gone">
+            android:visibility="gone"
+            android:paddingTop="5dp">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/list"
@@ -150,7 +154,7 @@
     </LinearLayout>
 
         </RelativeLayout>
-        </ScrollView>
+        <!--</ScrollView>-->
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -240,4 +244,4 @@
             android:id="@+id/progressHome"
             />
     </RelativeLayout>
-</LinearLayout>
+</ScrollView>

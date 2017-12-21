@@ -2,6 +2,8 @@ package com.hexaenna.drchella.Model;
 
 import android.graphics.Bitmap;
 
+import com.hexaenna.drchella.activity.BookAppointmentActivity;
+
 import java.util.ArrayList;
 
 /**
@@ -12,7 +14,7 @@ public class TestimonyDetails {
 
     Bitmap imageBitmap;
     public String content,status_code,status_message,success,testimonyPic,profilePic,name,from,date,time,email;
-    public boolean myMessage;
+    public boolean myMessage,approve;
     private static TestimonyDetails ourInstance = new TestimonyDetails();
     int colorCode;
     ArrayList<Tips>tips;
@@ -27,6 +29,14 @@ public class TestimonyDetails {
 
     public String getEmail() {
         return email;
+    }
+
+    public Boolean getApprove() {
+        return approve;
+    }
+
+    public void setApprove(Boolean approve) {
+        this.approve = approve;
     }
 
     public void setEmail(String email) {
@@ -152,6 +162,7 @@ public class TestimonyDetails {
     public class Tips
     {
         String email,content,dt_time,tstmny_pic,profile_pic,name;
+        Boolean approve;
 
         public String getName() {
             return name;
@@ -199,6 +210,14 @@ public class TestimonyDetails {
 
         public void setProfile_pic(String profile_pic) {
             this.profile_pic = profile_pic;
+        }
+
+        public Boolean getApprove() {
+            return approve;
+        }
+
+        public void setApprove(Boolean approve) {
+            this.approve = approve;
         }
     }
 }

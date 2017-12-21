@@ -9,7 +9,7 @@
     <string name="age">Age</string>
     <string name="city">City</string>
     <string name="mobile">Mobile number</string>
-    <string name="e_mail">E_Mail</string>
+    <string name="e_mail">E-Mail</string>
     <string name="register">Register</string>
     <string name="tamil_register">பதிவு</string>
     <string name="allfield">All fields are mandatory</string>
@@ -58,7 +58,7 @@
     <string name="english_place">Place:</string>
     <string name="english_place1">Place</string>
     <string name="tamil_place">இடம்:</string>
-    <string name="english_e_mail">Email id:</string>
+    <string name="english_e_mail">Email-id:</string>
     <string name="english_e_mail1">Email id</string>
     <string name="tamil_e_mail">மின்னஞ்சல் முகவரி்:</string>
     <string name="english_address">Short address:</string>
@@ -140,7 +140,7 @@
 
     <string name="patient_details">Patient Details</string>
     <string name="tamil_patient_details">நோயாளி விவரங்கள்</string>
-    <string name="conformation_of_your">Conformation Of Your Appointment</string>
+    <string name="conformation_of_your">Confirmation Of Your Appointment</string>
     <string name="tamil_conformation_of_your">உங்கள் பதிவு உறுதிப்படுத்தல்</string>
     <string name="info_description">Do you want to cancel the Appointment ?</string>
     <string name="tamil_info_description">பதிவு ரத்து செய்ய வேண்டுமா ?</string>
@@ -185,5 +185,5 @@
 
     <string name="no_video">To be uploaded..</string>
 
-    <string name="text_mobile_number">We sent mobile and E_Mail Validation, Please update boath below the fields</string>
+    <string name="text_mobile_number">We sent mobile and E_Mail Validation, Please update below the fields</string>
 </resources>

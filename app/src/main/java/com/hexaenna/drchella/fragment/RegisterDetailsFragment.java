@@ -62,7 +62,7 @@ import retrofit2.Response;
 public class RegisterDetailsFragment extends Fragment implements View.OnClickListener, BookAppointmentActivity.OnBackPressedListener {
 
     View mainView;
-    MaterialSpinner spnSirName;
+//    MaterialSpinner spnSirName;
     Toolbar mToolbar;
     LinearLayout ldtPreviosFragment,ldtNextFragment;
     EditText edtName,edtCity,edtE_mail,edtAge,edtPatientMobileNumber,edtApplicantNumber,edtPlace,edtAddress;
@@ -138,16 +138,16 @@ public class RegisterDetailsFragment extends Fragment implements View.OnClickLis
 
         }
 
-        spnSirName = (MaterialSpinner) mainView.findViewById(R.id.surname);
-        final String[] SPINNERLIST = {"Mr", "Mrs", "Ms", "Dr","Er"};
+//        spnSirName = (MaterialSpinner) mainView.findViewById(R.id.surname);
+//        final String[] SPINNERLIST = {"Mr", "Mrs", "Ms", "Dr","Er"};
 
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(),
-                R.layout.city_list_items, SPINNERLIST);
-        spnSirName.setAdapter(arrayAdapter);
-        spnSirName.setSelection(0);
-        spnSirName.setPaddingSafe(5,5,15,5);
-
-        spnSirName.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(),
+//                R.layout.city_list_items, SPINNERLIST);
+//        spnSirName.setAdapter(arrayAdapter);
+//        spnSirName.setSelection(0);
+//        spnSirName.setPaddingSafe(5,5,15,5);
+//
+     /*  spnSirName.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 sirNAme = SPINNERLIST[position];
@@ -157,7 +157,7 @@ public class RegisterDetailsFragment extends Fragment implements View.OnClickLis
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
-        });
+        });*/
 
 
         mToolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
@@ -263,7 +263,7 @@ public class RegisterDetailsFragment extends Fragment implements View.OnClickLis
     private void getNextFragment() {
 
 
-        registerBookDetails.setName(sirNAme +". "+edtName.getText().toString());
+        registerBookDetails.setName(edtName.getText().toString());
         registerBookDetails.setAge(edtAge.getText().toString());
         registerBookDetails.setApplicantNumber(edtApplicantNumber.getText().toString());
         registerBookDetails.setPatientNumber(edtPatientMobileNumber.getText().toString());
@@ -630,6 +630,14 @@ public class RegisterDetailsFragment extends Fragment implements View.OnClickLis
                         if (timeAndDateResponse.getStatus_code() != null) {
                             if (timeAndDateResponse.getStatus_code().equals(Constants.status_code1)) {
                                 Toast.makeText(getActivity(), timeAndDateResponse.getStatus_message(), Toast.LENGTH_SHORT).show();
+                                BookingDetails bookingDetails = BookingDetails.getInstance();
+                                bookingDetails.setCity(null);
+                                bookingDetails.setSelectedCity(null);
+                                bookingDetails.setSelectedDate(null);
+                                bookingDetails.setBookedList(null);
+                                bookingDetails.setBlockedList(null);
+                                bookingDetails.setSelectedPosition(-1);
+                                bookingDetails.setAppSeno(null);
                                 getActivity().finish();
                             } else if (timeAndDateResponse.getStatus_code().equals(Constants.status_code_1)) {
                                 if (timeAndDateResponse.getStatus_message() != null)
@@ -723,6 +731,7 @@ public class RegisterDetailsFragment extends Fragment implements View.OnClickLis
             countDownTimer.cancel();
             countDownTimer = null;
         }
+
 
         cancelAppointment();
     }

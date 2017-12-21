@@ -61,7 +61,7 @@ public class ConformationFragment extends Fragment implements View.OnClickListen
     View mainView;
     ProgressBar progressBar ;
     ApiInterface apiInterface;
-    String isConnection = null,erodeHos,coimHos,namHos,mayHos,kollihos,cheHos;
+    String isConnection = null,erodeHos,coimHos,namHos,mayHos,kollihos,cheHos,hosName;
     RelativeLayout relBar;
     TSnackbar snackbar;
     View snackbarView;
@@ -197,21 +197,28 @@ public class ConformationFragment extends Fragment implements View.OnClickListen
         if (bookingDetails.getSelectedCity().equals("1"))
         {
             hospital_name.setText(cheHos);
+            hosName = cheHos;
         }else if (bookingDetails.getSelectedCity().equals("2"))
         {
             hospital_name.setText(erodeHos);
+            hosName = erodeHos;
         }else if (bookingDetails.getSelectedCity().equals("3"))
         {
             hospital_name.setText(coimHos);
+            hosName = coimHos;
         }else if (bookingDetails.getSelectedCity().equals("4"))
         {
             hospital_name.setText(namHos);
+            hosName = namHos;
         }else if (bookingDetails.getSelectedCity().equals("5"))
         {
             hospital_name.setText(mayHos);
+            hosName = mayHos;
+
         }else if (bookingDetails.getSelectedCity().equals("6"))
         {
             hospital_name.setText(kollihos);
+            hosName = kollihos;
         }
         btnConform = (Button) mainView.findViewById(R.id.btnConform);
         btnConform.setOnClickListener(this);
@@ -522,7 +529,8 @@ public class ConformationFragment extends Fragment implements View.OnClickListen
     {
 
         BookingDetails bookingDetails  = BookingDetails.getInstance();
-        message =  "Dear "+ registerBookDetails.getName()+ ", You have an appointment with Dr.Chella on " +bookingDetails.getSelectedDate() + " at " + bookingDetails.getSelectedTime()+".GET WELL SOON";
+
+        message =  "Dear "+ registerBookDetails.getName()+ ", You have an appointment with Dr.Chella on " +bookingDetails.getSelectedDate() + " / " + bookingDetails.getSelectedTime()+" @ "+ hosName +". Please come before 15 mins of your appointment time. GET WELL SOON";
         if (isConnection.equals(Constants.NETWORK_CONNECTED)) {
             apiInterface = SendSMSApiClient.getClient().create(ApiInterface.class);
 

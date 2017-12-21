@@ -66,7 +66,7 @@ public class SettingFragment extends Fragment  implements MoreItemsActivity.OnBa
     String message = "";
     LinearLayout ldtchaneNumber,ldtchaneOtp;
     ProgressBar progress;
-    TextInputLayout txtInputMobileNumber;
+//    TextInputLayout txtInputMobileNumber;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -155,7 +155,7 @@ public class SettingFragment extends Fragment  implements MoreItemsActivity.OnBa
         final Dialog dialog = new Dialog(getActivity());
         dialog.setContentView(R.layout.updated_number);
         dialog.setCancelable(false);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(getActivity().getResources().getColor(R.color.white)));
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         btnOk = (Button) dialog.findViewById(R.id.btnOk);
         edtUpdatedNumber = (EditText) dialog.findViewById(R.id.edtUpdatedNumber);
         ldtchaneOtp = (LinearLayout) dialog.findViewById(R.id.ldtchaneOtp);
@@ -167,7 +167,7 @@ public class SettingFragment extends Fragment  implements MoreItemsActivity.OnBa
         progress = (ProgressBar) dialog.findViewById(R.id.progress);
         progress.setVisibility(View.GONE);
         btnSend = (Button) dialog.findViewById(R.id.btnSend);
-        txtInputMobileNumber = (TextInputLayout) dialog.findViewById(R.id.txtInputMobileNumber);
+//        txtInputMobileNumber = (TextInputLayout) dialog.findViewById(R.id.txtInputMobileNumber);
         Button btnCancel = (Button) dialog.findViewById(R.id.btnCancel);
 
         isMobileValidate();
@@ -211,14 +211,14 @@ public class SettingFragment extends Fragment  implements MoreItemsActivity.OnBa
 
                 if (s.length() < 10)
                 {
-                    txtInputMobileNumber.setErrorEnabled(true);
-                    txtInputMobileNumber.setError("Enter your correct mobile number");
+//                    txtInputMobileNumber.setErrorEnabled(true);
+//                    txtInputMobileNumber.setError("Enter your correct mobile number");
                     isMblNum[0] = false;
 
                 }else
                 {
                     isMblNum[0] = true;
-                    txtInputMobileNumber.setErrorEnabled(false);
+//                    txtInputMobileNumber.setErrorEnabled(false);
                 }
             }
 
@@ -257,7 +257,7 @@ public class SettingFragment extends Fragment  implements MoreItemsActivity.OnBa
     {
 
         UserRegisterDetails userRegisterDetails = UserRegisterDetails.getInstance();
-        message = userRegisterDetails.getOtp() +" is your conformation code.don't share with others";
+        message = userRegisterDetails.getOtp() +" is your confirmation code. Don't share with others";
         if (isConnection.equals(Constants.NETWORK_CONNECTED)) {
             apiInterface = SendSMSApiClient.getClient().create(ApiInterface.class);
 

@@ -80,6 +80,7 @@ public class TestimonyFragment extends Fragment implements MoreItemsActivity.OnB
     ApiInterface apiInterface;
     String isConnection = null,send = "";
     ProgressBar progress;
+    RelativeLayout rldReview,rldNoReview;
 
     public static Activity TestimonyFragment()
     {
@@ -95,6 +96,10 @@ public class TestimonyFragment extends Fragment implements MoreItemsActivity.OnB
         group = view.findViewById(R.id.group);
         progress = (ProgressBar) view.findViewById(R.id.progress);
         progress.setVisibility(View.GONE);
+        rldNoReview = (RelativeLayout) view.findViewById(R.id.rldNoReview);
+        rldNoReview.setVisibility(View.GONE);
+        rldReview = (RelativeLayout) view.findViewById(R.id.rldReview);
+        rldReview.setVisibility(View.GONE);
         group.hide();
         context = getActivity();
         imgSendImage.setOnClickListener(new View.OnClickListener() {
@@ -327,6 +332,7 @@ public class TestimonyFragment extends Fragment implements MoreItemsActivity.OnB
                                     int randomAndroidColor = androidColors[new Random().nextInt(androidColors.length)];
 
                                     TestimonyDetails details = new TestimonyDetails();
+                                    details.setApprove(tips.getApprove());
                                     details.setContent(tips.getContent());
                                     details.setMyMessage(myMessage);
                                     details.setName(tips.getName());
@@ -342,8 +348,21 @@ public class TestimonyFragment extends Fragment implements MoreItemsActivity.OnB
 
                                 }
                                 send = "send";
+                                list_msg.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        // Select the last row so it will scroll into view...
+                                        list_msg.setSelection(adapter.getCount() - 1);
+                                    }
+                                });
                                 Collections.reverse(ChatBubbles);
                                 adapter.notifyDataSetChanged();
+                                progress.setVisibility(View.GONE);
+                                rldNoReview.setVisibility(View.GONE);
+                                rldReview.setVisibility(View.VISIBLE);
+                            }else {
+                                rldNoReview.setVisibility(View.VISIBLE);
+                                rldReview.setVisibility(View.GONE);
                                 progress.setVisibility(View.GONE);
                             }
                         }
@@ -420,7 +439,8 @@ public class TestimonyFragment extends Fragment implements MoreItemsActivity.OnB
                                 imgCloseImg.performClick();
                                 progress.setVisibility(View.GONE);
 
-
+                                rldNoReview.setVisibility(View.GONE);
+                                rldReview.setVisibility(View.VISIBLE);
                             }
                         }
                     }

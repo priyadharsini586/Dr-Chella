@@ -157,7 +157,7 @@ public class ViewAppointmentActivity extends AppCompatActivity {
 
                     txtName.setText(appointmentDetails.getPatient_name());
                     txtTime.setText(appointmentDetails.getTime());
-                    txtConfirmationNumber.setText("Conformation No : "+appointmentDetails.getConfm_no());
+                    txtConfirmationNumber.setText("Confirmation No : "+appointmentDetails.getConfm_no());
                     txtTransactionNumber.setText("Transaction Time : "+appointmentDetails.getBooking_time());
                     DateFormat dateForRequest = new SimpleDateFormat("dd.MM.yyyy");
                     Date newDate= null;

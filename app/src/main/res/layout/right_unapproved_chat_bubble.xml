@@ -23,7 +23,7 @@
         android:background="@drawable/bubble_right"
         android:layout_alignParentRight="true"
         android:padding="10dp"
-        android:minWidth="150dp"
+        android:minWidth="180dp"
         android:id="@+id/layBg"
         >
 
@@ -65,18 +65,30 @@
            android:text="hi"
            android:maxWidth="250dp" />
 
+
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:paddingTop="5dp">
+
+            android:paddingBottom="5dp">
             <TextView
-                android:id="@+id/txtTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#d3d3d3"
-                android:text="07.12 PM"
+                android:textColor="#939393"
+                android:text="Waiting for Approval"
                 android:textSize="@dimen/testimony_time"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="end">
+                <TextView
+                    android:id="@+id/txtTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#939393"
+                    android:text="07.12 PM"
+                    android:textSize="@dimen/testimony_time"/>
+            </LinearLayout>
         </LinearLayout>
 </LinearLayout>
 </LinearLayout>

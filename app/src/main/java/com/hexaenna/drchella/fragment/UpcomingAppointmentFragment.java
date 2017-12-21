@@ -22,6 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import com.hexaenna.drchella.Model.AllAppointmentDetails;
+import com.hexaenna.drchella.Model.AppointmentDetails;
 import com.hexaenna.drchella.Model.UserRegisterDetails;
 import com.hexaenna.drchella.R;
 import com.hexaenna.drchella.activity.ViewAppointmentActivity;
@@ -89,7 +90,11 @@ public class UpcomingAppointmentFragment extends Fragment {
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), recyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-
+                AllAppointmentDetails.Appoinmentslist appoinmentslist = appointmentList.get(position);
+                AppointmentDetails appointmentDetails = AppointmentDetails.getInstance();
+                appointmentDetails.setCity(appoinmentslist.getCity_id());
+                appointmentDetails.setDate(appoinmentslist.getDate());
+                appointmentDetails.setTime(appoinmentslist.getTime());
                 Intent intent = new Intent(getActivity(), ViewAppointmentActivity.class);
                 startActivity(intent);
 
@@ -113,7 +118,7 @@ public class UpcomingAppointmentFragment extends Fragment {
 
                 apiInterface = ApiClient.getClient().create(ApiInterface.class);
                 JSONObject jsonObject = new JSONObject();
-
+                progress.setVisibility(View.VISIBLE);
                 try {
                     UserRegisterDetails userRegisterDetails = UserRegisterDetails.getInstance();
                     jsonObject.put("user_email", userRegisterDetails.getE_mail());
@@ -147,10 +152,12 @@ public class UpcomingAppointmentFragment extends Fragment {
                                 Log.e("size","" +appointmentList.size());
                                 recyclerView.setVisibility(View.VISIBLE);
                                 txtNodata.setVisibility(View.GONE);
+                                progress.setVisibility(View.GONE);
                             }else if (allAppointmentDetails.getStatus_code().equals(Constants.status_code0))
                             {
                                 recyclerView.setVisibility(View.GONE);
                                 txtNodata.setVisibility(View.VISIBLE);
+                                progress.setVisibility(View.GONE);
                             }
                         }
 

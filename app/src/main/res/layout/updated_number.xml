@@ -2,11 +2,16 @@
 <RelativeLayout
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="300dp"
-    android:layout_height="300dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="20dp">
+    android:background="@android:color/transparent" >
 
+    <RelativeLayout
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+         android:padding="5dp"
+        android:background="@drawable/notification_app_curved_bg">
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -21,7 +26,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:visibility="gone"
+        android:visibility="visible"
         android:id="@+id/ldtchaneOtp"
         android:gravity="center">
     <LinearLayout
@@ -34,33 +39,36 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Updated Number:"
+            android:text="Update  your Phone Number:"
             android:layout_weight="1"
             android:gravity="center"
             android:textColor="@color/black"
             android:textSize="@dimen/edit_text_size"
             android:layout_gravity="center"/>
 
-        <android.support.design.widget.TextInputLayout
+       <!-- <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/txtInputMobileNumber"
             android:layout_gravity="center"
             android:gravity="center"
             android:layout_weight="1"
-            app:errorTextAppearance="@style/error_appearance">
+            app:errorTextAppearance="@style/error_appearance">-->
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number"
                 android:hint="@string/mobile_number"
-                style="@style/App_EditTextStyle"
-                android:background="@android:color/transparent"
-                android:layout_gravity="center"
+                android:background="@drawable/drop_shadow_card_view"
                 android:id="@+id/edtUpdatedNumber"
                 android:maxLength="10"
-                android:paddingLeft="5dp"/>
-        </android.support.design.widget.TextInputLayout>
+                android:paddingLeft="5dp"
+                android:layout_weight="1"
+                android:padding="10dp"
+                android:textColor="@color/black"
+                style="@style/App_EditTextStyle_email_mbl"
+                android:textColorHint="#D3D3D3"/>
+        <!--</android.support.design.widget.TextInputLayout>-->
 
     </LinearLayout>
     <LinearLayout
@@ -110,7 +118,8 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:paddingTop="10dp"
-        android:layout_below="@+id/txtMsg">
+        android:layout_below="@+id/txtMsg"
+        android:visibility="gone">
 
         <TextView
             android:layout_width="match_parent"
@@ -212,4 +221,5 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:id="@+id/progress"/>
+    </RelativeLayout>
 </RelativeLayout>

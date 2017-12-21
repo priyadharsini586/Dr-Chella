@@ -65,7 +65,12 @@ public class TestimonyAdapter extends BaseAdapter {
 
         UserRegisterDetails userRegisterDetails = UserRegisterDetails.getInstance();
         if (chatBubble.getEmail().equals(userRegisterDetails.getE_mail())) {
-            layoutResource = R.layout.right_chat_bubble;
+            if (chatBubble.getApprove()) {
+                layoutResource = R.layout.right_approved_chat_bubble;
+            }else
+            {
+                layoutResource = R.layout.right_unapproved_chat_bubble;
+            }
             Log.e("right","right");
         } else {
             layoutResource = R.layout.left_bubble_chat;
