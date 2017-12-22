@@ -530,7 +530,7 @@ public class ConformationFragment extends Fragment implements View.OnClickListen
 
         BookingDetails bookingDetails  = BookingDetails.getInstance();
 
-        message =  "Dear "+ registerBookDetails.getName()+ ", You have an appointment with Dr.Chella on " +bookingDetails.getSelectedDate() + " / " + bookingDetails.getSelectedTime()+" @ "+ hosName +". Please come before 15 mins of your appointment time. GET WELL SOON";
+        message =  "Dear "+ registerBookDetails.getName()+ ", You have an appointment with Dr.Chella on " +bookingDetails.getSelectedDate() + " / " + bookingDetails.getSelectedTime()+" @ "+ hosName +". Please come before 15 mins your appointment time. GET WELL SOON";
         if (isConnection.equals(Constants.NETWORK_CONNECTED)) {
             apiInterface = SendSMSApiClient.getClient().create(ApiInterface.class);
 
