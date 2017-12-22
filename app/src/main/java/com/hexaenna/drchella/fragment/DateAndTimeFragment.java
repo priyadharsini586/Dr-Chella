@@ -272,7 +272,7 @@ public class DateAndTimeFragment extends Fragment implements View.OnClickListene
                     selectDate = dateRequest;
                     if (item[0].equals("Erode") || item[0].equals("ஈரோடு"))
                     {
-                        if (date.getCalendar().get(java.util.Calendar.DAY_OF_WEEK) == java.util.Calendar.FRIDAY) {
+                        if (date.getCalendar().get(java.util.Calendar.DAY_OF_WEEK) == java.util.Calendar.FRIDAY || date.getCalendar().get(java.util.Calendar.DAY_OF_WEEK) == java.util.Calendar.SUNDAY) {
                             Toast.makeText(getActivity(), "Doctor not avaiable", Toast.LENGTH_SHORT).show();
                             gridView.setVisibility(View.GONE);
                         }else
@@ -1742,7 +1742,7 @@ public class DateAndTimeFragment extends Fragment implements View.OnClickListene
                 if (currentMonth == day.getMonth()) {
                     if (currentDate <= day.getDay())
                     {
-                        if (day.getCalendar().get(java.util.Calendar.DAY_OF_WEEK) == java.util.Calendar.FRIDAY) {
+                        if (day.getCalendar().get(java.util.Calendar.DAY_OF_WEEK) == java.util.Calendar.FRIDAY || day.getCalendar().get(java.util.Calendar.DAY_OF_WEEK) == java.util.Calendar.SUNDAY ) {
                             return true;
                         }else
                         {
@@ -1753,7 +1753,7 @@ public class DateAndTimeFragment extends Fragment implements View.OnClickListene
                     }
                 } else if (lastMonth == day.getMonth()){
                     if (lastDate >= day.getDay()) {
-                        if (day.getCalendar().get(java.util.Calendar.DAY_OF_WEEK) == java.util.Calendar.FRIDAY) {
+                        if (day.getCalendar().get(java.util.Calendar.DAY_OF_WEEK) == java.util.Calendar.FRIDAY || day.getCalendar().get(java.util.Calendar.DAY_OF_WEEK) == java.util.Calendar.SUNDAY) {
                             return true;
                         }else
                         {
@@ -1766,7 +1766,7 @@ public class DateAndTimeFragment extends Fragment implements View.OnClickListene
 
                 }else
                 {
-                    if (day.getCalendar().get(java.util.Calendar.DAY_OF_WEEK) == java.util.Calendar.FRIDAY) {
+                    if (day.getCalendar().get(java.util.Calendar.DAY_OF_WEEK) == java.util.Calendar.FRIDAY || day.getCalendar().get(java.util.Calendar.DAY_OF_WEEK) == java.util.Calendar.SUNDAY) {
                         return true;
                     }else
                     {

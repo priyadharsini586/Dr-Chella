@@ -252,10 +252,9 @@ public class RegisterDetailsFragment extends Fragment implements View.OnClickLis
         switch (v.getId())
         {
             case R.id.ldtNextFragment:
-               /* if (isNameEmpty() && isAgeValidate() && isGender[0] && isApplicantMobileValidate() && isPatientMobileValidate() && isPlaceEmpty() && isE_mailValidate() && isAddressEmpty()) {
+                if (isNameEmpty() && isAgeValidate() && isGender[0] && isApplicantMobileValidate() && isPatientMobileValidate() && isPlaceEmpty() && isE_mailValidate() && isAddressEmpty()) {
                     getNextFragment();
-                }*/
-                getNextFragment();
+                }
                 break;
         }
     }

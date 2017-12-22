@@ -23,7 +23,7 @@ public class ConsultationLocationFragment extends Fragment implements MoreItemsA
     View view;
     ArrayList<String> hospitalName,hospitalAddress,hospitalNum;
     LinearLayout mainView;
-    TextView txtHospitalName,txtHospitalAddress,txtHospitalNum;
+    TextView txtHospitalName,txtHospitalAddress,txtHospitalNum,txtHospitalName_content;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -42,6 +42,12 @@ public class ConsultationLocationFragment extends Fragment implements MoreItemsA
             txtHospitalName = (TextView) consulation.findViewById(R.id.txtHospitalName);
             txtHospitalAddress = (TextView) consulation.findViewById(R.id.txtHospitalAddress);
             txtHospitalNum = (TextView) consulation.findViewById(R.id.txtHospitalNum);
+            txtHospitalName_content = (TextView) consulation.findViewById(R.id.txtHospitalName_content);
+            if (getHospitalName().size()-1 == i)
+            {
+                txtHospitalName_content.setVisibility(View.VISIBLE);
+                txtHospitalName_content.setText("(Peripheral Center)");
+            }
             txtHospitalName.setText(hospitalName.get(i));
             txtHospitalName.setTextColor(randomAndroidColor);
             txtHospitalAddress.setText(hospitalAddress.get(i));
