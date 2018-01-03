@@ -206,6 +206,7 @@ public class RegisterDetailsFragment extends Fragment implements View.OnClickLis
         radioSexGroup = (RadioGroup) mainView.findViewById(R.id.radioSexGroup);
 
         relBar = (ScrollView) mainView.findViewById(R.id.relBar);
+        relBar.fullScroll(View.FOCUS_UP);
 
          progressRegister = (ProgressBar) mainView.findViewById(R.id.progressRegister);
         progressRegister.setVisibility(View.GONE);

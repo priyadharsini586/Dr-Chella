@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.icu.util.Calendar;
 import android.net.ConnectivityManager;
 import android.os.Build;
@@ -49,6 +50,7 @@ import com.hexaenna.drchella.Model.BookingDetails;
 import com.hexaenna.drchella.Model.TimeAndDateResponse;
 import com.hexaenna.drchella.R;
 import com.hexaenna.drchella.activity.BookAppointmentActivity;
+import com.hexaenna.drchella.activity.HomeActivity;
 import com.hexaenna.drchella.adapter.CityAdapter;
 import com.hexaenna.drchella.adapter.TimeSlotAdapter;
 import com.hexaenna.drchella.api.ApiClient;
@@ -115,6 +117,7 @@ public class DateAndTimeFragment extends Fragment implements View.OnClickListene
     BookingDetails bookingDetails = BookingDetails.getInstance();
     private int previousSelectedPosition = -1;
     ArrayList<String> bookedListArray,blockedListArray;
+    boolean doubleBackToExitPressedOnce = false;
 
     @TargetApi(Build.VERSION_CODES.N)
     @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
@@ -1151,7 +1154,25 @@ public class DateAndTimeFragment extends Fragment implements View.OnClickListene
 
         }
 
-        BookAppointmentActivity.ldtBookingDetails.setBackgroundColor(getActivity().getResources().getColor(R.color.book_title_orange));
+
+        DateFormat df = new SimpleDateFormat("dd MMM yyyy");
+
+        String str = "";
+        DateFormat inputFormat = new SimpleDateFormat("dd.MM.yyyy");
+        try {
+            Date date = inputFormat.parse(selectDate);
+            str = df.format(date);
+           Log.e("output",str);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+//        String reportDate = df.format(selectDate);
+
+
+        showAlert(getActivity(),"Alert","Do you want to confirm and fix this appointment on "+ str + " / "+selectTime + " at "+ item[0] +" ?");
+
+
+       /* BookAppointmentActivity.ldtBookingDetails.setBackgroundColor(getActivity().getResources().getColor(R.color.book_title_orange));
         BookAppointmentActivity.txtBooking.setTextColor(getActivity().getResources().getColor(R.color.white));
 
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
@@ -1159,22 +1180,39 @@ public class DateAndTimeFragment extends Fragment implements View.OnClickListene
         fragmentTransaction.setCustomAnimations(R.anim.right_in, R.anim.left_out);
         fragmentTransaction.replace(R.id.fragment_container, new RegisterDetailsFragment(), "BOOKING_ FRAGMENT");
         fragmentTransaction.addToBackStack("BOOKING_ FRAGMENT");
-        fragmentTransaction.commit();
+        fragmentTransaction.commit();*/
     }
 
     @Override
     public void onBackPressed() {
-        BookingDetails bookingDetails = BookingDetails.getInstance();
-        bookingDetails.setCity(null);
-        bookingDetails.setSelectedCity(null);
-        bookingDetails.setSelectedDate(null);
-        bookingDetails.setBookedList(null);
-        bookingDetails.setBlockedList(null);
-        bookingDetails.setSelectedPosition(-1);
-        bookingDetails.setAppSeno(null);
-        if (RegisterDetailsFragment.countDownTimer != null)
-            RegisterDetailsFragment.countDownTimer.cancel();
-        getActivity().finish();
+        if (dialog.isShowing()) {
+            BookingDetails bookingDetails = BookingDetails.getInstance();
+            bookingDetails.setCity(null);
+            bookingDetails.setSelectedCity(null);
+            bookingDetails.setSelectedDate(null);
+            bookingDetails.setBookedList(null);
+            bookingDetails.setBlockedList(null);
+            bookingDetails.setSelectedPosition(-1);
+            bookingDetails.setAppSeno(null);
+            if (RegisterDetailsFragment.countDownTimer != null)
+                RegisterDetailsFragment.countDownTimer.cancel();
+            getActivity().finish();
+        }else
+        {
+            BookingDetails bookingDetails = BookingDetails.getInstance();
+            bookingDetails.setCity(null);
+            bookingDetails.setSelectedCity(null);
+            bookingDetails.setSelectedDate(null);
+            bookingDetails.setBookedList(null);
+            bookingDetails.setBlockedList(null);
+            bookingDetails.setSelectedPosition(-1);
+            bookingDetails.setAppSeno(null);
+            gridView.setVisibility(View.GONE);
+            if (RegisterDetailsFragment.countDownTimer != null)
+                RegisterDetailsFragment.countDownTimer.cancel();
+
+            showDailog(getActivity());
+        }
 
     }
 
@@ -1985,5 +2023,48 @@ public class DateAndTimeFragment extends Fragment implements View.OnClickListene
 
     }
 
+
+    public void showAlert(Context context, String title, String msg)
+    {
+        final Dialog dialog = new Dialog(context);
+//        dialog.setTitle(title);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE); //before
+        dialog.setContentView(R.layout.show_emergency_dialog);
+        dialog.setCancelable(false);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(context.getResources().getColor(R.color.white)));
+        LinearLayout ldtCancel = (LinearLayout) dialog.findViewById(R.id.ldtCancel);
+        ldtCancel.setVisibility(View.VISIBLE);
+        Button btnOk = (Button) dialog.findViewById(R.id.btnOk);
+        Button btnCancel = (Button) dialog.findViewById(R.id.btnCancel);
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        btnOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                BookAppointmentActivity.ldtBookingDetails.setBackgroundColor(getActivity().getResources().getColor(R.color.book_title_orange));
+                BookAppointmentActivity.txtBooking.setTextColor(getActivity().getResources().getColor(R.color.white));
+
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.setCustomAnimations(R.anim.right_in, R.anim.left_out);
+                fragmentTransaction.replace(R.id.fragment_container, new RegisterDetailsFragment(), "BOOKING_ FRAGMENT");
+                fragmentTransaction.addToBackStack("BOOKING_ FRAGMENT");
+                fragmentTransaction.commit();
+                dialog.dismiss();
+            }
+        });
+        TextView txtTitle = (TextView)  dialog.findViewById(R.id.txtTitle);
+        txtTitle.setText(title);
+        TextView txtMessage = (TextView)  dialog.findViewById(R.id.txtMessage);
+        txtMessage.setText(msg);
+        dialog.show();
+
+
+    }
 }
 

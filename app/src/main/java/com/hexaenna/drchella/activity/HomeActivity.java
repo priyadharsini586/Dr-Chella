@@ -33,6 +33,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -602,7 +603,8 @@ public class HomeActivity extends AppCompatActivity implements  LoadImageTask.Li
     public void showAlert(Context context, String title, String msg)
     {
         final Dialog dialog = new Dialog(context);
-        dialog.setTitle(title);
+//        dialog.setTitle(title);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE); //before
         dialog.setContentView(R.layout.show_emergency_dialog);
         dialog.setCancelable(false);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(context.getResources().getColor(R.color.white)));
