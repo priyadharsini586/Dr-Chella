@@ -256,7 +256,7 @@ public class ConformationFragment extends Fragment implements View.OnClickListen
         switch (v.getId())
         {
             case R.id.btnConform:
-                conform();
+                askConform();
                 break;
 
             case R.id.cancelbutton:
@@ -517,6 +517,30 @@ public class ConformationFragment extends Fragment implements View.OnClickListen
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
+
+            }
+        });
+        builder.show();
+    }
+
+    private void askConform() {
+
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.MyDialogTheme);
+        builder.setTitle(title);
+        builder.setMessage("Do you want confirm the Appointment?");
+        builder.setPositiveButton(ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                dialog.cancel();
+                conform();
+            }
+        });
+        builder.setNegativeButton(cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+                cancelAppointment();
 
             }
         });

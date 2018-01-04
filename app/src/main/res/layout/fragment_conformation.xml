@@ -403,11 +403,17 @@
 
             </LinearLayout>
         </LinearLayout>
-
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="*** Please come 15 mins before your Appointment time"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:textSize="13sp"
+            android:padding="15dp"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="20dp"
             android:paddingBottom="20dp"
             android:orientation="horizontal"
             android:weightSum="1">
@@ -452,13 +458,7 @@
                 android:textSize="12sp"/>
         </LinearLayout>
         </LinearLayout>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="*** Please come 15 mins before your Appointment time"
-            android:textColor="@color/black"
-            android:gravity="center"
-            android:textSize="13sp"/>
+
     </LinearLayout>
 
     <ProgressBar
