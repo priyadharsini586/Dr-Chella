@@ -41,7 +41,7 @@ public class TestimonyAdapter extends BaseAdapter {
     }
     @Override
     public int getCount() {
-        return messages.size();
+        return messages != null? messages.size() : 0;     
     }
 
     @Override

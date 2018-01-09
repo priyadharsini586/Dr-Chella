@@ -129,7 +129,7 @@ public class HomeFragment extends Fragment  implements OnDateSelectedListener {
     int currentDate,currentMonth,endMonth,endDate;
     String fromCal = "";
     Calendar  c,cal;
-    String s_no = "";
+    String s_no = "",selectDate;
     ScrollView scrView,ldtMainView;
 
     @Override
@@ -219,7 +219,7 @@ public class HomeFragment extends Fragment  implements OnDateSelectedListener {
             @Override
             public void onClick(View v) {
                 checkPdf();
-               /* */
+
 
             }
         });
@@ -659,10 +659,12 @@ public class HomeFragment extends Fragment  implements OnDateSelectedListener {
                 try {
                     if (fromCal.equals("")) {
                         jsonObject.put("adate", formattedDate);
+                        selectDate = formattedDate;
                         txtDate.setText(formattedDate);
                     }
                     else {
                         jsonObject.put("adate", fromCal);
+                        selectDate = fromCal;
                         txtDate.setText(fromCal);
                     }
 
@@ -804,8 +806,14 @@ public class HomeFragment extends Fragment  implements OnDateSelectedListener {
     {
 
         boolean fileExists =  new File(Environment.getExternalStorageDirectory() + "/chella/" +  pdfName).isFile();
-        if (fileExists)
-            view(pdfName);
+        if (fileExists) {
+            File file = new File(Environment.getExternalStorageDirectory() + "/chella/" +  pdfName);
+            file.delete();
+            getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+            new DownloadFile().execute(url,pdfName);
+//            view(pdfName);
+        }
         else {
 //            ldtProgressBar.setVisibility(View.VISIBLE);
             getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
@@ -928,6 +936,7 @@ public class HomeFragment extends Fragment  implements OnDateSelectedListener {
 //                ldtProgressBar.setVisibility(View.GONE);
                 Toast.makeText(getActivity(),"Download Completed",Toast.LENGTH_LONG).show();
                 getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                view(fileName);
             }
 
         }
@@ -960,7 +969,7 @@ public class HomeFragment extends Fragment  implements OnDateSelectedListener {
             final String formattedDate = df.format(calCurr.getTime());
             JSONObject jsonObject = new JSONObject();
             try {
-                jsonObject.put("adate",formattedDate);
+                jsonObject.put("adate",selectDate);
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -978,9 +987,9 @@ public class HomeFragment extends Fragment  implements OnDateSelectedListener {
                                 Calendar calCurr = Calendar.getInstance();
                                 SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy");
                                 final String formattedDate = df.format(calCurr.getTime());
-                                String excelNAme = Constants.GET_EXCEL + "{\"adate\":"+ "\""+formattedDate + "\"}";
+                                String excelNAme = Constants.GET_EXCEL + "{\"adate\":"+ "\""+selectDate + "\"}";
                                 Log.e("excel",excelNAme);
-                                download(excelNAme,"Appointments_report_"+formattedDate+".pdf");
+                                download(excelNAme,"Appointments_report_"+selectDate+".pdf");
 
                             }else if (timeAndDateResponse.equals(Constants.status_code0)) {
                                 Toast.makeText(getActivity(), timeAndDateResponse.getStatus_message(), Toast.LENGTH_LONG).show();

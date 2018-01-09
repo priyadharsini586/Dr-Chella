@@ -154,7 +154,8 @@ public class DailyHealthTipsFragment extends Fragment implements MoreItemsActivi
                                         String lang = tips.getLang();
                                         String appLang = " ";
                                         DatabaseHandler databaseHandler = new DatabaseHandler(getActivity());
-                                        if (databaseHandler.getContact("0").equals("English"))
+                                        appLang = "2";
+                                       /* if (databaseHandler.getContact("0").equals("English"))
                                         {
 
                                             appLang = "2";
@@ -162,7 +163,7 @@ public class DailyHealthTipsFragment extends Fragment implements MoreItemsActivi
                                         }else if (databaseHandler.getContact("0").equals("Tamil"))
                                         {
                                             appLang = "1";
-                                        }
+                                        }*/
 
                                         tips.setDt_time(formattedDate);
                                         tips.setTitle(tips.getTitle());
