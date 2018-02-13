@@ -28,6 +28,7 @@ import com.hexaenna.drchella.Db.DatabaseHandler;
 import com.hexaenna.drchella.Model.HealthTipsDetails;
 import com.hexaenna.drchella.Model.UserRegisterDetails;
 import com.hexaenna.drchella.R;
+import com.hexaenna.drchella.activity.HistoryActivity;
 import com.hexaenna.drchella.activity.MoreItemsActivity;
 import com.hexaenna.drchella.adapter.MoreAdapter;
 import com.hexaenna.drchella.api.ApiClient;
@@ -134,6 +135,10 @@ public class MoreFragment extends Fragment {
                 {
                     intent.putExtra(Constants.fromMore,Constants.SETTING);
                     startActivity(intent);
+                }else if (textPosition.equals("History"))
+                {
+                    Intent history_intent = new Intent(getActivity() , HistoryActivity.class);
+                    startActivity(history_intent);
                 }
             }
         });
@@ -162,6 +167,9 @@ public class MoreFragment extends Fragment {
         moreList.add("Daily Health Tips");
         moreList.add("Testimony");
         moreList.add("Change Language");
+        if (userDetails[3].equals("admin")) {
+            moreList.add("History");
+        }
         moreList.add("Contact");
         moreList.add("Refer Friends");
         moreList.add("Terms And Conditions");
@@ -180,6 +188,9 @@ public class MoreFragment extends Fragment {
         imgList.add(R.drawable.daily_health_tips);
         imgList.add(R.drawable.testimony);
         imgList.add(R.drawable.lang);
+        if (userDetails[3].equals("admin")) {
+            imgList.add(R.drawable.ic_calendar_history);
+        }
         imgList.add(R.drawable.contact);
         imgList.add(R.drawable.refer_friend);
         imgList.add(R.drawable.tearm_conditions);
