@@ -4,6 +4,7 @@ import com.hexaenna.drchella.Model.AllAppointmentDetails;
 import com.hexaenna.drchella.Model.AppointmentDetails;
 import com.hexaenna.drchella.Model.GetExcelModel;
 import com.hexaenna.drchella.Model.HealthTipsDetails;
+import com.hexaenna.drchella.Model.HistoryDetails;
 import com.hexaenna.drchella.Model.MessageRequestAndResponse;
 import com.hexaenna.drchella.Model.RegisterRequestAndResponse;
 import com.hexaenna.drchella.Model.TestimonyDetails;
@@ -123,5 +124,10 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("verify_update_phone.php")
     Call<RegisterRequestAndResponse>submitOTP(@Field("x") JSONObject email);
+
+
+    @FormUrlEncoded
+    @POST("apointment_history.php")
+    Call<HistoryDetails>getAppointmentHisoryDetails(@Field("x") JSONObject history);
 }
 

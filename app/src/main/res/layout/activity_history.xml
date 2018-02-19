@@ -1,13 +1,18 @@
-<LinearLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.hexaenna.drchella.activity.HomeActivity">
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:fillViewport="true">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
         android:layout_width="match_parent"
@@ -37,25 +42,15 @@
         </android.support.v7.widget.Toolbar>
 
 
-        <android.support.design.widget.TabLayout
-            android:id ="@+id/appointment_tabs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:color/white"
-            app:elevation="0dp"
-            app:tabGravity="fill"
-            app:tabIndicatorColor="@color/white"
-            app:tabIndicatorHeight="0dp"
-            app:tabMode="fixed"
-            app:tabTextColor="@color/white"
-            android:visibility="gone"/>
+
 
     </android.support.design.widget.AppBarLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/ldtDownload"
-        android:weightSum="3">
+        android:weightSum="3"
+        android:layout_below="@+id/appbar">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -113,9 +108,40 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:id="@+id/ldtListExcel"
-       >
+       android:layout_below="@+id/ldtDownload">
 
     </LinearLayout>
 
 
- </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtNoApp"
+        android:text="No Appointments Available"
+        android:textColor="@android:color/black"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+        android:visibility="visible"
+       android:layout_centerVertical="true"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtPick"
+            android:text="Pick Date From Calendar"
+            android:textColor="@android:color/black"
+            android:gravity="center"
+            android:layout_centerHorizontal="true"
+            android:visibility="visible"
+            android:layout_centerVertical="true"
+            android:textSize="15sp"/>
+
+    <ProgressBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:id="@+id/progressHistory"
+        />
+
+    </RelativeLayout>
+ </ScrollView>
