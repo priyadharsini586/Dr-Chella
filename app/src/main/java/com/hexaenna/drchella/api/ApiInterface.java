@@ -94,6 +94,9 @@ public interface ApiInterface {
     @POST("change_language.php")
     Call<HealthTipsDetails> changeLanguage(@Field("x") JSONObject bookObject);
 
+    @POST("check_unavailable_dates.php")
+    Call<TimeAndDateResponse> unAvaliableList();
+
 
     @FormUrlEncoded
     @POST("testimony.php")

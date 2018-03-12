@@ -14,6 +14,16 @@ import java.util.List;
 public class TimeAndDateResponse {
    private   String status_code,status_message,success,app_sno = null,city_id,date,time,uniqid,photo,profile_pic,mobile,name,lang,title,notification,user_type;
     public List<appoinments> appoinments = new ArrayList<>();
+    public List<UnAvailableList> list = new ArrayList<>();
+
+    public List<UnAvailableList> getList() {
+        return list;
+    }
+
+    public void setList(List<UnAvailableList> list) {
+        this.list = list;
+    }
+
     @SerializedName("Blocked_Array")
     @Expose
    private ArrayList<String> Blocked_Array = null ;
@@ -216,6 +226,27 @@ public class TimeAndDateResponse {
 
         public void setSno(String sno) {
             this.sno = sno;
+        }
+    }
+
+    public class UnAvailableList
+    {
+        private String from,to;
+
+        public String getFrom() {
+            return from;
+        }
+
+        public void setFrom(String from) {
+            this.from = from;
+        }
+
+        public String getTo() {
+            return to;
+        }
+
+        public void setTo(String to) {
+            this.to = to;
         }
     }
 }

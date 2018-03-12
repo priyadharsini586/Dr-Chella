@@ -71,7 +71,10 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
@@ -118,6 +121,7 @@ public class DateAndTimeFragment extends Fragment implements View.OnClickListene
     private int previousSelectedPosition = -1;
     ArrayList<String> bookedListArray,blockedListArray;
     boolean doubleBackToExitPressedOnce = false;
+    public static List<CalendarDay> unAvaliableList = new ArrayList<>();
 
     @TargetApi(Build.VERSION_CODES.N)
     @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
@@ -273,20 +277,26 @@ public class DateAndTimeFragment extends Fragment implements View.OnClickListene
                         Log.e("week date",String.valueOf(week));
                     }
                     selectDate = dateRequest;
-                    if (item[0].equals("Erode") || item[0].equals("ஈரோடு"))
+                    if (unAvaliableList.contains(date))
                     {
-                        if (date.getCalendar().get(java.util.Calendar.DAY_OF_WEEK) == java.util.Calendar.FRIDAY || date.getCalendar().get(java.util.Calendar.DAY_OF_WEEK) == java.util.Calendar.SUNDAY) {
-                            Toast.makeText(getActivity(), "Doctor not avaiable", Toast.LENGTH_SHORT).show();
-                            gridView.setVisibility(View.GONE);
-                        }else
-                        {
+                        Log.e("contains","true");
+                        gridView.setVisibility(View.GONE);
+                        Toast.makeText(getActivity(), "Doctor not avaiable in this Date", Toast.LENGTH_SHORT).show();
 
-                            getTimingList(selectCity,dateRequest);
+                    }else {
+                        Log.e("contains", "false");
 
-                        }
-                    }else if (item[0].equals("Chennai") || item[0].equals("சென்னை"))
-                    {
-                        CalendarDay  selectedDate = widget.getSelectedDate();
+                        if (item[0].equals("Erode") || item[0].equals("ஈரோடு")) {
+                            if (date.getCalendar().get(java.util.Calendar.DAY_OF_WEEK) == java.util.Calendar.FRIDAY || date.getCalendar().get(java.util.Calendar.DAY_OF_WEEK) == java.util.Calendar.SUNDAY) {
+                                Toast.makeText(getActivity(), "Doctor not avaiable", Toast.LENGTH_SHORT).show();
+                                gridView.setVisibility(View.GONE);
+                            } else {
+
+                                getTimingList(selectCity, dateRequest);
+
+                            }
+                        } else if (item[0].equals("Chennai") || item[0].equals("சென்னை")) {
+                            CalendarDay selectedDate = widget.getSelectedDate();
                       /*  Date date5 = selectedDate.getDate();
                         DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
                         String reportDate = df.format(date5);
@@ -302,62 +312,55 @@ public class DateAndTimeFragment extends Fragment implements View.OnClickListene
                         cal.setTime(date1);
                         int week = cal.get(Calendar.WEEK_OF_MONTH);*/
 
-                        if (date.getCalendar().get(java.util.Calendar.DAY_OF_WEEK) != java.util.Calendar.SUNDAY)
-                        {
-                            Toast.makeText(getActivity(), "Doctor not avaiable", Toast.LENGTH_SHORT).show();
-                        }else
-                        {
-                            if (selectedDate.getDay() <= 7 || selectedDate.getDay() < 22 && selectedDate.getDay() > 14)
-                            {
-                                getTimingList(selectCity,dateRequest);
-                            }else
-                            {
+                            if (date.getCalendar().get(java.util.Calendar.DAY_OF_WEEK) != java.util.Calendar.SUNDAY) {
                                 Toast.makeText(getActivity(), "Doctor not avaiable", Toast.LENGTH_SHORT).show();
+                            } else {
+                                if (selectedDate.getDay() <= 7 || selectedDate.getDay() < 22 && selectedDate.getDay() > 14) {
+                                    getTimingList(selectCity, dateRequest);
+                                } else {
+                                    Toast.makeText(getActivity(), "Doctor not avaiable", Toast.LENGTH_SHORT).show();
+                                }
                             }
-                        }
-                    }else if (item[0].equals("Coimbatore") || item[0].equals("கோயம்புத்தூர்"))
-                    {
-                        if (date.getCalendar().get(java.util.Calendar.DAY_OF_WEEK) == java.util.Calendar.FRIDAY) {
-                            if (week == 2 || week == 4) {
-                                getTimingList(selectCity,dateRequest);
+                        } else if (item[0].equals("Coimbatore") || item[0].equals("கோயம்புத்தூர்")) {
+                            if (date.getCalendar().get(java.util.Calendar.DAY_OF_WEEK) == java.util.Calendar.FRIDAY) {
+                                if (week == 2 || week == 4) {
+                                    getTimingList(selectCity, dateRequest);
+                                } else {
+                                    Toast.makeText(getActivity(), "Doctor not avaiable", Toast.LENGTH_SHORT).show();
+                                }
                             } else {
                                 Toast.makeText(getActivity(), "Doctor not avaiable", Toast.LENGTH_SHORT).show();
                             }
-                        }else {
-                            Toast.makeText(getActivity(), "Doctor not avaiable", Toast.LENGTH_SHORT).show();
-                        }
-                    }else if (item[0].equals("Namakkal") || item[0].equals("நாமக்கல்"))
-                    {
-                        if (date.getCalendar().get(java.util.Calendar.DAY_OF_WEEK) == java.util.Calendar.FRIDAY) {
-                            if (week == 2 || week == 4) {
-                                getTimingList(selectCity,dateRequest);
+                        } else if (item[0].equals("Namakkal") || item[0].equals("நாமக்கல்")) {
+                            if (date.getCalendar().get(java.util.Calendar.DAY_OF_WEEK) == java.util.Calendar.FRIDAY) {
+                                if (week == 2 || week == 4) {
+                                    getTimingList(selectCity, dateRequest);
+                                } else {
+                                    Toast.makeText(getActivity(), "Doctor not avaiable", Toast.LENGTH_SHORT).show();
+                                }
                             } else {
                                 Toast.makeText(getActivity(), "Doctor not avaiable", Toast.LENGTH_SHORT).show();
                             }
-                        }else {
-                            Toast.makeText(getActivity(), "Doctor not avaiable", Toast.LENGTH_SHORT).show();
-                        }
-                    }else if (item[0].equals("Mayiladuthurai") || item[0].equals("மயிலாடுதுறை"))
-                    {
-                        if (date.getCalendar().get(java.util.Calendar.DAY_OF_WEEK) == java.util.Calendar.FRIDAY) {
-                            if (week == 1 || week == 3) {
-                                getTimingList(selectCity,dateRequest);
+                        } else if (item[0].equals("Mayiladuthurai") || item[0].equals("மயிலாடுதுறை")) {
+                            if (date.getCalendar().get(java.util.Calendar.DAY_OF_WEEK) == java.util.Calendar.FRIDAY) {
+                                if (week == 1 || week == 3) {
+                                    getTimingList(selectCity, dateRequest);
+                                } else {
+                                    Toast.makeText(getActivity(), "Doctor not avaiable", Toast.LENGTH_SHORT).show();
+                                }
                             } else {
                                 Toast.makeText(getActivity(), "Doctor not avaiable", Toast.LENGTH_SHORT).show();
                             }
-                        }else {
-                            Toast.makeText(getActivity(), "Doctor not avaiable", Toast.LENGTH_SHORT).show();
-                        }
-                    }else if (item[0].equals("Kollidam") || item[0].equals("கொள்ளிடம்"))
-                    {
-                        if (date.getCalendar().get(java.util.Calendar.DAY_OF_WEEK) == java.util.Calendar.FRIDAY) {
-                            if (week == 1 || week == 3) {
-                                getTimingList(selectCity,dateRequest);
+                        } else if (item[0].equals("Kollidam") || item[0].equals("கொள்ளிடம்")) {
+                            if (date.getCalendar().get(java.util.Calendar.DAY_OF_WEEK) == java.util.Calendar.FRIDAY) {
+                                if (week == 1 || week == 3) {
+                                    getTimingList(selectCity, dateRequest);
+                                } else {
+                                    Toast.makeText(getActivity(), "Doctor not avaiable", Toast.LENGTH_SHORT).show();
+                                }
                             } else {
                                 Toast.makeText(getActivity(), "Doctor not avaiable", Toast.LENGTH_SHORT).show();
                             }
-                        }else {
-                            Toast.makeText(getActivity(), "Doctor not avaiable", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
@@ -812,6 +815,7 @@ public class DateAndTimeFragment extends Fragment implements View.OnClickListene
                     gridView.setVisibility(View.GONE);
                     dialog.dismiss();
                     checkList(item[0]);
+                    checkAvailable();
                 }
             }
         });
@@ -1132,6 +1136,88 @@ public class DateAndTimeFragment extends Fragment implements View.OnClickListene
 
     }
 
+
+    public void checkAvailable()
+    {
+        if (isConnection.equals(Constants.NETWORK_CONNECTED)) {
+            apiInterface = ApiClient.getClient().create(ApiInterface.class);
+
+            progressCalendar.setVisibility(View.VISIBLE);
+            Call<TimeAndDateResponse> call = apiInterface.unAvaliableList();
+            call.enqueue(new Callback<TimeAndDateResponse>() {
+                @Override
+                public void onResponse(Call<TimeAndDateResponse> call, Response<TimeAndDateResponse> response) {
+                    if (response.isSuccessful()) {
+                        TimeAndDateResponse timeAndDateResponse = response.body();
+
+                        if (timeAndDateResponse.getStatus_code() != null) {
+
+                            List<TimeAndDateResponse.UnAvailableList> unAvailableLists = timeAndDateResponse.getList();
+                            List<CalendarDay> fromCalendarDayList = new ArrayList<>();
+                            List<CalendarDay> toCalendarDayList = new ArrayList<>();
+                            for (int i=0 ; i < unAvailableLists.size() ; i++)
+                            {
+                                TimeAndDateResponse.UnAvailableList unAvailableList = unAvailableLists.get(i);
+                                String fromStrDate = unAvailableList.getFrom();
+                                String toStrDate = unAvailableList.getTo();
+
+                                Date fromDate = null,toDate = null;
+
+                                try {
+                                    fromDate=new SimpleDateFormat("dd.MM.yyyy").parse(fromStrDate);
+                                    toDate=new SimpleDateFormat("dd.MM.yyyy").parse(toStrDate);
+                                    CalendarDay  fromDay = CalendarDay.from(fromDate);
+                                    CalendarDay  toDay = CalendarDay.from(toDate);
+
+                                    calendarView.addDecorators(new DrUnavailableDaysDisable(getActivity(),fromDate,toDate));
+
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+
+                            progressCalendar.setVisibility(View.GONE);
+
+
+                        }
+                    }else
+                    {
+
+                        Toast.makeText(getActivity(), "Internal Server Error", Toast.LENGTH_SHORT).show();
+                        progressCalendar.setVisibility(View.GONE);
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<TimeAndDateResponse> call, Throwable t) {
+                    Log.e("Failure", String.valueOf(t));
+
+                }
+            });
+
+        }else
+        {
+            snackbar = TSnackbar
+                    .make(scltimeMain, "No Internet Connection !", TSnackbar.LENGTH_INDEFINITE)
+                    .setAction("Retry", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Log.d("Action Button", "onClick triggered");
+
+                        }
+                    });
+            snackbar.setActionTextColor(Color.parseColor("#4ecc00"));
+            snackbarView = snackbar.getView();
+            snackbarView.setBackgroundColor(Color.parseColor("#E43F3F"));
+            TextView textView = (TextView) snackbarView.findViewById(com.androidadvance.topsnackbar.R.id.snackbar_text);
+            textView.setTextColor(Color.YELLOW);
+            textView.setTypeface(null, Typeface.BOLD);
+            snackbar.show();
+        }
+    }
+
     private void getNextFragment() {
 
         if (item[0] != null) {
@@ -1256,6 +1342,50 @@ public class DateAndTimeFragment extends Fragment implements View.OnClickListene
 
         }
 
+    }
+
+    private static class DrUnavailableDaysDisable implements DayViewDecorator
+    {
+        private int color;
+        private Date fromDates , toDates;
+        Context mContext;
+
+        public DrUnavailableDaysDisable(Context context,Date fromDate ,Date toDate)
+        {
+            this.color = color;
+            this.fromDates = fromDate;
+            this.toDates = toDate;
+            this.mContext = context;
+        }
+        @Override
+        public boolean shouldDecorate(CalendarDay day) {
+
+            Date calDay = day.getDate();
+
+            if (calDay.compareTo(fromDates) >= 0)
+            {
+                Log.e("true","true");
+                if (calDay.compareTo(toDates) <= 0 ) {
+                    unAvaliableList.add(day);
+                    return true;
+                }else
+                {
+                    return false;
+                }
+            }else
+            {
+
+                return false;
+            }
+
+
+        }
+
+        @Override
+        public void decorate(DayViewFacade view) {
+            view.setDaysDisabled(false);
+            view.addSpan(new ForegroundColorSpan(mContext.getResources().getColor(R.color.red_not_avaliable)));
+        }
     }
 
 
